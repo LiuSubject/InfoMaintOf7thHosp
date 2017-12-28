@@ -1,0 +1,243 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<style>
+			ul {
+				font-size: 14px;
+				color: #8f8f94;
+			}
+			
+			.mui-btn {
+				padding: 10px;
+			}
+			
+			.title {
+				margin: 35px 15px 10px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<h1 class="mui-title">信息维护管理平台</h1>
+		</header>
+				<div class="mui-content mui-scroll-wrapper">
+					<div class="mui-scroll">
+
+						<div id="slider" class="mui-slider">
+							<div class="mui-slider-group mui-slider-loop">
+								<!-- 额外增加的一个节点(循环轮播：第一个节点是最后一张轮播) -->
+								<div class="mui-slider-item mui-slider-item-duplicate">
+									<a href="#">
+										<img src="images/main.png">
+									</a>
+								</div>
+								<!-- 第一张 -->
+								<div class="mui-slider-item">
+									<a href="#">
+										<img src="images/main.png">
+									</a>
+								</div>
+								<!-- 额外增加的一个节点(循环轮播：最后一个节点是第一张轮播) -->
+								<div class="mui-slider-item mui-slider-item-duplicate">
+									<a href="#">
+										<img src="images/main.png">
+									</a>
+								</div>
+							</div>
+						</div>
+						<ul class="mui-table-view mui-grid-view mui-grid-9">
+							<li id='faultapplication' class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+								<a href="#">
+									<span class="mui-icon mui-icon-help"></span>
+									<div class="mui-media-body">故障申报</div>
+								</a>
+							</li>
+							<li id='materialapplication' class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+								<a href="#">
+									<span class="mui-icon mui-icon-paperclip"></span>
+									<div class="mui-media-body">物资申购</div>
+								</a>
+							</li>
+							<li id="inspectionengineroom" class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+								<a href="#">
+									<span class="mui-icon mui-icon-flag"></span>
+									<div class="mui-media-body">巡检机房</div>
+								</a>
+							</li>
+							<li id='faultlist' class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+								<a href="#">
+									<span class="mui-icon mui-icon-spinner-cycle mui-spin"></span>
+									<div class="mui-media-body">故障列表</div>
+								</a>
+							</li>
+							<li id='materiallist' class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+								<a href="#">
+									<span class="mui-icon mui-icon-paperplane"></span>
+									<div class="mui-media-body">申购列表</div>
+								</a>
+							</li>
+							<li id='inspectionlist' class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+								<a href="#">
+									<span class="mui-icon mui-icon-bars"></span>
+									<div class="mui-media-body">巡检记录</div>
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			
+		<script src="js/mui.min.js"></script>
+		<script>
+			(function($, doc) {
+				mui.init();
+				mui.plusReady(function() {
+					//故障申报按钮
+					var faultapplicationDiv = doc.getElementById('faultapplication');
+					//故障列表按钮
+					var faultlistDiv = doc.getElementById('faultlist');
+					//物资申购按钮
+					var materialapplicationDiv = doc.getElementById('materialapplication');
+					//申购列表按钮
+					var materiallistDiv = doc.getElementById('materiallist');
+					//巡检机房按钮
+					var inspectionengineroomDiv = doc.getElementById('inspectionengineroom');
+					//巡检信息按钮
+					var inspectionlistDiv = doc.getElementById('inspectionlist');
+					//部门统计按钮
+					var deptstaticDiv = doc.getElementById('deptstatic');					
+					
+					//获取当前用户ID
+					var userid= localStorage.getItem("occurUserId");
+					
+					
+					
+					
+					faultapplicationDiv.addEventListener('tap', function(event) {
+						mui.openWindow({
+							url: 'InfoDept/Fault_Application.html',
+							id: 'Fault_Application',
+							styles: {
+								popGesture: 'hide'
+							},
+							show:{
+								duration: 150
+							},
+							waiting: { 
+								autoShow: false, //自动显示等待框，默认为true  
+							}	
+						});
+					}, false);
+
+					faultlistDiv.addEventListener('tap', function(event) {
+						mui.openWindow({
+							url: 'InfoDept/Fault_List.html',
+							id: 'Fault_List',
+							styles: {
+								popGesture: 'hide'
+							},
+							show:{
+								duration: 150
+							},
+							waiting: { 
+								autoShow: false, //自动显示等待框，默认为true  
+							}
+						});
+					}, false);
+
+					materialapplicationDiv.addEventListener('tap', function(event) {
+						mui.openWindow({
+							url: 'InfoDept/Material_Application.html',
+							id: 'Material_Application',
+							styles: {
+								popGesture: 'hide'
+							},
+							show:{
+								duration: 150
+							},
+							waiting: { 
+								autoShow: false, //自动显示等待框，默认为true  
+							}
+						});
+					}, false);
+
+					inspectionengineroomDiv.addEventListener('tap', function(event) {
+						mui.openWindow({
+							url: 'InfoDept/Inspection_Engine_Room.html',
+							id: 'Inspection_Engine_Room',
+							styles: {
+								popGesture: 'hide'
+							},
+							show:{
+								duration: 150
+							},
+							waiting: { 
+								autoShow: false, //自动显示等待框，默认为true  
+							}
+						});
+					}, false);
+
+					materiallistDiv.addEventListener('tap', function(event) {
+						mui.openWindow({
+							url: 'InfoDept/Material_List.html',
+							id: 'Material_List',
+							styles: {
+								popGesture: 'hide'
+							},
+							show:{
+								duration: 150
+							},
+							waiting: { 
+								autoShow: false, //自动显示等待框，默认为true  
+							}
+						});
+					}, false);
+
+					inspectionlistDiv.addEventListener('tap', function(event) {
+						mui.openWindow({
+							url: 'InfoDept/Inspection_List.html',
+							id: 'Inspection_List',
+							styles: {
+								popGesture: 'hide'
+							},
+							show:{
+								duration: 150
+							},
+							waiting: { 
+								autoShow: false, //自动显示等待框，默认为true  
+							}
+						});
+					}, false);
+					
+					//暂时弃用
+/*					deptstaticDiv.addEventListener('tap', function(event) {
+						mui.openWindow({
+							url: 'InfoDept/Dept_Static.html',
+							id: 'Dept_Static',
+							styles: {
+								popGesture: 'hide'
+							},
+							show:{
+								duration: 150
+							},
+							waiting: { 
+								autoShow: false, //自动显示等待框，默认为true  
+							}
+						});
+					}, false);*/
+					
+					
+
+				});
+				
+			}(mui, document));
+				
+		</script>
+	</body>
+
+</html>

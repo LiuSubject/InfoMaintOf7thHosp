@@ -1,0 +1,216 @@
+<!--管理用户电脑故障处理页-->
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<script src="../js/jquery.min.js 	"></script>
+		<style type="text/css">
+		    #textareadetail {
+		    	min-height: 90px;
+		    }
+		    #textareafeedback {
+		    	min-height: 90px;
+		    }
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		  <button class="mui-action-back mui-btn mui-btn-blue mui-btn-link mui-btn-nav mui-pull-left"><span class="mui-icon mui-icon-left-nav"></span>返回</button>
+		  <h1 class="mui-title">申报详情</h1>
+		</header>
+		<div class="mui-content">
+		  	<form id="faultapplicationform" name="faultapplicationform" class="mui-input-group" method="post" action="" enctype="multipart/form-data">
+		      <div class="mui-input-row">
+		          <label >标题</label>
+		          <input name="title" id='title' type="text" class="mui-input" 
+		          	readonly="readonly">
+		      </div>
+		      <div class="mui-input-row">
+		          <label >科室</label>
+		          <input name="dept" id="dept" type="text" class="mui-input"
+		          	readonly="readonly">
+		      </div>
+		      <div class="mui-input-row">
+		          <label >申报人</label>
+		          <input name="name" id="name" type="text" class="mui-input"
+		          	readonly="readonly">
+		      </div>
+		      <div class="mui-input-row">
+		          <label >联系方式</label>
+		          <input name="tel" id="tel" type="text" class="mui-input"
+		          	readonly="readonly">
+		      </div>
+		      <div class="mui-input-row">
+		          <label>故障类型</label>
+		          <select name="type" id="type"
+		          	onfocus="this.defaultIndex=this.selectedIndex;"
+					onchange="this.selectedIndex=this.defaultIndex;">
+		              <option value="1">电脑问题</option>
+		              <option value="2">打印机问题</option>
+		              <option value="3">监控问题</option>
+		              <option value="4">网络问题</option>
+		              <option value="5">病区软件问题</option>
+		              <option value="6">门诊软件问题</option>
+		              <option value="7">其它问题</option>
+		          </select>		          
+		      </div>
+		      <div id="textareadetail" class="mui-input-row">
+		          <label >详情描述</label>
+		          <textarea name="detail" id="detail" readonly="readonly"></textarea>
+		      </div>
+		      <div class="mui-input-row">
+		          <label style="color: #0680FF;">负责人:</label>
+		          <input name="leader" id="leader" type="text" class="mui-input"
+		          	readonly="readonly">
+		      </div>
+		      <div id="textareafeedback" class="mui-input-row">
+		          <label style="color: #0680FF;">请输入反馈:</label>
+		          <textarea name="feedback" id="feedback"></textarea>
+		      </div>
+		  </form>
+		</div>
+		<nav class="mui-bar mui-bar-tab">
+        <a id="deal" class="mui-tab-item mui-active">
+            <span class="mui-icon mui-icon-download"></span>
+            <span class="mui-tab-label">处理</span>
+        </a>
+        <a id="complete" class="mui-tab-item">
+            <span class="mui-icon mui-icon-upload"></span>
+            <span class="mui-tab-label">完成</span>
+        </a>
+	    </nav>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/jquery.min.js"></script>
+		<script src="../js/jquery.easyui.min.js"></script>
+		<script src="../js/jquery.easyui.mobile.js"></script>
+		<script src="../js/APPINFO.js"></script>
+		<script type="text/javascript">
+			(function($, doc) {
+				mui.init();
+				jQuery.noConflict();
+				mui.plusReady(function() {
+					//加载数据
+					var url = APPINFO.serverURL+'/mobileadmin/checkComputerProblems';
+					mui.ajax( url ,{
+						data : {
+									id:plus.webview.currentWebview().thisId
+								},
+						dataType : 'json' , // 服务器返回 json 格式数据
+						type : 'GET' , //HTTP 请求类型
+						timeout : 10000 , // 超时时间设置为 10 秒；
+						success : function (data){
+							// 服务器返回响应，根据响应结果，分析是否成功；
+							if(data.success == 'true'){	
+								jQuery('#faultapplicationform').form('load', data.computerProblems);
+							    //图片加载
+							    var img=new Image();  
+							    img.onload=function(){
+							    	plus.nativeUI.toast("图片加载成功");							    	
+							    	//调整图片尺寸
+							    	var mobileWidth = document.body.clientWidth;
+							    	if(img.width > mobileWidth){
+							    		img.height = img.height * mobileWidth / img.width;
+            							img.width = mobileWidth;
+							    	}
+							    	//加载完毕，显示图片
+							    	document.body.appendChild(img);
+							    	};
+							    img.onerror=function(){
+							    	plus.nativeUI.toast("图片信息有误")
+							    	};
+							    //此行一定要在onload之后
+							    img.src=APPINFO.serverURL+"/upload/"+ data.computerProblems.img;
+							    
+							    if (!img.complete) {
+							    	plus.nativeUI.toast("图片加载中");
+				                }
+							}else if(data.success == 'false'){
+								plus.nativeUI.toast(data.msg);
+							}else{
+								plus.nativeUI.toast("状态异常");
+							}
+							
+	
+						},	
+						error : function (xhr,type,errorThrown){
+							// 异常处理；
+							plus.nativeUI.toast('请保持网络畅通');
+						}
+					});
+				});
+				
+				//处理按钮
+				var dealBtn = doc.getElementById('deal');
+				//完成按钮
+				var completeBtn = doc.getElementById('complete');
+				
+				dealBtn.addEventListener('tap', function(event) {
+					//处理按钮点击事件
+					var url = APPINFO.serverURL+'/mobileadmin/dealComputerProblems';
+					mui.ajax( url ,{
+						data : {
+									id : plus.webview.currentWebview().thisId,
+									feedback : document.getElementById("feedback").value
+								},
+						dataType : 'json' , // 服务器返回 json 格式数据
+						type : 'GET' , //HTTP 请求类型
+						timeout : 10000 , // 超时时间设置为 10 秒；
+						success : function (data){
+							// 服务器返回响应，根据响应结果，分析是否成功；
+							if(data.success == 'true'){	
+								plus.nativeUI.toast(data.msg);
+							}else if(data.success == 'false'){
+								plus.nativeUI.toast(data.msg);
+							}else{
+								plus.nativeUI.toast("状态异常");
+							}
+							
+	
+						},	
+						error : function (xhr,type,errorThrown){
+							// 异常处理；
+							plus.nativeUI.toast('请保持网络畅通');
+						}
+					});
+				});
+				
+				completeBtn.addEventListener('tap', function(event) {
+					//处理按钮点击事件
+					var url = APPINFO.serverURL+'/mobileadmin/completeComputerProblems';
+					mui.ajax( url ,{
+						data : {
+									id : plus.webview.currentWebview().thisId,
+									feedback : document.getElementById("feedback").value
+								},
+						dataType : 'json' , // 服务器返回 json 格式数据
+						type : 'GET' , //HTTP 请求类型
+						timeout : 10000 , // 超时时间设置为 10 秒；
+						success : function (data){
+							// 服务器返回响应，根据响应结果，分析是否成功；
+							if(data.success == 'true'){	
+								plus.nativeUI.toast(data.msg);
+							}else if(data.success == 'false'){
+								plus.nativeUI.toast(data.msg);
+							}else{
+								plus.nativeUI.toast("状态异常");
+							}
+							
+	
+						},	
+						error : function (xhr,type,errorThrown){
+							// 异常处理；
+							plus.nativeUI.toast('请保持网络畅通');
+						}
+					});
+				});
+			}(mui, document));
+			
+		</script>
+	</body>
+
+</html>

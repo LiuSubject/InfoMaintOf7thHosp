@@ -1,0 +1,147 @@
+<!--未使用-->
+<!--数据统计页-->
+<!doctype html>
+
+<style> 
+	body{ text-align:center} 
+	#main{ margin:0 auto; width:400px; height:100px; border:1px} 
+</style> 
+
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<h1 class="mui-title">数据统计</h1>
+		</header>
+		<div style="height:45px;" ></div><!--防遮挡-->
+		<div id="fault" style="width: 350px;height:250px;"></div>
+		<div id="buy" style="width: 350px;height:250px;"></div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/echarts.common.min.js"></script>
+		<script type="text/javascript">
+			mui.init();
+	        // 基于准备好的dom，初始化echarts实例
+			//故障饼图
+	        var faultchart = echarts.init(document.getElementById('fault'));
+	        //申购饼图
+	        var buychart = echarts.init(document.getElementById('buy'));
+	
+			//故障饼图设置
+	        faultoption = {
+	        	title : {
+	        		show : false,
+	        		text : '故障'
+	        	},
+			    tooltip : {
+			        trigger: 'item',
+			        formatter: "故障<br/>{b} : {c} ({d}%)"
+			    },
+			    series : [
+			        {
+			            name: '',
+			            type: 'pie',
+			            radius: '80%',
+			            center: ['50%', '50%'],
+			            data:[
+			                {value:335, name:'已解决'},
+			                {value:310, name:'未处理'},
+			                {value:234, name:'处理中'}
+			            ],
+			            itemStyle: {
+			                emphasis: {
+			                    shadowBlur: 10,
+			                    shadowOffsetX: 0,
+			                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+			                }
+			            }
+			        }
+			    ],
+   				color: ['rgb(235,97,51)','rgb(251,202,90)','rgb(170,207,82)']
+			};
+
+			//申购饼图设置
+			buyoption = {
+	        	title : {
+	        		show : false,
+	        		text : '申购'
+	        	},
+			    tooltip : {
+			        trigger: 'item',
+			        formatter: "申购<br/>{b} : {c} ({d}%)"
+			    },
+			    series : [
+			        {
+			            name: '',
+			            type: 'pie',
+			            radius: '80%',
+			            center: ['50%', '50%'],
+			            data:[
+			                {value:335, name:'已解决'},
+			                {value:310, name:'未处理'},
+			                {value:234, name:'处理中'}
+			            ],
+			            itemStyle: {
+			                emphasis: {
+			                    shadowBlur: 10,
+			                    shadowOffsetX: 0,
+			                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+			                }
+			            }
+			        }
+			    ],
+   				color: ['rgb(234,100,94)','rgb(244,200,113)','rgb(21,174,103)']
+			};
+	        // 使用刚指定的配置项和数据显示图表。
+	        faultchart.setOption(faultoption);
+	        buychart.setOption(buyoption);
+	        
+	        //AJAX获取数据
+	     /*        $.ajax({  
+			         method: 'POST',  
+			         data: {},  
+			         url: 'http://localhost:8080/getMapData.do',  
+			         success: function(result){  
+			                console.info(result);  
+			                if(result){  
+			                    //get max and series data  
+			                    var jsonObj = $.parseJSON(result);  
+			                    mapChart.setOption({  
+			                          
+			                         visualMap: {  
+			                               min: 0,  
+			                               max: jsonObj.maxRange,  
+			                               text:['高','低'],  
+			                               realtime: false,  
+			                               calculable: true,  
+			                               inRange: {  
+			                               color: ['lightskyblue','yellow', 'orangered']  
+			                               }  
+			                         },  
+			                        series:[{  
+			                                     name: '通州区各镇xxx统计图',  
+			                                     type: 'map',  
+			                                     map: '北京', // 自定义扩展图表类型  
+			                                     aspectScale: 1.0, //长宽比 default: 0.75  
+			                                     zoom: 1.1,  
+			                                     roam: true,  
+			                                       itemStyle:{  
+			                                           normal:{label:{show:true}},  
+			                                           emphasis:{label:{show:true}}  
+			                                   },  
+			                                  data: jsonObj.data //json对象中的data, data为JSONArray  
+			                             }  
+			                         ]  
+			                     });  
+			                  }   
+			         }  
+			     }) */
+		</script>
+	</body>
+</html>

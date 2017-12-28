@@ -1,0 +1,53 @@
+{
+  "login.html": {
+    "refer": [
+      "main.html",
+      "InfoDept/Fault_Application.html",
+      "forget_password.html",
+      "reg.html",
+      "mainNormal.html"
+    ],
+    "resources": [
+      "/images/eye.png"
+    ]
+  },
+  "main.html": {
+    "refer": [
+      "InfoDept/Fault_Application.html",
+      "InfoDept/Fault_List.html",
+      "InfoDept/Material_List.html",
+      "InfoDept/Material_Application.html",
+      "user_message.html",
+      "user_task.html",
+      "user_statistics.html",
+      "InfoDept/Inspection_Engine_Room.html",
+      "InfoDept/Dept_Static.html",
+      "InfoDept/Inspection_List.html"
+    ]
+  },
+  "mainNormal.html": {
+    "refer": [
+      "InfoDept/Fault_Application.html",
+      "InfoDept/Material_Application.html",
+      "InfoDept/Fault_List.html",
+      "InfoDept/Material_List.html"
+    ]
+  },
+  "InfoDept/Fault_List.html": {
+    "refer": [
+      "InfoDept/Fault_Deal.html",
+      "InfoDept/Fault_Detail.html"
+    ]
+  },
+  "InfoDept/Material_List.html": {
+    "refer": [
+      "InfoDept/Material_Deal.html",
+      "InfoDept/Material_Detail.html"
+    ]
+  },
+  "InfoDept/Inspection_List.html": {
+    "refer": [
+      "InfoDept/Inspection_Details.html"
+    ]
+  }
+}

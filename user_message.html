@@ -1,0 +1,176 @@
+<!--abandon-->
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="css/easyui.css">
+		<link rel="stylesheet" type="text/css" href="css/mobile.css">
+		<link rel="stylesheet" type="text/css" href="css/icon.css">
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="css/tether.min.css">
+		<title>顶部选项卡</title>
+		<style type="text/css">
+			body {
+				background-color: white;
+			}
+			
+			.mui-content-padded {
+				margin: 0px;
+				padding: 8px;
+			}
+			/** 设置 选项卡颜色，字体颜色 **/
+			
+			.mui-segmented-control .mui-control-item.mui-active {
+				color: white;
+				background-color: #5f75e0;
+			}
+			/** 设置 选项卡 高度（默认38px） **/
+			
+			.mui-segmented-control .mui-control-item {
+				line-height: 38px;
+				text-align: center;
+				color: #007aff;
+				border-color: #007aff;
+				border-left: 1px solid #007aff;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<div class="mui-content">
+			<header id="header" class="mui-bar mui-bar-nav">
+			  <button class="mui-action-back mui-btn mui-btn-blue mui-btn-link mui-btn-nav mui-pull-left"><span class="mui-icon mui-icon-left-nav"></span>返回</button>
+			  <h1 class="mui-title">消息</h1>
+			</header>
+			<div class="mui-content-padded">
+				<div style="height:45px;" ></div><!--防遮挡-->
+				<div class="mui-segmented-control">
+					<a class="mui-control-item mui-active" href="#item1">故障</a>
+					<a class="mui-control-item" href="#item2">申购</a>
+					<a class="mui-control-item" href="#item2">巡检</a>
+				</div>
+			</div>
+			<div id="item1" class="mui-control-content mui-active">
+				<div class="mui-scroll">
+					<table  id="fault_list">
+					</table>
+				</div>
+			</div>
+			<div id="item2" class="mui-control-content">
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell">
+						第二个选项卡子项-1
+					</li>
+					<li class="mui-table-view-cell">
+						第二个选项卡子项-2
+					</li>
+					<li class="mui-table-view-cell">
+						第二个选项卡子项-3
+					</li>
+				</ul>
+			</div>
+		</div>
+
+		<script src="js/mui.min.js"></script>
+		<script src="js/jquery.min.js"></script>
+		<script src="js/jquery.easyui.min.js"></script>
+		<script src="js/jquery.easyui.mobile.js"></script>	
+		<script src="js/tether.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<script src="js/bootstrapQ.js"></script>
+		<script type="text/javascript">
+			mui.init()
+			jQuery.noConflict();
+			
+			//搜索框
+			function enterSearch(e) {
+			    if(e.keyCode == 13) {
+			        jQuery("#searchInput").blur();
+			        jQuery("#faultlistgrid").datagrid(
+			        	'load',
+			        	{
+							title:jQuery("#searchInput").val(),
+							dept:jQuery("#searchInput").val(),
+							name:jQuery("#searchInput").val()
+			        	}
+			        );
+			    }
+			}
+			
+			jQuery(function() {
+				jQuery('#faultlistgrid').datagrid({ 
+				    url: '', 
+				    columns: [[
+				     { field: 'create_time', title: '创建时间', width:35,align: 'center' }, 
+				     { field: 'dept', title: '部门',width:20, align: 'center' }, 
+				     { field: 'flag', title: '状态',width:10,align: 'center' ,
+					     formatter :
+				            function(value, row, index) {
+				            	var res = '';  
+				            	//状态色块标识
+	                           	switch (value) {
+	                               case 1:  
+	                                   res = '<font style="color:#dd4b39;">■</font>';        //未处理  
+	                                   break;  
+	                               case 3:  
+	                                   res = '<font style="color:#008539;">■</font>';        //已解决  
+	                                   break;    
+	                               case 2:  
+	                                   res = '<font style="color:#F39C12;">■</font>';        //处理中 
+	                                   break; 
+	                               default:  
+	                                   break;  
+	                           }  
+	                           return res;
+				            }
+				     },
+				     { field: 'id', title: '操作',width:35,align: 'center' ,
+					     formatter :
+				            function(value, row, index) {
+				            	var user_type = "1";
+				            	var res = ''; 
+				            	//按钮动态生成
+				            	if(user_type == "1"){
+				            		res = '<button type="button" class="btn btn-default btn-sm editBtn" id="' + value + '">处理</button>'+
+    									  '&nbsp;&nbsp;<button type="button" class="btn btn-default btn-sm viewDetail" id="' + value + '">详情</button>';
+				            	}else{
+				            		res = '<button type="button" class="btn btn-default btn-sm viewDetail" id="' + value + '">详情</button>';
+				            	} 
+	                           	return res;
+				            }
+				     }
+				    ]] 
+				   })
+				
+				//模拟数据加载
+				var a = [{ create_time: '2017-11-10 08:38:06', dept: '门诊内科', flag: 1, id: '2' },
+						 { create_time: '2017-11-10 08:38:08', dept: '急诊内科', flag: 2, id: '2' },
+						 { create_time: '2017-11-10 08:38:01', dept: '心内科', flag: 3, id: '2' }
+						
+						];
+				jQuery("#faultlistgrid").datagrid("loadData", a);
+
+				//处理按钮点击事件
+				jQuery(document).on('click', '.editBtn', function() {
+					window.location.href = "/sxqy/index.php/Home/Admin/manageEdit" + "/id/" + $(this).attr('id');
+				});
+				//详情按钮点击事件+
+				 
+				jQuery(document).on("click",".viewDetail",function(){
+			   		bootstrapQ.dialog({
+			    	    url : '/sxqy/index.php/Home/Index/manageModify/id/' + jQuery(this).attr('id'),
+			    	    title : '详细信息',
+			    	    foot : false
+	    			});
+   				});
+			});
+		</script>
+	</body>
+
+</html>

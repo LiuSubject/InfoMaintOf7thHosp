@@ -1,0 +1,140 @@
+<!--物资申购页-->
+<!doctype html>
+<style type="text/css">
+    #textareadetail {
+    	min-height: 90px;
+    }
+</style>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		  <button class="mui-action-back mui-btn mui-btn-blue mui-btn-link mui-btn-nav mui-pull-left">&nbsp;&nbsp;返回</button>
+		  <h1 class="mui-title">物资申购</h1>
+		  <button id="materialSavebtn" class="mui-btn mui-btn-blue mui-btn-link mui-btn-nav mui-pull-right">提交&nbsp;&nbsp;</button>
+		</header>
+		<div class="mui-content">
+			<form id="materialapplicationform" name="materialapplicationform" class="mui-input-group" method="post" action="" enctype="multipart/form-data">
+			      <div class="mui-input-row">
+			          <label>名称</label>
+			          <input id="name" name="name" type="text" class="mui-input-clear mui-input" placeholder="请输入名称">
+			      </div>
+			      <div class="mui-input-row">
+			          <label>数量</label>
+			          <input id="number" name="number" type="number" class="mui-input-clear mui-input" placeholder="请输入数量">
+			      </div>
+			      <div class="mui-input-row">
+			          <label>品牌</label>
+			          <input id="brand" name="brand" type="text" class="mui-input-clear mui-input" placeholder="请输入品牌">
+			      </div>
+			      <div class="mui-input-row">
+			          <label>参考型号</label>
+			          <input id="model" name="model" type="text" class="mui-input-clear mui-input" placeholder="请输入参考型号">
+			      </div>
+			      <div class="mui-input-row">
+			          <label>估价</label>
+			          <input id="judge" name="judge" type="number" class="mui-input-clear mui-input" placeholder="请输入估价">
+			      </div>
+			      <div class="mui-input-row">
+			          <label>总价</label>
+			          <input id="total" name="total" type="number" class="mui-input-clear mui-input" placeholder="请输入总价">
+			      </div>
+			      <div class="mui-input-row">
+			          <label>使用日期</label>
+			          <input id="useDate" name="useDate" placeholder="请输入时间" type="date">
+			      </div>
+			      <div class="mui-input-row">
+			          <label>申请人</label>
+			          <input id="applicant" name="applicant" type="text" class="mui-input-clear mui-input" placeholder="请输入申请人">
+			      </div>
+			      <div id="textareadetail" class="mui-input-row">
+			          <label>请购理由</label>
+			          <textarea id="reason" name="reason" placeholder="请输入请购理由"></textarea>
+			      </div>
+			  </form>
+		  </div>
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/jquery.min.js"></script>
+		<script src="../js/jquery.easyui.min.js"></script>
+		<script src="../js/jquery.easyui.mobile.js"></script>
+		<script src="../js/APPINFO.js"></script>
+		<script type="text/javascript">
+			(function($, doc) {
+				mui.init();
+				jQuery.noConflict();
+				mui.plusReady(function() {
+						var materialSavebtn = doc.getElementById('materialSavebtn');
+						materialSavebtn.addEventListener('tap', function(event) {
+							
+							//表单验证
+						 	if( !jQuery("#name").val() ){
+						        plus.nativeUI.toast("请输入名称");
+						        return false;
+						    }else if( !jQuery("#number").val() ){
+						        plus.nativeUI.toast("请输入数量");
+						        return false;
+						    }else if( !jQuery("#brand").val() ){
+						        plus.nativeUI.toast("请输入品牌");
+						        return false;
+						    }else if( !jQuery("#model").val() ){
+						        plus.nativeUI.toast("请输入参考型号");
+						        return false; 
+						    }else if( jQuery("#judge").val()==0 ){
+						        plus.nativeUI.toast("请选择估价");
+						        return false; 
+						    }else if( jQuery("#total").val()==0 ){
+						        plus.nativeUI.toast("请选择总价");
+						        return false; 
+						    }else if( jQuery("#use_date").val()==0 ){
+						        plus.nativeUI.toast("请选择使用日期");
+						        return false; 
+						    }else if( jQuery("#applicant").val()==0 ){
+						        plus.nativeUI.toast("请输入申请人");
+						        return false; 
+						    }else if( jQuery("#reason").val()==0 ){
+						        plus.nativeUI.toast("请输入请购理由");
+						        return false; 
+						    }
+						    
+						    //表单提交
+						    var form = new FormData(document.getElementById("materialapplicationform"));
+						    jQuery("#materialSavebtn").attr("disabled", true);
+						    jQuery.ajax({
+				                url:APPINFO.serverURL+'/mobileadmin/addMaterialApplication',
+				                type:"post",
+				                data:form,
+				                processData:false,
+				                contentType:false,
+				                success:function(data){
+				                   // 服务器返回响应，根据响应结果，分析是否成功；
+								if(data.success == 'true'){	
+									plus.nativeUI.toast(data.msg);
+									
+								}else if(data.success == 'false'){
+									plus.nativeUI.toast(data.msg);
+									jQuery("#materialSavebtn").attr("disabled", false);
+								}else{
+									plus.nativeUI.toast("状态异常");
+									jQuery("#materialSavebtn").attr("disabled", false);
+								}
+				                },
+				                error:function(e){
+				                    plus.nativeUI.toast("提交错误");
+				                    jQuery("#materialSavebtn").attr("disabled", false);
+				                }
+				           });
+						}, false);
+					});
+				}(mui, document));
+		</script>
+	</body>
+
+</html>

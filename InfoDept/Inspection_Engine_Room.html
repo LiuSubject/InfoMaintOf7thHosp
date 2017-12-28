@@ -1,0 +1,232 @@
+<!--信息科机房巡检记录页-->
+<!doctype html>
+<style type="text/css">
+    #textareadetail {
+    	min-height: 90px;
+    }
+</style>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		  <button class="mui-action-back mui-btn mui-btn-blue mui-btn-link mui-btn-nav mui-pull-left">&nbsp;&nbsp;返回</button>
+		  <h1 class="mui-title">机房巡检</h1>
+		  <button id="engineSavebtn" class="mui-btn mui-btn-blue mui-btn-link mui-btn-nav mui-pull-right">保存&nbsp;&nbsp;</button>
+		</header>
+		<div class="mui-content">
+		  	<form id="inspectionform" name="inspectionform" class="mui-input-group" method="post" action="" >
+		      <div class="mui-input-row">
+		          <label class='long'>检查日期</label>
+		          <input id="date" name="date" type="date">
+		      </div>
+		      <div class="mui-input-row">
+		          <label class='long'>检查者</label>
+		          <input id="examiner" name="examiner" type="text" class="mui-input-clear mui-input" placeholder="请输入姓名">
+		      </div>
+		      <div class="mui-input-row">
+		          <label class='long'>EMR服务器</label>
+		          <select name="emr" id="emr">
+		              <option value="0">未检查</option>
+		              <option value="1">正常</option>
+		              <option value="2">异常</option>
+		          </select>	
+		      </div>
+		      <div class="mui-input-row">
+		          <label class='long'>HIS服务器</label>
+		          <select name="his" id="his">
+		              <option value="0">未检查</option>
+		              <option value="1">正常</option>
+		              <option value="2">异常</option>
+		          </select>	
+		      </div>
+		      <div class="mui-input-row">
+		          <label class='long'>LIS服务器</label>
+		          <select name="lis" id="lis">
+		              <option value="0">未检查</option>
+		              <option value="1">正常</option>
+		              <option value="2">异常</option>
+		          </select>	
+		      </div>
+		      <div class="mui-input-row">
+		          <label class='long'>PACS服务器</label>
+		          <select name="pacs" id="pacs">
+		              <option value="0">未检查</option>
+		              <option value="1">正常</option>
+		              <option value="2">异常</option>
+		          </select>	
+		      </div>
+		      <div class="mui-input-row">
+		          <label class='long'>云服务器</label>
+		          <select name="xny" id="xny">
+		              <option value="0">未检查</option>
+		              <option value="1">正常</option>
+		              <option value="2">异常</option>
+		          </select>	
+		      </div>
+		      <div class="mui-input-row">
+		          <label class='long'>OA服务器</label>
+		          <select name="oa" id="oa">
+		              <option value="0">未检查</option>
+		              <option value="1">正常</option>
+		              <option value="2">异常</option>
+		          </select>	
+		      </div>
+		      <div class="mui-input-row">
+		          <label class='long'>医保前置</label>
+		          <select name="yb" id="yb">
+		              <option value="0">未检查</option>
+		              <option value="1">正常</option>
+		              <option value="2">异常</option>
+		          </select>	
+		      </div>
+		      <div class="mui-input-row">
+		          <label class='long'>区域网前置</label>
+		          <select name="qyw" id="qyw">
+		              <option value="0">未检查</option>
+		              <option value="1">正常</option>
+		              <option value="2">异常</option>
+		          </select>	
+		      </div>
+		      
+		      
+		      <div class="mui-input-row">
+		          <label class='long'>应用服务器</label>
+		          <select name="yy" id="yy">
+		              <option value="0">未检查</option>
+		              <option value="1">正常</option>
+		              <option value="2">异常</option>
+		          </select>	
+		      </div>
+		      <div class="mui-input-row">
+		          <label class='long'>监控服务器</label>
+		          <select name="jk" id="jk">
+		              <option value="0">未检查</option>
+		              <option value="1">正常</option>
+		              <option value="2">异常</option>
+		          </select>	
+		      </div>
+		      <div class="mui-input-row">
+		          <label class='long'>HIS存储</label>
+		          <select name="hiscc" id="hiscc">
+		              <option value="0">未检查</option>
+		              <option value="1">正常</option>
+		              <option value="2">异常</option>
+		          </select>	
+		      </div>
+		      <div class="mui-input-row">
+		          <label class='long'>核心交换机</label>
+		          <select name="hx" id="hx">
+		              <option value="0">未检查</option>
+		              <option value="1">正常</option>
+		              <option value="2">异常</option>
+		          </select>	
+		      </div>
+		      <div class="mui-input-row">
+		          <label class='long'>汇聚交换机</label>
+		          <select name="hj" id="hj">
+		              <option value="0">未检查</option>
+		              <option value="1">正常</option>
+		              <option value="2">异常</option>
+		          </select>	
+		      </div>
+		      <div class="mui-input-row">
+		          <label class='long'>安全设备</label>
+		          <select name="aqsb" id="aqsb">
+		              <option value="0">未检查</option>
+		              <option value="1">正常</option>
+		              <option value="2">异常</option>
+		          </select>	
+		      </div>
+		      <div class="mui-input-row">
+		          <label class='long'>UPS供电</label>
+		          <select name="ups" id="ups">
+		              <option value="0">未检查</option>
+		              <option value="1">正常</option>
+		              <option value="2">异常</option>
+		          </select>	
+		      </div>
+		      <div class="mui-input-row">
+		          <label class='long'>气体灭火</label>
+		          <select name="qtmh" id="qtmh">
+		              <option value="0">未检查</option>
+		              <option value="1">正常</option>
+		              <option value="2">异常</option>
+		          </select>	
+		      </div>
+		      <div class="mui-input-row">
+		          <label class='long'>空调</label>
+		          <select name="kt" id="kt">
+		              <option value="0">未检查</option>
+		              <option value="1">正常</option>
+		              <option value="2">异常</option>
+		          </select>	
+		      </div>
+		      <div id="textareadetail" class="mui-input-row">
+			          <label>原因/结果</label>
+			          <textarea id="ycyy" name="ycyy" placeholder="原因/结果"></textarea>
+			  </div>	      
+		  </form>
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/jquery.min.js"></script>
+		<script src="../js/jquery.easyui.min.js"></script>
+		<script src="../js/jquery.easyui.mobile.js"></script>
+		<script src="../js/APPINFO.js"></script>
+		<script type="text/javascript">
+			(function($, doc) {
+				mui.init();
+				jQuery.noConflict();
+				mui.plusReady(function() {
+				var engineSavebtn = doc.getElementById('engineSavebtn');
+				engineSavebtn.addEventListener('tap', function(event) {
+					
+					//表单验证
+				 	if( !jQuery("#date").val() ){
+				        plus.nativeUI.toast("请选择检查日期");
+				        return false;
+				    }else if( !jQuery("#examiner").val() ){
+				        plus.nativeUI.toast("请输入检查者");
+				        return false;
+				    }
+				    
+				    //表单提交
+				    var form = new FormData(document.getElementById("inspectionform"));
+				    jQuery("#engineSavebtn").attr("disabled", true);
+				    jQuery.ajax({
+		                url:APPINFO.serverURL+'/mobileadmin/addEngineRoomInspection',
+		                type:"post",
+		                data:form,
+		                processData:false,
+		                contentType:false,
+		                success:function(data){
+		                   // 服务器返回响应，根据响应结果，分析是否成功；
+						if(data.success == 'true'){	
+							plus.nativeUI.toast(data.msg);
+							
+						}else if(data.success == 'false'){
+							plus.nativeUI.toast(data.msg);
+							jQuery("#engineSavebtn").attr("disabled", false);
+						}else{
+							plus.nativeUI.toast("状态异常");
+							jQuery("#engineSavebtn").attr("disabled", false);						}
+		                },
+		                error:function(e){
+		                    plus.nativeUI.toast("提交错误");
+		                    jQuery("#engineSavebtn").attr("disabled", false);
+		                }
+		            });
+		            
+				}, false);
+			});
+			}(mui, document));
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,108 @@
+<!--管理用物资申购查看页-->
+<!doctype html>
+<style type="text/css">
+    #textareadetail {
+    	min-height: 90px;
+    }
+</style>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		  <button class="mui-action-back mui-btn mui-btn-blue mui-btn-link mui-btn-nav mui-pull-left">&nbsp;&nbsp;返回</button>
+		  <h1 class="mui-title">物资申购</h1>
+		</header>
+		<div class="mui-content">
+			<form id="materialapplicationform" class="mui-input-group" method="post" action="http://194.168.0.194/sxqy/index.php/Home/Index/saveMaterial" enctype="multipart/form-data">
+			      <div class="mui-input-row">
+			          <label>名称</label>
+			          <input id="name" name="name" type="text" class=" mui-input" readonly="readonly">
+			      </div>
+			      <div class="mui-input-row">
+			          <label>数量</label>
+			          <input id="number" name="number" type="number" class=" mui-input" readonly="readonly">
+			      </div>
+			      <div class="mui-input-row">
+			          <label>品牌</label>
+			          <input id="brand" name="brand" type="text" class=" mui-input" readonly="readonly">
+			      </div>
+			      <div class="mui-input-row">
+			          <label>参考型号</label>
+			          <input id="model" name="model" type="text" class=" mui-input" readonly="readonly">
+			      </div>
+			      <div class="mui-input-row">
+			          <label>估价</label>
+			          <input id="judge" name="judge" type="number" class=" mui-input" readonly="readonly">
+			      </div>
+			      <div class="mui-input-row">
+			          <label>总价</label>
+			          <input id="total" name="total" type="number" class=" mui-input" readonly="readonly">
+			      </div>
+			      <div class="mui-input-row">
+			          <label>使用日期</label>
+			          <input id="useDate" name="useDate" type="text" class=" mui-input" readonly="readonly">
+			      </div>
+			      <div class="mui-input-row">
+			          <label>申请人</label>
+			          <input id="applicant" name="applicant" type="text" class=" mui-input" readonly="readonly">
+			      </div>
+			      <div id="textareadetail" class="mui-input-row">
+			          <label>请购理由</label>
+			          <textarea id="reason" name="reason" readonly="readonly"></textarea>
+			      </div>
+			      <div id="textareadetail" class="mui-input-row">
+			          <label>回复</label>
+			          <textarea id="reback" name="reback" readonly="readonly"></textarea>
+			      </div>
+			  </form>
+		  </div>
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/jquery.min.js"></script>
+		<script src="../js/jquery.easyui.min.js"></script>
+		<script src="../js/jquery.easyui.mobile.js"></script>
+		<script src="../js/APPINFO.js"></script>
+		<script type="text/javascript">
+			(function($, doc) {
+				mui.init();
+				jQuery.noConflict();
+				mui.plusReady(function() {
+					//加载数据
+					var url = APPINFO.serverURL+'/mobileadmin/checkMaterialApplication';
+					mui.ajax( url ,{
+						data : {
+									id:plus.webview.currentWebview().thisId
+								},
+						dataType : 'json' , // 服务器返回 json 格式数据
+						type : 'GET' , //HTTP 请求类型
+						timeout : 5000 , // 超时时间设置为 5 秒；
+						success : function (data){
+							// 服务器返回响应，根据响应结果，分析是否登录成功；
+							if(data.success == 'true'){	
+								jQuery('#materialapplicationform').form('load', data.materialApplication);							    
+							}else if(data.success == 'false'){
+								plus.nativeUI.toast(data.msg);
+							}else{
+								plus.nativeUI.toast("状态异常");
+							}
+							
+	
+						},	
+						error : function (xhr,type,errorThrown){
+							// 异常处理；
+							plus.nativeUI.toast('请保持网络畅通');
+						}
+					});
+				});							
+			}(mui, document));
+		</script>
+	</body>
+
+</html>

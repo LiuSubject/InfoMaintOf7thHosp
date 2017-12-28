@@ -1,0 +1,303 @@
+<!--信息科机房巡检记录-->
+<!doctype html>
+<style type="text/css">
+	#searchInput{
+		margin-bottom: 0px;
+	}
+	
+</style>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../css/easyui.css">
+		<link rel="stylesheet" type="text/css" href="../css/mobile.css">
+		<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="../css/tether.min.css">
+	</head>
+
+	<body>
+		<header id="header" class="mui-bar mui-bar-nav">
+		  <button class="mui-action-back mui-btn mui-btn-blue mui-btn-link mui-btn-nav mui-pull-left">&nbsp;&nbsp;返回</button>
+		  <h1 class="mui-title">巡检信息</h1>
+		  <button id="searchMyself" class="mui-btn mui-btn-link mui-btn-nav mui-pull-right" >我的&nbsp;&nbsp;</button>
+		</header>
+		<div id="hh">			
+			<div style="height:45px;" ></div><!--防遮挡-->
+			<div class="mui-input-row mui-search">			
+				<input type="search" id="searchIn"  class="mui-input-clear" placeholder="搜索">
+			</div>
+		</div>
+		<table id="inspectionlistgrid" data-options="
+				header:'#hh',
+				iconCls: 'icon-edit',
+				singleSelect: true,
+				fit:true,
+				fitColumns:true,
+				border: false,
+				scrollbarSize: 0">
+		</table>
+		<nav class="mui-bar mui-bar-tab">
+        <a id="frontPage" class="mui-tab-item mui-active">
+            <span class="mui-icon mui-icon-arrowthinleft"></span>
+            <span class="mui-tab-label">上一页</span>
+        </a>
+        <a id="reloadPage" class="mui-tab-item mui-active">
+            <span class="mui-icon mui-icon-loop"></span>
+            <span class="mui-tab-label">刷新</span>
+        </a>
+        <a id="nextPage" class="mui-tab-item">
+            <span class="mui-icon mui-icon-arrowthinright"></span>
+            <span class="mui-tab-label">下一页</span>
+        </a>
+	    </nav>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/jquery.min.js"></script>
+		<script src="../js/jquery.easyui.min.js"></script>
+		<script src="../js/jquery.easyui.mobile.js"></script>	
+		<script src="../js/tether.min.js"></script>
+		<script src="../js/bootstrap.min.js"></script>
+		<script src="../js/APPINFO.js"></script>
+		<script type="text/javascript">
+			(function($, doc) {
+			mui.init();
+			jQuery.noConflict();
+			mui.plusReady(function() {
+			
+			jQuery(function() {
+				jQuery('#inspectionlistgrid').datagrid({ 
+				    url: "",//"/sxqy/index.php/Home/Admin/getInspectionList"; 
+				    columns: [[
+				     { field: 'date', title: '检查日期', width:40,align: 'center' }, 
+				     { field: 'examiner', title: '检查者',width:25, align: 'center' }, 
+				     { field: 'id', title: '操作',width:25,align: 'center' ,
+					     formatter :
+				            function(value, row, index) {
+				            	var user_type = "2";
+				            	var res = ''; 
+				            	//按钮动态生成				            	
+				            	res = '<button style="color: #fff;background-color: #ec971f; border-color: #d58512;" type="button" class="mui-btn btn-default btn-sm viewDetail" id="' + value + '">查看</button>';
+	                           	return res;
+				            }
+				     }
+				    ]]
+				})
+				
+				/*//模拟数据加载
+				var a = [{ date: '2017-11-10 08:38:06', examiner: '孟王芳', id: '2' },
+						 { date: '2017-11-10 08:38:08', examiner: '孟王芳', id: '2' },
+						 { date: '2017-11-10 08:38:01', examiner: '孟王芳', id: '2' }];
+
+				
+				jQuery("#faultlistgrid").datagrid("loadData", a);*/
+				
+				//初次加载
+				var url = APPINFO.serverURL+'/mobileadmin/showEngineRoomInspection';
+				mui.ajax( url ,{
+					dataType : 'json' , // 服务器返回 json 格式数据
+					type : 'post' , //HTTP 请求类型
+					timeout : 10000 , // 超时时间设置为 10 秒；
+					success : function (data){
+						// 服务器返回响应，根据响应结果，分析是否登录成功；
+	/*					if(data.success == 'true'){
+							
+							toMain(data);
+						}else if(data.success == 'false'){
+							plus.nativeUI.toast(data.msg);
+						}else{
+							plus.nativeUI.toast("抱歉，获取失败");
+						}*/
+						jQuery("#inspectionlistgrid").datagrid("loadData", data.engineRoomInspectionList);
+						PagingVO = data.pagingVO;
+					},	
+					error : function (xhr,type,errorThrown){
+						// 异常处理；
+						plus.nativeUI.toast('请保持网络畅通');
+					}
+				});
+				
+				//查看按钮点击事件
+				jQuery(document).on("click",".viewDetail",function(){
+			   		var thisid = jQuery(this).parents("tr").find(".viewDetail").attr("id");
+					mui.openWindow({
+							url: 'Inspection_Details.html',
+							id: 'Inspection_Details',
+							extras:{
+						        thisId:thisid
+						   },
+							styles: {
+								popGesture: 'hide'
+							},
+							show:{
+								duration: 150
+							},
+							waiting: { 
+								autoShow: false, //自动显示等待框，默认为true  
+							}
+						});
+					});
+	   				});	
+	   				//上一页按钮
+					var frontPageButton = doc.getElementById('frontPage');
+					//下一页按钮
+					var nextPageButton = doc.getElementById('nextPage');					
+					//刷新按钮
+					var reloadButton = doc.getElementById('reloadPage');
+					//搜索按钮
+					var searchInput = doc.getElementById('searchIn');
+					//“我的”按钮
+					var searchMyButton = doc.getElementById('searchMyself');
+					
+					frontPageButton.addEventListener('tap', function(event) {
+						//上一页按钮点击事件
+						//页码边界判断
+						if(PagingVO.curentPageNo < 0 
+							|| typeof(PagingVO.curentPageNo) == "undefined"
+							|| PagingVO.curentPageNo == null )
+						{
+							PagingVO.curentPageNo = 0;
+							return;
+						}else if(PagingVO.curentPageNo == 0){
+							return;
+						}else if(PagingVO.curentPageNo > 1){
+							var url = APPINFO.serverURL+'/mobileadmin/showEngineRoomInspection';
+							mui.ajax( url ,{
+					   			data : {
+									page : PagingVO.curentPageNo-1
+								},
+								dataType : 'json' , // 服务器返回 json 格式数据
+								type : 'get' , //HTTP 请求类型
+								timeout : 10000 , // 超时时间设置为 10 秒；
+								success : function (data){
+									// 服务器返回响应，根据响应结果，分析是否登录成功；
+				/*					if(data.success == 'true'){
+										
+										toMain(data);
+									}else if(data.success == 'false'){
+										plus.nativeUI.toast(data.msg);
+									}else{
+										plus.nativeUI.toast("抱歉，登陆失败");
+									}*/
+									jQuery("#inspectionlistgrid").datagrid("loadData", data.engineRoomInspectionList);
+									PagingVO = data.pagingVO;
+								},	
+								error : function (xhr,type,errorThrown){
+									// 异常处理；
+									plus.nativeUI.toast('请保持网络畅通');
+								}
+							});
+						}
+					});
+					
+					nextPageButton.addEventListener('tap', function(event) {
+						//下一页按钮点击事件
+						//页码边界判断
+						if(PagingVO.curentPageNo < 0 
+							|| typeof(PagingVO.curentPageNo) == "undefined"
+							|| PagingVO.curentPageNo == null )
+						{
+							PagingVO.curentPageNo = 0;
+							return;
+						}else if(PagingVO.curentPageNo >= PagingVO.totalCount){
+							return;
+						}else if(PagingVO.curentPageNo >= 1){
+							var url = APPINFO.serverURL+'/mobileadmin/showEngineRoomInspection';
+							mui.ajax( url ,{
+					   			data : {
+									page : PagingVO.curentPageNo+1
+								},
+								dataType : 'json' , // 服务器返回 json 格式数据
+								type : 'get' , //HTTP 请求类型
+								timeout : 10000 , // 超时时间设置为 10 秒；
+								success : function (data){
+									// 服务器返回响应，根据响应结果，分析是否登录成功；
+				/*					if(data.success == 'true'){
+										
+										toMain(data);
+									}else if(data.success == 'false'){
+										plus.nativeUI.toast(data.msg);
+									}else{
+										plus.nativeUI.toast("抱歉，登陆失败");
+									}*/
+									jQuery("#inspectionlistgrid").datagrid("loadData", data.engineRoomInspectionList);
+									PagingVO = data.pagingVO;
+								},	
+								error : function (xhr,type,errorThrown){
+									// 异常处理；
+									plus.nativeUI.toast('请保持网络畅通');
+								}
+							});
+						}
+					});
+					
+					reloadButton.addEventListener('tap', function(event) {
+						//刷新按钮
+						window.location.reload();
+					});
+					
+					searchMyButton.addEventListener('tap', function(event) {
+						//搜索用户相关记录
+						var url = APPINFO.serverURL+'/mobileadmin/searchMyComputerProblems';
+							mui.ajax( url ,{
+								dataType : 'json' , // 服务器返回 json 格式数据
+								type : 'post' , //HTTP 请求类型
+								timeout : 10000 , // 超时时间设置为 10 秒；
+								success : function (data){
+									// 服务器返回响应，根据响应结果，分析是否登录成功；
+									if(data.success == 'true'){
+										
+										jQuery("#inspectionlistgrid").datagrid("loadData", data.engineRoomInspectionList);
+									}else{
+										plus.nativeUI.toast("抱歉，查询失败");
+									}
+									
+								},	
+								error : function (xhr,type,errorThrown){
+									// 异常处理；
+									plus.nativeUI.toast('请保持网络畅通');
+								}
+							});
+					});
+					
+					//搜索框回车触发
+					searchInput.addEventListener('keyup', function(event) {
+						if(event.keyCode == 13) {
+					        var url = APPINFO.serverURL+'/mobileadmin/searchComputerProblems';
+					        var searchKey = document.getElementById("searchIn").value;
+							mui.ajax( url ,{
+								data:{
+									findByDept: searchKey,
+									findByName: searchKey, 
+									findByFlag: searchKey,
+								},
+								dataType : 'json' , // 服务器返回 json 格式数据
+								type : 'post' , //HTTP 请求类型
+								timeout : 20000 , // 超时时间设置为 10 秒；
+								success : function (data){
+									// 服务器返回响应，根据响应结果，分析是否登录成功；
+									if(data.success == 'true'){
+										
+										jQuery("#inspectionlistgrid").datagrid("loadData", data.engineRoomInspectionList);
+									}else if(data.success == 'false'){
+										plus.nativeUI.toast(data.msg);
+									}else{
+										plus.nativeUI.toast("抱歉，搜索失败");
+									}
+									
+								},	
+								error : function (xhr,type,errorThrown){
+									// 异常处理；
+									plus.nativeUI.toast('请保持网络畅通');
+								}
+							});
+					    }
+					});
+	   			});	
+			}(mui, document));
+		</script>
+	</body>
+
+</html>
