@@ -145,7 +145,7 @@
 					var state = app.getState();
 					
 					var userscode = localStorage.getItem('userscode') || '';
-					var userspsd = localStorage.getItem('userspwd') || '';
+					var userspsd = localStorage.getItem('userspsd') || '';
 					document.getElementById("account").value = userscode;
 					document.getElementById("password").value = userspsd;
 					
@@ -184,7 +184,7 @@
 						//可能执行太快，main页面loaded事件尚未触发就执行自定义事件，此时必然会失败
 						//根据用户权限加载不同主页面
 						if(data.role == "admin"){
-							localStorage.setItem('$role', JSON.stringify(data.role));
+							localStorage.setItem('$role', data.role);
 							var id = setInterval(function () {
 								if(main_loaded_flag){
 									clearInterval(id);
@@ -193,7 +193,7 @@
 								}
 							},20);
 						}else if(data.role == "normal"){
-							localStorage.setItem('$role', JSON.stringify(data.role));
+							localStorage.setItem('$role', data.role);
 							var id = setInterval(function () {
 								if(mainNormal_loaded_flag){
 									clearInterval(id);
@@ -288,19 +288,19 @@
 					loginButton.addEventListener('tap', function(event) {
 						
 						
-						var url = APPINFO.serverURL+'/mobilelogin';
+						var url = APPINFO.serverURL+'/mobilelogin';		
 						var usercode = document.getElementById("account").value; 
-						var userpsd =  Encrypting(document.getElementById("account").value,
-										document.getElementById("password").value);
+						var userspsd = document.getElementById("password").value;
 						localStorage.setItem('userscode', usercode);
-						localStorage.setItem('userpsd', userpsd);
+						localStorage.setItem('userspsd', userspsd);
+						userspsd =  Encrypting(usercode,userspsd);
 						//获取当前用户ID
 						var ClientInfo = plus.push.getClientInfo();
 						var clientid = ClientInfo.clientid;
 						mui.ajax( url ,{
 							data : {
 								code : usercode,
-								psd : userpsd,
+								psd : userspsd,
 								userclientid : clientid
 							},
 							dataType : 'json' , // 服务器返回 json 格式数据
@@ -325,7 +325,7 @@
 						
 						var loginInfo = {
 							account: usercode,
-							password: userpsd
+							password: userspsd
 						};
 						
 						app.login(loginInfo, function(err) {
@@ -359,15 +359,15 @@
 						                var response=jQuery.parseJSON(xhr.responseText);
 						                var serverVer = response.version;
 						                if(wgtVer&&serverVer&&(wgtVer!=serverVer)){
-						                    downWgt(response.wgtPath);  // 下载升级包
+						                    downWgt(response.wgtPath,serverVer);  // 下载升级包
 						                }else if(wgtVer == serverVer){
 						                	plus.nativeUI.toast("版本已是最新");
 						                }else{
 						                    plus.nativeUI.toast("检测更新失败");
 						                }
 						            }else{
-						                console.log("检测更新失败！");
-						                plus.nativeUI.toast("检测更新失败！");
+						                console.log("检测更新失败");
+						                plus.nativeUI.toast("检测更新失败");
 						            }
 						            break;
 					            default:
@@ -378,33 +378,34 @@
 					    xhr.send();
 					}
 					
-					function downWgt(wgtUrl){
-					    plus.nativeUI.showWaiting("下载wgt文件...");
+					function downWgt(wgtUrl,version){
+					    plus.nativeUI.showWaiting("下载更新文件中");
 					    plus.downloader.createDownload( wgtUrl, {filename:"_doc/update/"}, function(d,status){
 					        if ( status == 200 ) { 
-					            console.log("下载wgt成功："+d.filename);
-					            installWgt(d.filename); // 安装wgt包
+					            console.log("下载更新文件成功："+d.filename);
+					            installWgt(d.filename,version); // 安装wgt包
 					        } else {
-					            console.log("下载wgt失败！");
-					            plus.nativeUI.toast("下载wgt失败！");
+					            console.log("下载更新文件失败");
+					            plus.nativeUI.toast("下载更新文件失败");
 					        }
 					        plus.nativeUI.closeWaiting();
 					    }).start();
 					}
 					
 					// 更新应用资源
-					function installWgt(path){
-					    plus.nativeUI.showWaiting("安装wgt文件...");
+					function installWgt(path,version){
+					    plus.nativeUI.showWaiting("安装更新文件中...");
 					    plus.runtime.install(path,{},function(){
 					        plus.nativeUI.closeWaiting();
-					        console.log("安装wgt文件成功！");
-					        plus.nativeUI.toast("应用资源更新完成！",function(){
+					        console.log("安装更新文件成功！");
+					        plus.nativeUI.toast("应用更新完成！",function(){
+					        	APPINFO.version = version;
 					            plus.runtime.restart();
 					        });
 					    },function(e){
 					        plus.nativeUI.closeWaiting();
-					        console.log("安装wgt文件失败["+e.code+"]："+e.message);
-					        plus.nativeUI.toast("安装wgt文件失败["+e.code+"]："+e.message);
+					        console.log("安装更新文件失败["+e.code+"]："+e.message);
+					        plus.nativeUI.toast("安装更新文件失败["+e.code+"]："+e.message);
 					    });
 					}
 					
