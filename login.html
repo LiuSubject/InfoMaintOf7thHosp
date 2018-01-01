@@ -85,10 +85,9 @@
 				background-color: #ddd;
 			}
 			
-			#updateLink{
+			#updateLink {
 				color: #929292
 			}
-			
 		</style>
 
 	</head>
@@ -103,9 +102,10 @@
 					<input id='account' type="text" class="mui-input-clear mui-input" placeholder="工号">
 				</div>
 				<div class="mui-input-row">
-					<input id='password' type="password" class="mui-input-clear mui-input" placeholder="密码">					
+					<input id='password' type="password" class="mui-input-clear mui-input" placeholder="密码">
 				</div>
-			</form><!--
+			</form>
+			<!--
 			<form class="mui-input-group">
 				<ul class="mui-table-view mui-table-view-chevron">
 					<li class="mui-table-view-cell">
@@ -117,8 +117,10 @@
 				</ul>
 			</form>-->
 			<div class="mui-content-padded">
-				<button id='login' class="mui-btn mui-btn-block mui-btn-primary">登录</button>						
-				<div  class="link-area"><a  id='updateLink'>—&nbsp;检查更新&nbsp;—</a></div>
+				<button id='login' class="mui-btn mui-btn-block mui-btn-primary">登录</button>
+				<div class="link-area">
+					<a id='updateLink'>—&nbsp;检查更新&nbsp;—</a>
+				</div>
 				<!--注册账号及忘记密码入口关闭-->
 				<!--<div class="link-area"><a id='reg'>注册账号</a> <span class="spliter">|</span> <a id='forgetPassword'>忘记密码</a>
 				</div>-->
@@ -143,72 +145,51 @@
 					plus.screen.lockOrientation("portrait-primary");
 					var settings = app.getSettings();
 					var state = app.getState();
-					
+
 					var userscode = localStorage.getItem('userscode') || '';
 					var userspsd = localStorage.getItem('userspsd') || '';
 					document.getElementById("account").value = userscode;
 					document.getElementById("password").value = userspsd;
-					
-					
-					//管理用户登录页面预加载
-					var mainPage = plus.webview.getWebviewById("main");
 					var main_loaded_flag = false;
-					if(!mainPage){
-						mainPage = $.preload({
-							"id": 'main',
-							"url": 'main.html'
-						});
-					}else{
-						main_loaded_flag = true;
-					}		
-					mainPage.addEventListener("loaded",function () {
-						main_loaded_flag = true;
-					});
-					
-					//普通用户登录页面预加载
-					var mainNormalPage = plus.webview.getWebviewById("mainNormal");
 					var mainNormal_loaded_flag = false;
-					if(!mainNormalPage){
-						mainNormalPage = $.preload({
-							"id": 'mainNormal',
-							"url": 'mainNormal.html'
-						});
-					}else{
-						mainNormal_loaded_flag = true;
-					}					
-					mainNormalPage.addEventListener("loaded",function () {
-						mainNormal_loaded_flag = true;
-					});
+					var mainPage = null;
+					var mainNormalPage = null;
+
 					var toMain = function(data) {
 						//使用定时器的原因：
 						//可能执行太快，main页面loaded事件尚未触发就执行自定义事件，此时必然会失败
 						//根据用户权限加载不同主页面
-						if(data.role == "admin"){
+						if(data.role == "admin") {
 							localStorage.setItem('$role', data.role);
-							var id = setInterval(function () {
-								if(main_loaded_flag){
-									clearInterval(id);
-									$.fire(mainPage, 'show', null);
-									mainPage.show("pop-in");
+							mui.openWindow({
+							    url: 'main.html', 
+							    id:'main',
+							    show: {
+									aniShow: 'pop-in'
+								},
+								waiting: {
+									autoShow: false
 								}
-							},20);
-						}else if(data.role == "normal"){
+							});
+						} else if(data.role == "normal") {
 							localStorage.setItem('$role', data.role);
-							var id = setInterval(function () {
-								if(mainNormal_loaded_flag){
-									clearInterval(id);
-									$.fire(mainNormalPage, 'show', null);
-									mainNormalPage.show("pop-in");
+							mui.openWindow({
+							    url: 'mainNormal.html', 
+							    id:'mainNormal',
+							    show: {
+									aniShow: 'pop-in'
+								},
+								waiting: {
+									autoShow: false
 								}
-							},20);
-						}
-						else{
+							});
+						} else {
 							return;
 						}
-						
+
 					};
 					//检查 "登录状态/锁屏状态" 开始
-					if (settings.autoLogin && state.token && settings.gestures) {
+					if(settings.autoLogin && state.token && settings.gestures) {
 						$.openWindow({
 							url: 'unlock.html',
 							id: 'unlock',
@@ -219,7 +200,7 @@
 								autoShow: false
 							}
 						});
-					} else if (settings.autoLogin && state.token) {
+					} else if(settings.autoLogin && state.token) {
 						toMain(localStorage.getItem('$role') || "{}");
 					} else {
 						app.setState(null);
@@ -228,10 +209,10 @@
 						var auths = {};
 						var oauthArea = doc.querySelector('.oauth-area');
 						plus.oauth.getServices(function(services) {
-							for (var i in services) {
+							for(var i in services) {
 								var service = services[i];
 								auths[service.id] = service;
-								if (~authBtns.indexOf(service.id)) {
+								if(~authBtns.indexOf(service.id)) {
 									var isInstalled = app.isInstalled(service.id);
 									var btn = document.createElement('div');
 									//如果微信未安装，则为不启用状态
@@ -242,7 +223,7 @@
 								}
 							}
 							$(oauthArea).on('tap', '.oauth-btn', function() {
-								if (this.classList.contains('disabled')) {
+								if(this.classList.contains('disabled')) {
 									plus.nativeUI.toast('您尚未安装微信客户端');
 									return;
 								}
@@ -283,181 +264,176 @@
 					var regButton = doc.getElementById('reg');
 					var forgetButton = doc.getElementById('forgetPassword');
 					var updateButton = doc.getElementById('updateLink');
-					
+
 					//登录按钮触发事件
 					loginButton.addEventListener('tap', function(event) {
-						
-						
-						var url = APPINFO.serverURL+'/mobilelogin';		
-						var usercode = document.getElementById("account").value; 
+
+						var url = APPINFO.serverURL + '/mobilelogin';
+						var usercode = document.getElementById("account").value;
 						var userspsd = document.getElementById("password").value;
 						localStorage.setItem('userscode', usercode);
 						localStorage.setItem('userspsd', userspsd);
-						userspsd =  Encrypting(usercode,userspsd);
+						userspsd = Encrypting(usercode, userspsd);
 						//获取当前用户ID
 						var ClientInfo = plus.push.getClientInfo();
 						var clientid = ClientInfo.clientid;
-						mui.ajax( url ,{
-							data : {
-								code : usercode,
-								psd : userspsd,
-								userclientid : clientid
+						mui.ajax(url, {
+							data: {
+								code: usercode,
+								psd: userspsd,
+								userclientid: clientid
 							},
-							dataType : 'json' , // 服务器返回 json 格式数据
-							type : 'post' , //HTTP 请求类型
-							timeout : 10000 , // 超时时间设置为 10 秒；
-							success : function (data){
+							dataType: 'json', // 服务器返回 json 格式数据
+							type: 'post', //HTTP 请求类型
+							timeout: 10000, // 超时时间设置为 10 秒；
+							success: function(data) {
 								// 服务器返回响应，根据响应结果，分析是否登录成功；
-								if(data.success == 'true'){
-									
+								if(data.success == 'true') {
+									//根据根据用户权限预加载不同页面
+									/*if(data.role == "admin") {
+										//管理用户登录页面预加载
+										mainPage = $.preload({
+												"id": 'main',
+												"url": 'main.html'
+										});
+										mainPage.addEventListener("loaded", function() {
+											main_loaded_flag = true;
+										});
+									} else {
+										//普通用户登录页面预加载
+										mainNormalPage = $.preload({
+												"id": 'mainNormal',
+												"url": 'mainNormal.html'
+										});
+										mainNormalPage.addEventListener("loaded", function() {
+											mainNormal_loaded_flag = true;
+										});
+									}*/
 									toMain(data);
-								}else if(data.success == 'false'){
+								} else if(data.success == 'false') {
 									plus.nativeUI.toast(data.msg);
-								}else{
+								} else {
 									plus.nativeUI.toast("抱歉，登陆失败");
 								}
-							},	
-							error : function (xhr,type,errorThrown){
+							},
+							error: function(xhr, type, errorThrown) {
 								// 异常处理；
 								plus.nativeUI.toast('o(╥﹏╥)o连接不到服务器');
 							}
 						});
-						
+
 						var loginInfo = {
 							account: usercode,
 							password: userspsd
 						};
-						
+
 						app.login(loginInfo, function(err) {
-							if (err) {
+							if(err) {
 								plus.nativeUI.toast(err);
 								return;
 							}
 						});
 					});
-					
+
 					//检查更新按钮触发事件
-					updateButton.addEventListener('tap', function(event){
+					updateButton.addEventListener('tap', function(event) {
 						var wgtver;
-						plus.runtime.getProperty(plus.runtime.appid,function(inf){
-					        wgtVer=inf.version;
-					    });
-					    checkUpdate();
+						plus.runtime.getProperty(plus.runtime.appid, function(inf) {
+							wgtVer = inf.version;
+						});
+						checkUpdate();
 					});
-					
+
 					// 检测更新
-					var checkUrl=APPINFO.serverURL +"/mobileupdate";
-					function checkUpdate(){
-					    plus.nativeUI.showWaiting("检查更新中...");
-					    var xhr=new XMLHttpRequest();
-					    xhr.onreadystatechange=function(){
-					        switch(xhr.readyState){
-					            case 4:
-						            plus.nativeUI.closeWaiting();
-						            if(xhr.status==200){
-						                console.log("检测更新成功："+xhr.responseText);
-						                var response=jQuery.parseJSON(xhr.responseText);
-						                var serverVer = response.version;
-						                if(wgtVer&&serverVer&&(wgtVer!=serverVer)){
-						                    downWgt(response.wgtPath,serverVer);  // 下载升级包
-						                }else if(wgtVer == serverVer){
-						                	plus.nativeUI.toast("版本已是最新");
-						                }else{
-						                    plus.nativeUI.toast("检测更新失败");
-						                }
-						            }else{
-						                console.log("检测更新失败");
-						                plus.nativeUI.toast("检测更新失败");
-						            }
-						            break;
-					            default:
-					            	break;
-					        }
-					    }
-					    xhr.open('GET',checkUrl);
-					    xhr.send();
+					var checkUrl = APPINFO.serverURL + "/mobileupdate";
+
+					function checkUpdate() {
+						plus.nativeUI.showWaiting("检查更新中...");
+						var xhr = new XMLHttpRequest();
+						xhr.onreadystatechange = function() {
+							switch(xhr.readyState) {
+								case 4:
+									plus.nativeUI.closeWaiting();
+									if(xhr.status == 200) {
+										console.log("检测更新成功：" + xhr.responseText);
+										var response = jQuery.parseJSON(xhr.responseText);
+										var serverVer = response.version;
+										if(wgtVer && serverVer && (wgtVer != serverVer)) {
+											downWgt(response.wgtPath, serverVer); // 下载升级包
+										} else if(wgtVer == serverVer) {
+											plus.nativeUI.toast("版本已是最新");
+										} else {
+											plus.nativeUI.toast("检测更新失败");
+										}
+									} else {
+										console.log("检测更新失败");
+										plus.nativeUI.toast("检测更新失败");
+									}
+									break;
+								default:
+									break;
+							}
+						}
+						xhr.open('GET', checkUrl);
+						xhr.send();
 					}
-					
-					function downWgt(wgtUrl,version){
-					    plus.nativeUI.showWaiting("下载更新文件中");
-					    plus.downloader.createDownload( wgtUrl, {filename:"_doc/update/"}, function(d,status){
-					        if ( status == 200 ) { 
-					            console.log("下载更新文件成功："+d.filename);
-					            installWgt(d.filename,version); // 安装wgt包
-					        } else {
-					            console.log("下载更新文件失败");
-					            plus.nativeUI.toast("下载更新文件失败");
-					        }
-					        plus.nativeUI.closeWaiting();
-					    }).start();
+
+					function downWgt(wgtUrl, version) {
+						plus.nativeUI.showWaiting("下载更新文件中");
+						plus.downloader.createDownload(wgtUrl, {
+							filename: "_doc/update/"
+						}, function(d, status) {
+							if(status == 200) {
+								console.log("下载更新文件成功：" + d.filename);
+								installWgt(d.filename, version); // 安装wgt包
+							} else {
+								console.log("下载更新文件失败");
+								plus.nativeUI.toast("下载更新文件失败");
+							}
+							plus.nativeUI.closeWaiting();
+						}).start();
 					}
-					
+
 					// 更新应用资源
-					function installWgt(path,version){
-					    plus.nativeUI.showWaiting("安装更新文件中...");
-					    plus.runtime.install(path,{},function(){
-					        plus.nativeUI.closeWaiting();
-					        console.log("安装更新文件成功！");
-					        plus.nativeUI.toast("应用更新完成！",function(){
-					        	APPINFO.version = version;
-					            plus.runtime.restart();
-					        });
-					    },function(e){
-					        plus.nativeUI.closeWaiting();
-					        console.log("安装更新文件失败["+e.code+"]："+e.message);
-					        plus.nativeUI.toast("安装更新文件失败["+e.code+"]："+e.message);
-					    });
+					function installWgt(path, version) {
+						plus.nativeUI.showWaiting("安装更新文件中...");
+						plus.runtime.install(path, {}, function() {
+							plus.nativeUI.closeWaiting();
+							console.log("安装更新文件成功！");
+							plus.nativeUI.toast("应用更新完成！", function() {
+								APPINFO.version = version;
+								plus.runtime.restart();
+							});
+						}, function(e) {
+							plus.nativeUI.closeWaiting();
+							console.log("安装更新文件失败[" + e.code + "]：" + e.message);
+							plus.nativeUI.toast("安装更新文件失败[" + e.code + "]：" + e.message);
+						});
 					}
-					
+
 					$.enterfocus('#login-form input', function() {
 						$.trigger(loginButton, 'tap');
 					});
-					/*autoLoginButton.classList[settings.autoLogin ? 'add' : 'remove']('mui-active')
-					autoLoginButton.addEventListener('toggle', function(event) {
-						setTimeout(function() {
-							var isActive = event.detail.isActive;
-							settings.autoLogin = isActive;
-							app.setSettings(settings);
-						}, 50);
-					}, false);*/
-					/*regButton.addEventListener('tap', function(event) {
-						$.openWindow({
-							url: 'reg.html',
-							id: 'reg',
-							preload: true,
-							show: {
-								aniShow: 'pop-in'
-							},
-							styles: {
-								popGesture: 'hide'
-							},
-							waiting: {
-								autoShow: false
-							}
-						});
-					}, false);
-					forgetButton.addEventListener('tap', function(event) {
-						$.openWindow({
-							url: 'forget_password.html',
-							id: 'forget_password',
-							preload: true,
-							show: {
-								aniShow: 'pop-in'
-							},
-							styles: {
-								popGesture: 'hide'
-							},
-							waiting: {
-								autoShow: false
-							}
-						});
-					}, false);*/
-					//
-					//
+					
+					//切换用户时，清空除登录页面的所有预加载页面
+					jQuery("#account").focus(function(){
+						var array = plus.webview.all();
+						var curr = plus.webview.currentWebview();
+				        if(array){
+				            for(var i=0,len=array.length;i<len;i++){
+				            	if (array[i].getURL() == curr.getURL()){
+				            		continue;
+				            	}
+                                plus.webview.close(array[i]);
+				            
+				            }
+				        }
+					});
+					
 					var backButtonPress = 0;
 					$.back = function(event) {
 						backButtonPress++;
-						if (backButtonPress > 1) {
+						if(backButtonPress > 1) {
 							plus.runtime.quit();
 						} else {
 							plus.nativeUI.toast('再按一次退出应用');
@@ -468,12 +444,8 @@
 						return false;
 					};
 				});
-				
-				
+
 			}(mui, document));
-			
-			
-			
 		</script>
 	</body>
 
