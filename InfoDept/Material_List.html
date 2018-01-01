@@ -144,9 +144,6 @@
 								];
 						jQuery("#faultlistgrid").datagrid("loadData", a);*/
 
-					
-					
-
 						//处理按钮点击事件
 						jQuery(document).on('click', '.editBtn', function() {
 							var thisid = jQuery(this).parents("tr").find(".editBtn").attr("id");
@@ -225,138 +222,101 @@
 					//“我的”按钮
 					var searchMyButton = doc.getElementById('searchMyself');
 
-					frontPageButton.addEventListener('tap', function(event) {
-						//上一页按钮点击事件
-						//页码边界判断
-						if(PagingVO.curentPageNo < 0 ||
-							typeof(PagingVO.curentPageNo) == "undefined" ||
-							PagingVO.curentPageNo == null) {
-							PagingVO.curentPageNo = 0;
-							return;
-						} else if(PagingVO.curentPageNo == 0) {
-							return;
-						} else if(PagingVO.curentPageNo > 1) {
-							var url = APPINFO.serverURL + '/mobileadmin/showComputerProblems';
-							mui.ajax(url, {
-								data: {
-									page: PagingVO.curentPageNo - 1
-								},
-								dataType: 'json', // 服务器返回 json 格式数据
-								type: 'get', //HTTP 请求类型
-								timeout: 10000, // 超时时间设置为 10 秒；
-								success: function(data) {
-									// 服务器返回响应，根据响应结果，分析是否登录成功；
-									/*					if(data.success == 'true'){
-															
-															toMain(data);
-														}else if(data.success == 'false'){
-															plus.nativeUI.toast(data.msg);
-														}else{
-															plus.nativeUI.toast("抱歉，登陆失败");
-														}*/
-									jQuery("#materiallistgrid").datagrid("loadData", data.materialApplicationList);
-									PagingVO = data.pagingVO;
-								},
-								error: function(xhr, type, errorThrown) {
-									// 异常处理；
-									plus.nativeUI.toast('请保持网络畅通');
-								}
-							});
-						}
-					});
-
-					nextPageButton.addEventListener('tap', function(event) {
-						//下一页按钮点击事件
-						//页码边界判断
-						if(PagingVO.curentPageNo < 0 ||
-							typeof(PagingVO.curentPageNo) == "undefined" ||
-							PagingVO.curentPageNo == null) {
-							PagingVO.curentPageNo = 0;
-							return;
-						} else if(PagingVO.curentPageNo >= PagingVO.totalCount) {
-							return;
-						} else if(PagingVO.curentPageNo >= 1) {
-							var url = APPINFO.serverURL + '/mobileadmin/showComputerProblems';
-							mui.ajax(url, {
-								data: {
-									page: PagingVO.curentPageNo + 1
-								},
-								dataType: 'json', // 服务器返回 json 格式数据
-								type: 'get', //HTTP 请求类型
-								timeout: 10000, // 超时时间设置为 10 秒；
-								success: function(data) {
-									// 服务器返回响应，根据响应结果，分析是否登录成功；
-									/*					if(data.success == 'true'){
-															
-															toMain(data);
-														}else if(data.success == 'false'){
-															plus.nativeUI.toast(data.msg);
-														}else{
-															plus.nativeUI.toast("抱歉，登陆失败");
-														}*/
-									jQuery("#materiallistgrid").datagrid("loadData", data.materialApplicationList);
-									PagingVO = data.pagingVO;
-								},
-								error: function(xhr, type, errorThrown) {
-									// 异常处理；
-									plus.nativeUI.toast('请保持网络畅通');
-								}
-							});
-						}
-					});
-
-					reloadButton.addEventListener('tap', function(event) {
-						//刷新按钮
-						window.location.reload();
-					});
-
-					searchMyButton.addEventListener('tap', function(event) {
-						//搜索用户相关记录
-						var url = APPINFO.serverURL + '/mobileadmin/searchMyComputerProblems';
-						mui.ajax(url, {
-							dataType: 'json', // 服务器返回 json 格式数据
-							type: 'post', //HTTP 请求类型
-							timeout: 10000, // 超时时间设置为 10 秒；
-							success: function(data) {
-								// 服务器返回响应，根据响应结果，分析是否登录成功；
-								if(data.success == 'true') {
-
-									jQuery("#materiallistgrid").datagrid("loadData", data.materialApplicationList);
-								} else {
-									plus.nativeUI.toast("抱歉，查询失败");
-								}
-
-							},
-							error: function(xhr, type, errorThrown) {
-								// 异常处理；
-								plus.nativeUI.toast('请保持网络畅通');
+					if(typeof(frontPageButton) != "undefined" && frontPageButton != null) {
+						frontPageButton.addEventListener('tap', function(event) {
+							//上一页按钮点击事件
+							//页码边界判断
+							if(PagingVO.curentPageNo < 0 ||
+								typeof(PagingVO.curentPageNo) == "undefined" ||
+								PagingVO.curentPageNo == null) {
+								PagingVO.curentPageNo = 0;
+								return;
+							} else if(PagingVO.curentPageNo == 0) {
+								return;
+							} else if(PagingVO.curentPageNo > 1) {
+								var url = APPINFO.serverURL + '/mobileadmin/showComputerProblems';
+								mui.ajax(url, {
+									data: {
+										page: PagingVO.curentPageNo - 1
+									},
+									dataType: 'json', // 服务器返回 json 格式数据
+									type: 'get', //HTTP 请求类型
+									timeout: 10000, // 超时时间设置为 10 秒；
+									success: function(data) {
+										// 服务器返回响应，根据响应结果，分析是否登录成功；
+										/*					if(data.success == 'true'){
+																
+																toMain(data);
+															}else if(data.success == 'false'){
+																plus.nativeUI.toast(data.msg);
+															}else{
+																plus.nativeUI.toast("抱歉，登陆失败");
+															}*/
+										jQuery("#materiallistgrid").datagrid("loadData", data.materialApplicationList);
+										PagingVO = data.pagingVO;
+									},
+									error: function(xhr, type, errorThrown) {
+										// 异常处理；
+										plus.nativeUI.toast('请保持网络畅通');
+									}
+								});
 							}
 						});
-					});
 
-					//搜索框回车触发
-					searchInput.addEventListener('keyup', function(event) {
-						if(event.keyCode == 13) {
-							var url = APPINFO.serverURL + '/mobileadmin/searchMaterialApplication';
-							var searchKey = document.getElementById("searchIn").value;
+						nextPageButton.addEventListener('tap', function(event) {
+							//下一页按钮点击事件
+							//页码边界判断
+							if(PagingVO.curentPageNo < 0 ||
+								typeof(PagingVO.curentPageNo) == "undefined" ||
+								PagingVO.curentPageNo == null) {
+								PagingVO.curentPageNo = 0;
+								return;
+							} else if(PagingVO.curentPageNo >= PagingVO.totalCount) {
+								return;
+							} else if(PagingVO.curentPageNo >= 1) {
+								var url = APPINFO.serverURL + '/mobileadmin/showComputerProblems';
+								mui.ajax(url, {
+									data: {
+										page: PagingVO.curentPageNo + 1
+									},
+									dataType: 'json', // 服务器返回 json 格式数据
+									type: 'get', //HTTP 请求类型
+									timeout: 10000, // 超时时间设置为 10 秒；
+									success: function(data) {
+										// 服务器返回响应，根据响应结果，分析是否登录成功；
+										/*					if(data.success == 'true'){
+																
+																toMain(data);
+															}else if(data.success == 'false'){
+																plus.nativeUI.toast(data.msg);
+															}else{
+																plus.nativeUI.toast("抱歉，登陆失败");
+															}*/
+										jQuery("#materiallistgrid").datagrid("loadData", data.materialApplicationList);
+										PagingVO = data.pagingVO;
+									},
+									error: function(xhr, type, errorThrown) {
+										// 异常处理；
+										plus.nativeUI.toast('请保持网络畅通');
+									}
+								});
+							}
+						});
+
+						searchMyButton.addEventListener('tap', function(event) {
+							//搜索用户相关记录
+							var url = APPINFO.serverURL + '/mobileadmin/searchMyComputerProblems';
 							mui.ajax(url, {
-								data: {
-									findByDept: searchKey,
-									findByName: searchKey,
-									findByFlag: searchKey,
-								},
 								dataType: 'json', // 服务器返回 json 格式数据
 								type: 'post', //HTTP 请求类型
-								timeout: 20000, // 超时时间设置为 10 秒；
+								timeout: 10000, // 超时时间设置为 10 秒；
 								success: function(data) {
 									// 服务器返回响应，根据响应结果，分析是否登录成功；
 									if(data.success == 'true') {
 
 										jQuery("#materiallistgrid").datagrid("loadData", data.materialApplicationList);
-									} else if(data.success == 'false') {
-										plus.nativeUI.toast(data.msg);
 									} else {
-										plus.nativeUI.toast("抱歉，搜索失败");
+										plus.nativeUI.toast("抱歉，查询失败");
 									}
 
 								},
@@ -365,10 +325,68 @@
 									plus.nativeUI.toast('请保持网络畅通');
 								}
 							});
+						});
+
+						//搜索框回车触发
+						searchInput.addEventListener('keyup', function(event) {
+							if(event.keyCode == 13) {
+								var url = APPINFO.serverURL + '/mobileadmin/searchMaterialApplication';
+								var searchKey = document.getElementById("searchIn").value;
+								mui.ajax(url, {
+									data: {
+										findByDept: searchKey,
+										findByName: searchKey,
+										findByFlag: searchKey,
+									},
+									dataType: 'json', // 服务器返回 json 格式数据
+									type: 'post', //HTTP 请求类型
+									timeout: 20000, // 超时时间设置为 10 秒；
+									success: function(data) {
+										// 服务器返回响应，根据响应结果，分析是否登录成功；
+										if(data.success == 'true') {
+
+											jQuery("#materiallistgrid").datagrid("loadData", data.materialApplicationList);
+										} else if(data.success == 'false') {
+											plus.nativeUI.toast(data.msg);
+										} else {
+											plus.nativeUI.toast("抱歉，搜索失败");
+										}
+
+									},
+									error: function(xhr, type, errorThrown) {
+										// 异常处理；
+										plus.nativeUI.toast('请保持网络畅通');
+									}
+								});
+							}
+						});
+					}
+					//刷新按钮
+					reloadButton.addEventListener('tap', function(event) {
+						mui.ajax(url, {
+						dataType: 'json', // 服务器返回 json 格式数据
+						type: 'post', //HTTP 请求类型
+						timeout: 5000, // 超时时间设置为 10 秒；
+						success: function(data) {
+							// 服务器返回响应，根据响应结果，分析是否登录成功；
+							/*					if(data.success == 'true'){
+													
+													toMain(data);
+												}else if(data.success == 'false'){
+													plus.nativeUI.toast(data.msg);
+												}else{
+													plus.nativeUI.toast("抱歉，登陆失败");
+												}*/
+							jQuery("#materiallistgrid").datagrid("loadData", data.materialApplicationList);
+							PagingVO = data.pagingVO;
+						},
+						error: function(xhr, type, errorThrown) {
+							// 异常处理；
+							plus.nativeUI.toast('请保持网络畅通');
 						}
 					});
+					});
 				});
-
 			}(mui, document));
 		</script>
 	</body>
