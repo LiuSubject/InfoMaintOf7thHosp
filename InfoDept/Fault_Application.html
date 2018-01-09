@@ -22,9 +22,14 @@
 		</header>
 		<div class="mui-content">
 		  	<form id="faultapplicationform" name="faultapplicationform" class="mui-input-group" method="post" action="" enctype="multipart/form-data">
-		      <div class="mui-input-row">
+		      <div class="mui-input-row" style="display:none">
 		          <label>标题</label>
 		          <input name="title" id='title' type="text" class="mui-input-clear mui-input" placeholder="请输入标题">
+		      </div>
+		      <div class="mui-input-row">
+		          <label>故障类型</label>
+		          <select name="type" id="type">
+		          </select>		          
 		      </div>
 		      <div class="mui-input-row">
 		          <label>科室</label>
@@ -37,18 +42,6 @@
 		      <div class="mui-input-row">
 		          <label>联系方式</label>
 		          <input name="tel" id="tel" type="text" class="mui-input-clear mui-input" placeholder="请输入联系方式">
-		      </div>
-		      <div class="mui-input-row">
-		          <label>故障类型</label>
-		          <select name="type" id="type">
-		              <option value="1">电脑问题</option>
-		              <option value="2">打印机问题</option>
-		              <option value="3">监控问题</option>
-		              <option value="4">网络问题</option>
-		              <option value="5">病区软件问题</option>
-		              <option value="6">门诊软件问题</option>
-		              <option value="7">其它问题</option>
-		          </select>		          
 		      </div>
 		      <div id="textareadetail" class="mui-input-row">
 		          <label>详情描述</label>
@@ -118,9 +111,48 @@
 			                    jQuery("#faultSavebtn").attr("disabled", false);
 			                }
 			          	});
+			          	
+			          	
+					    
 											    
 					}, false);
+					
 	  			});
+	  			
+	  			//用户信息填入
+			          	jQuery.ajax({
+					        url:APPINFO.serverURL+"/mobileadmin/getApplicantInfo",
+					        async:true,
+					        success: function(data){
+					            document.getElementById("dept").value = data.appliDept;
+					            document.getElementById("name").value = data.appliName;
+							}
+					  	});
+					  	
+					  	//故障列表填入
+					    jQuery.ajax({
+					        url:APPINFO.serverURL+"/mobileadmin/getProblemsTypeList",
+					        async:true,
+					        success: function(data){
+					            var list = data.computerProblemsTypeList;
+					            if(list){                                               //判断
+					                for(var i=0; i<list.length; i++){                   //遍历，动态赋值
+					                    var optionString = "";
+					                    optionString ="<option value=\""
+					                                + list[i].typeCode+"\">"
+					                                + list[i].typeName+"</option>";     //动态添加数据
+					                    jQuery("#type").append(optionString);                // 为当前Id为type的select添加数据。
+					                }
+					            }
+					            //title初始值设置
+					            document.getElementById("title").value = jQuery("#type").find("option:selected").text();
+					        }
+					    });
+					    
+					    jQuery("#type").change(function(){
+					        document.getElementById("title").value = jQuery("#type").find("option:selected").text();
+					    });
+	  		
   			}(mui, document));
 		</script>
 	</body>
