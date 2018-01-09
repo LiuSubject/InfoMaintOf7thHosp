@@ -23,7 +23,7 @@
 		<div class="mui-content">
 		  	<form id="faultapplicationform" name="faultapplicationform" class="mui-input-group" method="post" action="" enctype="multipart/form-data">
 		      <div class="mui-input-row">
-		          <label>标题</label>
+		          <label>故障类型</label>
 		          <input name="title" id='title' type="text" class="mui-input" 
 		          	readonly="readonly">
 		      </div>
@@ -41,20 +41,6 @@
 		          <label>联系方式</label>
 		          <input name="tel" id="tel" type="text" class="mui-input"
 		          	readonly="readonly">
-		      </div>
-		      <div class="mui-input-row">
-		          <label>故障类型</label>
-		          <select name="type" id="type"
-		          	onfocus="this.defaultIndex=this.selectedIndex;"
-					onchange="this.selectedIndex=this.defaultIndex;">
-		              <option value="1">电脑问题</option>
-		              <option value="2">打印机问题</option>
-		              <option value="3">监控问题</option>
-		              <option value="4">网络问题</option>
-		              <option value="5">病区软件问题</option>
-		              <option value="6">门诊软件问题</option>
-		              <option value="7">其它问题</option>
-		          </select>		          
 		      </div>
 		      <div id="textareadetail" class="mui-input-row">
 		          <label>详情描述</label>
