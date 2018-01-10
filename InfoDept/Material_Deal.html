@@ -18,10 +18,15 @@
 		<header class="mui-bar mui-bar-nav">
 		  <button class="mui-action-back mui-btn mui-btn-blue mui-btn-link mui-btn-nav mui-pull-left">&nbsp;&nbsp;返回</button>
 		  <h1 class="mui-title">物资申购</h1>
-		  <button id="savebtn" class="mui-btn mui-btn-blue mui-btn-link mui-btn-nav mui-pull-right">提交&nbsp;&nbsp;</button>
+		  
 		</header>
 		<div class="mui-content">
 			<form id="materialapplicationform" class="mui-input-group" method="post" action="http://194.168.0.194/sxqy/index.php/Home/Index/saveMaterial" enctype="multipart/form-data">
+			      
+			      <div class="mui-input-row">
+			          <label>申请人</label>
+			          <input id="applicant" name="applicant" type="text" class="mui-input-clear mui-input" readonly="readonly">
+			      </div>
 			      <div class="mui-input-row">
 			          <label>名称</label>
 			          <input id="name" name="name" type="text" class="mui-input-clear mui-input" readonly="readonly">
@@ -30,33 +35,30 @@
 			          <label>数量</label>
 			          <input id="number" name="number" type="number" class="mui-input-clear mui-input" readonly="readonly">
 			      </div>
-			      <div class="mui-input-row">
-			          <label>品牌</label>
-			          <input id="brand" name="brand" type="text" class="mui-input-clear mui-input" readonly="readonly">
-			      </div>
-			      <div class="mui-input-row">
-			          <label>参考型号</label>
-			          <input id="model" name="model" type="text" class="mui-input-clear mui-input" readonly="readonly">
-			      </div>
-			      <div class="mui-input-row">
-			          <label>估价</label>
-			          <input id="judge" name="judge" type="number" class="mui-input-clear mui-input" readonly="readonly">
-			      </div>
-			      <div class="mui-input-row">
-			          <label>总价</label>
-			          <input id="total" name="total" type="number" class="mui-input-clear mui-input" readonly="readonly">
-			      </div>
+			      
 			      <div class="mui-input-row">
 			          <label>使用日期</label>
 			          <input id="useDate" name="useDate" placeholder="请输入时间" type="date">
 			      </div>
-			      <div class="mui-input-row">
-			          <label>申请人</label>
-			          <input id="applicant" name="applicant" type="text" class="mui-input-clear mui-input" readonly="readonly">
-			      </div>
 			      <div id="textareadetail" class="mui-input-row">
 			          <label>请购理由</label>
 			          <textarea id="reason" name="reason" readonly="readonly"></textarea>
+			      </div>
+			      <div class="mui-input-row">
+			          <label style="color: #0680FF;">品牌:</label>
+			          <input id="brand" name="brand" type="text" class="mui-input-clear mui-input" placeholder="请输入品牌">
+			      </div>
+			      <div class="mui-input-row">
+			          <label style="color: #0680FF;">参考型号:</label>
+			          <input id="model" name="model" type="text" class="mui-input-clear mui-input" placeholder="请输入型号">
+			      </div>
+			      <div class="mui-input-row">
+			          <label style="color: #0680FF;">估价:</label>
+			          <input id="judge" name="judge" type="number" class="mui-input-clear mui-input" placeholder="请输入估价">
+			      </div>
+			      <div class="mui-input-row">
+			          <label style="color: #0680FF;">总价:</label>
+			          <input id="total" name="total" type="number" class="mui-input-clear mui-input" placeholder="请输入总价">
 			      </div>
 			      <div id="textareadetail" class="mui-input-row">
 			          <label style="color: #0680FF;">回复：</label>
@@ -120,7 +122,11 @@
 					mui.ajax( url ,{
 						data : {
 									id : plus.webview.currentWebview().thisId,
-									feedback : document.getElementById("reback").value
+									feedback : document.getElementById("reback").value,
+									brand : document.getElementById("brand").value,
+									model : document.getElementById("model").value,
+									judge : document.getElementById("judge").value,
+									total : document.getElementById("total").value
 								},
 						dataType : 'json' , // 服务器返回 json 格式数据
 						type : 'GET' , //HTTP 请求类型
@@ -150,7 +156,11 @@
 					mui.ajax( url ,{
 						data : {
 									id : plus.webview.currentWebview().thisId,
-									feedback : document.getElementById("reback").value
+									feedback : document.getElementById("reback").value,
+									brand : document.getElementById("brand").value,
+									model : document.getElementById("model").value,
+									judge : document.getElementById("judge").value,
+									total : document.getElementById("total").value
 								},
 						dataType : 'json' , // 服务器返回 json 格式数据
 						type : 'GET' , //HTTP 请求类型
