@@ -225,7 +225,15 @@
 		            
 				}, false);
 			});
-			}(mui, document));
+			//用户信息填入
+		    jQuery.ajax({
+		        url:APPINFO.serverURL+'/mobileadmin/getApplicantInfo',
+		        async:true,
+		        success: function(data){
+		            document.getElementById("examiner").value = data.appliName;
+		        }
+		    });
+		}(mui, document));
 		</script>
 	</body>
 

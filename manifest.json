@@ -322,7 +322,8 @@
 			"InfoDept/Inspection_List.html": {
 				"resources": [],
 				"refer": [
-					"InfoDept/Inspection_Details.html"
+					"InfoDept/Inspection_Details.html",
+					"InfoDept/Inspection_Deal.html"
 				],
 				"priority": 0
 			}
