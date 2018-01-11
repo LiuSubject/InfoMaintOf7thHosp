@@ -1,0 +1,286 @@
+<!--信息科机房巡检记录页-->
+<!doctype html>
+<style type="text/css">
+	#textareadetail {
+		min-height: 90px;
+	}
+</style>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<button class="mui-action-back mui-btn mui-btn-blue mui-btn-link mui-btn-nav mui-pull-left"><span class="mui-icon mui-icon-left-nav"></span>返回</button>
+			<h1 class="mui-title">机房巡检</h1>
+		</header>
+		<div class="mui-content">
+			<form id="inspectionform" name="inspectionform" class="mui-input-group" method="post" action="">
+				<div class="mui-input-row">
+					<label class='long'>检查日期</label>
+					<input id="date" name="date" type="text">
+				</div>
+				<div class="mui-input-row">
+					<label class='long'>检查者</label>
+					<input id="examiner" name="examiner" type="text" class="mui-input-clear mui-input" placeholder="请输入姓名">
+				</div>
+				<div class="mui-input-row">
+					<label class='long'>EMR服务器</label>
+					<select name="emr" id="emr" onfocus="this.defaultIndex=this.selectedIndex;" onchange="this.selectedIndex=this.defaultIndex;">
+						<option value="0">未检查</option>
+						<option value="1">正常</option>
+						<option value="2">异常</option>
+					</select>
+				</div>
+				<div class="mui-input-row">
+					<label class='long'>HIS服务器</label>
+					<select name="his" id="his" onfocus="this.defaultIndex=this.selectedIndex;" onchange="this.selectedIndex=this.defaultIndex;">
+						<option value="0">未检查</option>
+						<option value="1">正常</option>
+						<option value="2">异常</option>
+					</select>
+				</div>
+				<div class="mui-input-row">
+					<label class='long'>LIS服务器</label>
+					<select name="lis" id="lis" onfocus="this.defaultIndex=this.selectedIndex;" onchange="this.selectedIndex=this.defaultIndex;">
+						<option value="0">未检查</option>
+						<option value="1">正常</option>
+						<option value="2">异常</option>
+					</select>
+				</div>
+				<div class="mui-input-row">
+					<label class='long'>PACS服务器</label>
+					<select name="pacs" id="pacs" onfocus="this.defaultIndex=this.selectedIndex;" onchange="this.selectedIndex=this.defaultIndex;">
+						<option value="0">未检查</option>
+						<option value="1">正常</option>
+						<option value="2">异常</option>
+					</select>
+				</div>
+				<div class="mui-input-row">
+					<label class='long'>云服务器</label>
+					<select name="xny" id="xny" onfocus="this.defaultIndex=this.selectedIndex;" onchange="this.selectedIndex=this.defaultIndex;">
+						<option value="0">未检查</option>
+						<option value="1">正常</option>
+						<option value="2">异常</option>
+					</select>
+				</div>
+				<div class="mui-input-row">
+					<label class='long'>OA服务器</label>
+					<select name="oa" id="oa" onfocus="this.defaultIndex=this.selectedIndex;" onchange="this.selectedIndex=this.defaultIndex;">
+						<option value="0">未检查</option>
+						<option value="1">正常</option>
+						<option value="2">异常</option>
+					</select>
+				</div>
+				<div class="mui-input-row">
+					<label class='long'>医保前置</label>
+					<select name="yb" id="yb" onfocus="this.defaultIndex=this.selectedIndex;" onchange="this.selectedIndex=this.defaultIndex;">
+						<option value="0">未检查</option>
+						<option value="1">正常</option>
+						<option value="2">异常</option>
+					</select>
+				</div>
+				<div class="mui-input-row">
+					<label class='long'>区域网前置</label>
+					<select name="qyw" id="qyw" onfocus="this.defaultIndex=this.selectedIndex;" onchange="this.selectedIndex=this.defaultIndex;">
+						<option value="0">未检查</option>
+						<option value="1">正常</option>
+						<option value="2">异常</option>
+					</select>
+				</div>
+
+				<div class="mui-input-row">
+					<label class='long'>应用服务器</label>
+					<select name="yy" id="yy" onfocus="this.defaultIndex=this.selectedIndex;" onchange="this.selectedIndex=this.defaultIndex;">
+						<option value="0">未检查</option>
+						<option value="1">正常</option>
+						<option value="2">异常</option>
+					</select>
+				</div>
+				<div class="mui-input-row">
+					<label class='long'>监控服务器</label>
+					<select name="jk" id="jk" onfocus="this.defaultIndex=this.selectedIndex;" onchange="this.selectedIndex=this.defaultIndex;">
+						<option value="0">未检查</option>
+						<option value="1">正常</option>
+						<option value="2">异常</option>
+					</select>
+				</div>
+				<div class="mui-input-row">
+					<label class='long'>HIS存储</label>
+					<select name="hiscc" id="hiscc" onfocus="this.defaultIndex=this.selectedIndex;" onchange="this.selectedIndex=this.defaultIndex;">
+						<option value="0">未检查</option>
+						<option value="1">正常</option>
+						<option value="2">异常</option>
+					</select>
+				</div>
+				<div class="mui-input-row">
+					<label class='long'>核心交换机</label>
+					<select name="hx" id="hx" onfocus="this.defaultIndex=this.selectedIndex;" onchange="this.selectedIndex=this.defaultIndex;">
+						<option value="0">未检查</option>
+						<option value="1">正常</option>
+						<option value="2">异常</option>
+					</select>
+				</div>
+				<div class="mui-input-row">
+					<label class='long'>汇聚交换机</label>
+					<select name="hj" id="hj" onfocus="this.defaultIndex=this.selectedIndex;" onchange="this.selectedIndex=this.defaultIndex;">
+						<option value="0">未检查</option>
+						<option value="1">正常</option>
+						<option value="2">异常</option>
+					</select>
+				</div>
+				<div class="mui-input-row">
+					<label class='long'>安全设备</label>
+					<select name="aqsb" id="aqsb" onfocus="this.defaultIndex=this.selectedIndex;" onchange="this.selectedIndex=this.defaultIndex;">
+						<option value="0">未检查</option>
+						<option value="1">正常</option>
+						<option value="2">异常</option>
+					</select>
+				</div>
+				<div class="mui-input-row">
+					<label class='long'>UPS供电</label>
+					<select name="ups" id="ups" onfocus="this.defaultIndex=this.selectedIndex;" onchange="this.selectedIndex=this.defaultIndex;">
+						<option value="0">未检查</option>
+						<option value="1">正常</option>
+						<option value="2">异常</option>
+					</select>
+				</div>
+				<div class="mui-input-row">
+					<label class='long'>气体灭火</label>
+					<select name="qtmh" id="qtmh" onfocus="this.defaultIndex=this.selectedIndex;" onchange="this.selectedIndex=this.defaultIndex;">
+						<option value="0">未检查</option>
+						<option value="1">正常</option>
+						<option value="2">异常</option>
+					</select>
+				</div>
+				<div class="mui-input-row">
+					<label class='long'>空调</label>
+					<select name="kt" id="kt" onfocus="this.defaultIndex=this.selectedIndex;" onchange="this.selectedIndex=this.defaultIndex;">
+						<option value="0">未检查</option>
+						<option value="1">正常</option>
+						<option value="2">异常</option>
+					</select>
+				</div>
+				<div id="textareadetail" class="mui-input-row">
+					<label>原因/结果</label>
+					<textarea id="ycyy" name="ycyy" placeholder="原因/结果"></textarea>
+				</div>
+			</form>
+		</div>
+		<nav class="mui-bar mui-bar-tab">
+			<a id="passBtn" class="mui-tab-item mui-active">
+				<span class="mui-icon mui-icon-checkmarkempty"></span>
+				<span class="mui-tab-label">通过</span>
+			</a>
+			<a id="denyBtn" class="mui-tab-item">
+				<span class="mui-icon mui-icon-closeempty"></span>
+				<span class="mui-tab-label">拒绝</span>
+			</a>
+		</nav>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/jquery.min.js"></script>
+		<script src="../js/jquery.easyui.min.js"></script>
+		<script src="../js/jquery.easyui.mobile.js"></script>
+		<script src="../js/APPINFO.js"></script>
+		<script type="text/javascript">
+			(function($, doc) {
+				mui.init();
+				jQuery.noConflict();
+				mui.plusReady(function() {
+					//加载数据
+					var url = APPINFO.serverURL + '/mobileadmin/dealEngineRoomInspection';
+					mui.ajax(url, {
+						data: {
+							id: plus.webview.currentWebview().thisId
+						},
+						dataType: 'json', // 服务器返回 json 格式数据
+						type: 'GET', //HTTP 请求类型
+						timeout: 5000, // 超时时间设置为 5 秒；
+						success: function(data) {
+							// 服务器返回响应，根据响应结果，分析是否登录成功；
+							if(data.success == 'true') {
+								jQuery('#inspectionform').form('load', data.engineRoomInspection);
+							} else if(data.success == 'false') {
+								plus.nativeUI.toast(data.msg);
+							} else {
+								plus.nativeUI.toast("状态异常");
+							}
+
+						},
+						error: function(xhr, type, errorThrown) {
+							// 异常处理；
+							plus.nativeUI.toast('请保持网络畅通');
+						}
+					});
+				});
+
+				//通过按钮
+				var passBtn = doc.getElementById('passBtn');
+				//拒绝按钮
+				var denyBtn = doc.getElementById('denyBtn');
+
+				passBtn.addEventListener('tap', function(event) {
+					//通过按钮点击事件
+					var url = APPINFO.serverURL + '/mobileadmin/passEngineRoomInspection';
+					mui.ajax(url, {
+						data: {
+							id: plus.webview.currentWebview().thisId
+						},
+						dataType: 'json', // 服务器返回 json 格式数据
+						type: 'GET', //HTTP 请求类型
+						timeout: 10000, // 超时时间设置为 10 秒；
+						success: function(data) {
+							// 服务器返回响应，根据响应结果，分析是否成功；
+							if(data.success == 'true') {
+								plus.nativeUI.toast(data.msg);
+							} else if(data.success == 'false') {
+								plus.nativeUI.toast(data.msg);
+							} else {
+								plus.nativeUI.toast("状态异常");
+							}
+
+						},
+						error: function(xhr, type, errorThrown) {
+							// 异常处理；
+							plus.nativeUI.toast('请保持网络畅通');
+						}
+					});
+				});
+
+				denyBtn.addEventListener('tap', function(event) {
+					//拒绝按钮点击事件
+					var url = APPINFO.serverURL + '/mobileadmin/denyEngineRoomInspection';
+					mui.ajax(url, {
+						data: {
+							id: plus.webview.currentWebview().thisId
+						},
+						dataType: 'json', // 服务器返回 json 格式数据
+						type: 'GET', //HTTP 请求类型
+						timeout: 10000, // 超时时间设置为 10 秒；
+						success: function(data) {
+							// 服务器返回响应，根据响应结果，分析是否成功；
+							if(data.success == 'true') {
+								plus.nativeUI.toast(data.msg);
+							} else if(data.success == 'false') {
+								plus.nativeUI.toast(data.msg);
+							} else {
+								plus.nativeUI.toast("状态异常");
+							}
+
+						},
+						error: function(xhr, type, errorThrown) {
+							// 异常处理；
+							plus.nativeUI.toast('请保持网络畅通');
+						}
+					});
+				});
+			}(mui, document));
+		</script>
+	</body>
+
+</html>
