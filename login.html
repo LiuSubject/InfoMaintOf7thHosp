@@ -159,7 +159,7 @@
 						//使用定时器的原因：
 						//可能执行太快，main页面loaded事件尚未触发就执行自定义事件，此时必然会失败
 						//根据用户权限加载不同主页面
-						if(data.role == "admin") {
+						if(data.role.indexOf("admin")!= -1 ) {
 							localStorage.setItem('$role', data.role);
 							mui.openWindow({
 							    url: 'main.html', 
@@ -171,8 +171,8 @@
 									autoShow: false
 								}
 							});
-						} else if(data.role == "normal") {
-							localStorage.setItem('$role', data.role);
+						} else if(data.role.indexOf("admin") == -1) {
+							localStorage.setItem('$role', "normal");
 							mui.openWindow({
 							    url: 'mainNormal.html', 
 							    id:'mainNormal',

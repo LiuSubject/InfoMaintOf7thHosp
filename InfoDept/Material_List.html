@@ -124,7 +124,7 @@
 											var role = localStorage.getItem('$role') || '[]';
 											var res = '';
 											//按钮动态生成
-											if(role == "admin") {
+											if(role.indexOf("admin")!= -1) {
 												res = '<button style="color: #fff;background-color: #31b0d5; border-color: #269abc;" type="button" class="mui-btn btn-default btn-sm editBtn" id="' + value + '">处理</button>';
 											} else {
 												res = '<button style="color: #fff;background-color: #ec971f; border-color: #d58512;" type="button" class="mui-btn btn-default btn-sm viewDetail" id="' + value + '">详情</button>';
