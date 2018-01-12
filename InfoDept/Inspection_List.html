@@ -216,10 +216,10 @@
 					frontPageButton.addEventListener('tap', function(event) {
 						//上一页按钮点击事件
 						//页码边界判断
-						if(PagingVO.curentPageNo < 0 ||
+						if(typeof(PagingVO) == "undefined" ||
+							PagingVO.curentPageNo < 0 ||
 							typeof(PagingVO.curentPageNo) == "undefined" ||
 							PagingVO.curentPageNo == null) {
-							PagingVO.curentPageNo = 0;
 							return;
 						} else if(PagingVO.curentPageNo == 0) {
 							return;
@@ -256,10 +256,10 @@
 					nextPageButton.addEventListener('tap', function(event) {
 						//下一页按钮点击事件
 						//页码边界判断
-						if(PagingVO.curentPageNo < 0 ||
+						if(typeof(PagingVO) == "undefined" ||
+							PagingVO.curentPageNo < 0 ||
 							typeof(PagingVO.curentPageNo) == "undefined" ||
 							PagingVO.curentPageNo == null) {
-							PagingVO.curentPageNo = 0;
 							return;
 						} else if(PagingVO.curentPageNo >= PagingVO.totalCount) {
 							return;
