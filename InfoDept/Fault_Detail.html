@@ -95,7 +95,7 @@
 							    	document.body.appendChild(img);
 							    	};
 							    img.onerror=function(){
-							    	plus.nativeUI.toast("图片信息有误")
+							    	plus.nativeUI.toast("图片信息不存在")
 							    	};
 							    //此行一定要在onload之后
 							    img.src=APPINFO.serverURL+"/upload/"+ data.computerProblems.img;
