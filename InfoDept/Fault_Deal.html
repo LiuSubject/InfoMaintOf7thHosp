@@ -7,69 +7,180 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link href="../css/mui.min.css" rel="stylesheet" />
-		<script src="../js/jquery.min.js 	"></script>
+		<link rel="stylesheet" type="text/css" href="../css/loaders.min.css" />
+		<link rel="stylesheet" type="text/css" href="../css/loading.css" />
+		<link rel="stylesheet" type="text/css" href="../css/all.css" />
+		<link rel="stylesheet" href="../css/style_time.css" />
+		<script src="../js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			jQuery(window).load(function() {
+				jQuery(".loading").addClass("loader-chanage")
+				jQuery(".loading").fadeOut(1000)
+			})
+		</script>
 		<style type="text/css">
-		    #textareadetail {
-		    	min-height: 90px;
-		    }
-		    #textareafeedback {
-		    	min-height: 90px;
-		    }
+			#textareadetail {
+				min-height: 90px;
+			}
+			
+			#textareafeedback {
+				min-height: 90px;
+			}
+			.flex-justify-sb {
+				-webkit-justify-content: flex-start;
+			}
+			
+			.ui-box {
+				background-color: #efeff4;
+				border: none;
+			}
+			
+			.home-qnav .ui-box {
+				border: none;
+			}
+			
+			.home-qnav .ico {
+				display: block;
+				width: 3.5rem;
+				margin: 0.5em 2.0rem 0.6rem;
+			}
+			
+			.home-qnav .name {
+				display: block;
+				text-align: center;
+				font-size: 0.9rem;
+				color: #363636;
+				margin: 0.5rem;
+				margin-bottom: 0rem;
+			}
+
 		</style>
 	</head>
 
 	<body>
 		<header class="mui-bar mui-bar-nav">
-		  <button class="mui-action-back mui-btn mui-btn-blue mui-btn-link mui-btn-nav mui-pull-left"><span class="mui-icon mui-icon-left-nav"></span>返回</button>
-		  <h1 class="mui-title">申报详情</h1>
+			<button class="mui-action-back mui-btn mui-btn-blue mui-btn-link mui-btn-nav mui-pull-left"><span class="mui-icon mui-icon-left-nav"></span>返回</button>
+			<h1 class="mui-title">申报详情</h1>
 		</header>
-		<div class="mui-content">
-		  	<form id="faultapplicationform" name="faultapplicationform" class="mui-input-group" method="post" action="" enctype="multipart/form-data">
-		      <div class="mui-input-row">
-		          <label >故障类型</label>
-		          <input name="title" id='title' type="text" class="mui-input" 
-		          	readonly="readonly">
-		      </div>
-		      <div class="mui-input-row">
-		          <label >科室</label>
-		          <input name="dept" id="dept" type="text" class="mui-input"
-		          	readonly="readonly">
-		      </div>
-		      <div class="mui-input-row">
-		          <label >申报人</label>
-		          <input name="name" id="name" type="text" class="mui-input"
-		          	readonly="readonly">
-		      </div>
-		      <div class="mui-input-row">
-		          <label >联系方式</label>
-		          <input name="tel" id="tel" type="text" class="mui-input"
-		          	readonly="readonly">
-		      </div>
-		      <div id="textareadetail" class="mui-input-row">
-		          <label >详情描述</label>
-		          <textarea name="detail" id="detail" readonly="readonly"></textarea>
-		      </div>
-		      <div class="mui-input-row">
-		          <label style="color: #0680FF;">负责人:</label>
-		          <input name="leader" id="leader" type="text" class="mui-input"
-		          	readonly="readonly">
-		      </div>
-		      <div id="textareafeedback" class="mui-input-row">
-		          <label style="color: #0680FF;">请输入反馈:</label>
-		          <textarea name="feedback" id="feedback"></textarea>
-		      </div>
-		  </form>
+		<div class="mui-clearfix">
+			<!--loading页开始-->
+			<div class="loading" style="background: #efeff4;">
+				<div class="loader">
+					<div class="loader-inner ball-grid-beat">
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+					</div>
+				</div>
+			</div>
+			<!--loading页结束-->
+			<div style="height:45px;"></div>
+			<!--防遮挡-->
+			<form id="faultapplicationform" name="faultapplicationform" class="mui-input-group" method="post" action="" enctype="multipart/form-data">
+				<div class="mui-input-row">
+					<label>故障类型</label>
+					<input name="title" id='title' type="text" class="mui-input" readonly="readonly">
+				</div>
+				<div class="mui-input-row">
+					<label>科室</label>
+					<input name="dept" id="dept" type="text" class="mui-input" readonly="readonly">
+				</div>
+				<div class="mui-input-row">
+					<label>申报人</label>
+					<input name="name" id="name" type="text" class="mui-input" readonly="readonly">
+				</div>
+				<div class="mui-input-row">
+					<label>联系方式</label>
+					<input name="tel" id="tel" type="text" class="mui-input" readonly="readonly">
+				</div>
+				<div id="textareadetail" class="mui-input-row">
+					<label>详情描述</label>
+					<textarea name="detail" id="detail" readonly="readonly"></textarea>
+				</div>
+				<div id="textareafeedback" class="mui-input-row">
+					<label style="color: #0680FF;">反馈:</label>
+					<textarea name="feedback" id="feedback" placeholder="请输入描述"></textarea>
+				</div>
+			</form>
+
+			<section id="cd-timeline" class="cd-container">
+				<div class="cd-timeline-block">
+					<div class="cd-timeline-img cd-picture">
+
+					</div>
+
+					<div class="cd-timeline-content">
+						<h2>HTML5+CSS3实现的响应式垂直时间轴</h2>
+						<p>网页时间轴一般用于展示以时间为主线的事件，如企业网站常见的公司发展历程等。本文将给大家介绍一款基于HTML5和CSS3的漂亮的垂直时间轴，它可以响应页面布局，适用于HTML5开发的PC和移动手机WEB应用。</p>
+						<span class="cd-date">2015-01-06</span>
+					</div>
+				</div>
+				<div class="cd-timeline-block">
+					<div class="cd-timeline-img cd-movie">
+
+					</div>
+
+					<div class="cd-timeline-content">
+						<h2>jQuery+PHP动态数字展示效果</h2>
+						<p>我们在一些应用中需要动态展示数据，比如当前在线人数，当前交易总额，当前汇率等等，前端页面需要实时刷新获取最新数据。本文将结合实例给大家介绍使用jQuery和PHP来实现动态数字展示效果。</p>
+
+						<span class="cd-date">2014-12-25</span>
+					</div>
+				</div>
+				<div class="cd-timeline-block">
+					<div class="cd-timeline-img cd-picture">
+
+					</div>
+
+					<div class="cd-timeline-content">
+						<h2>PHP操作Session和Cookie</h2>
+						<p>我们跟踪用户信息时需要用到Session和Cookie，比如用户登录验证、记录用户浏览历史，存储购物车数据，限制用户会话有效时间等。今天我们来了解下PHP是如何操作Session和Cookie的。</p>
+
+						<span class="cd-date">2014-12-20</span>
+					</div>
+				</div>
+				<div class="cd-timeline-block">
+					<div class="cd-timeline-img cd-movie">
+
+					</div>
+
+					<div class="cd-timeline-content">
+						<h2>jQuery数字加减插件</h2>
+						<p>我们在网上购物提交订单时，在网页上一般会有一个选择数量的控件，要求买家选择购买商品的件数，开发者会把该控件做成可以通过点击实现加减等微调操作，当然也可以直接输入数字件数。本文将介绍常见的几种使用spinner数字微调器来实现数字加减的功能的方法。</p>
+
+						<span class="cd-date">2014-12-14</span>
+					</div>
+				</div>
+				<div class="cd-timeline-block">
+					<div class="cd-timeline-img cd-movie">
+
+					</div>
+
+					<div class="cd-timeline-content">
+						<h2>收集整理的非常有用的PHP函数</h2>
+						<p>项目中经常会需要一些让人头疼的函数，作为开发者应该整理一个自己的函数库，在需要之时复制过来即可。本文作者收集整理数十个PHP项目中常用的函数，保证能正常运行，你只要复制粘贴到你项目中即可。</p>
+
+						<span class="cd-date">2014-12-05</span>
+					</div>
+				</div>
+			</section>
 		</div>
 		<nav class="mui-bar mui-bar-tab">
-        <a id="deal" class="mui-tab-item mui-active">
-            <span class="mui-icon mui-icon-download"></span>
-            <span class="mui-tab-label">处理</span>
-        </a>
-        <a id="complete" class="mui-tab-item">
-            <span class="mui-icon mui-icon-upload"></span>
-            <span class="mui-tab-label">完成</span>
-        </a>
-	    </nav>
+			<a id="deal" class="mui-tab-item mui-active">
+				<span class="mui-icon mui-icon-download"></span>
+				<span class="mui-tab-label">处理</span>
+			</a>
+			<a id="complete" class="mui-tab-item">
+				<span class="mui-icon mui-icon-upload"></span>
+				<span class="mui-tab-label">完成</span>
+			</a>
+		</nav>
 		<script src="../js/mui.min.js"></script>
 		<script src="../js/jquery.min.js"></script>
 		<script src="../js/jquery.easyui.min.js"></script>
@@ -81,121 +192,122 @@
 				jQuery.noConflict();
 				mui.plusReady(function() {
 					//加载数据
-					var url = APPINFO.serverURL+'/mobileadmin/checkComputerProblems';
-					mui.ajax( url ,{
-						data : {
-									id:plus.webview.currentWebview().thisId
-								},
-						dataType : 'json' , // 服务器返回 json 格式数据
-						type : 'GET' , //HTTP 请求类型
-						timeout : 10000 , // 超时时间设置为 10 秒；
-						success : function (data){
+					var url = APPINFO.serverURL + '/mobileadmin/checkComputerProblems';
+					mui.ajax(url, {
+						data: {
+							id: plus.webview.currentWebview().thisId
+						},
+						dataType: 'json', // 服务器返回 json 格式数据
+						type: 'GET', //HTTP 请求类型
+						timeout: 10000, // 超时时间设置为 10 秒；
+						success: function(data) {
 							// 服务器返回响应，根据响应结果，分析是否成功；
-							if(data.success == 'true'){	
+							if(data.success == 'true') {
 								jQuery('#faultapplicationform').form('load', data.computerProblems);
-							    //图片加载
-							    var img=new Image();  
-							    img.onload=function(){
-							    	plus.nativeUI.toast("图片加载成功");							    	
-							    	//调整图片尺寸
-							    	var mobileWidth = document.body.clientWidth;
-							    	if(img.width > mobileWidth){
-							    		img.height = img.height * mobileWidth / img.width;
-            							img.width = mobileWidth;
-							    	}
-							    	//加载完毕，显示图片
-							    	document.body.appendChild(img);
-							    	};
-							    img.onerror=function(){
-							    	plus.nativeUI.toast("图片信息不存在")
-							    	};
-							    //此行一定要在onload之后
-							    img.src=APPINFO.serverURL+"/upload/"+ data.computerProblems.img;
-							    
-							    if (!img.complete) {
-							    	plus.nativeUI.toast("图片加载中");
-				                }
-							}else if(data.success == 'false'){
+								//图片加载
+								var img = new Image();
+								img.onload = function() {
+									plus.nativeUI.toast("图片加载成功");
+									//调整图片尺寸
+									var mobileWidth = document.body.clientWidth;
+									if(img.width > mobileWidth) {
+										img.height = img.height * mobileWidth / img.width;
+										img.width = mobileWidth;
+									}
+									//加载完毕，显示图片
+									document.body.appendChild(img);
+								};
+								img.onerror = function() {
+									plus.nativeUI.toast("图片信息不存在")
+								};
+								//此行一定要在onload之后
+								img.src = APPINFO.serverURL + "/upload/" + data.computerProblems.img;
+
+								if(!img.complete) {
+									plus.nativeUI.toast("图片加载中");
+								}
+							} else if(data.success == 'false') {
 								plus.nativeUI.toast(data.msg);
-							}else{
+							} else {
 								plus.nativeUI.toast("状态异常");
 							}
-							
-	
-						},	
-						error : function (xhr,type,errorThrown){
+
+						},
+						error: function(xhr, type, errorThrown) {
 							// 异常处理；
 							plus.nativeUI.toast('请保持网络畅通');
 						}
 					});
 				});
-				
+
 				//处理按钮
 				var dealBtn = doc.getElementById('deal');
 				//完成按钮
 				var completeBtn = doc.getElementById('complete');
-				
+
 				dealBtn.addEventListener('tap', function(event) {
 					//处理按钮点击事件
-					var url = APPINFO.serverURL+'/mobileadmin/dealComputerProblems';
-					mui.ajax( url ,{
-						data : {
-									id : plus.webview.currentWebview().thisId,
-									feedback : document.getElementById("feedback").value
-								},
-						dataType : 'json' , // 服务器返回 json 格式数据
-						type : 'GET' , //HTTP 请求类型
-						timeout : 10000 , // 超时时间设置为 10 秒；
-						success : function (data){
+					var url = APPINFO.serverURL + '/mobileadmin/dealComputerProblems';
+					mui.ajax(url, {
+						data: {
+							id: plus.webview.currentWebview().thisId,
+							feedback: document.getElementById("feedback").value
+						},
+						dataType: 'json', // 服务器返回 json 格式数据
+						type: 'GET', //HTTP 请求类型
+						timeout: 10000, // 超时时间设置为 10 秒；
+						success: function(data) {
 							// 服务器返回响应，根据响应结果，分析是否成功；
-							if(data.success == 'true'){	
+							if(data.success == 'true') {
 								plus.nativeUI.toast(data.msg);
-							}else if(data.success == 'false'){
+							} else if(data.success == 'false') {
 								plus.nativeUI.toast(data.msg);
-							}else{
+							} else {
 								plus.nativeUI.toast("状态异常");
 							}
-							
-	
-						},	
-						error : function (xhr,type,errorThrown){
+
+						},
+						error: function(xhr, type, errorThrown) {
 							// 异常处理；
 							plus.nativeUI.toast('请保持网络畅通');
 						}
 					});
 				});
-				
+
 				completeBtn.addEventListener('tap', function(event) {
 					//处理按钮点击事件
-					var url = APPINFO.serverURL+'/mobileadmin/completeComputerProblems';
-					mui.ajax( url ,{
-						data : {
-									id : plus.webview.currentWebview().thisId,
-									feedback : document.getElementById("feedback").value
-								},
-						dataType : 'json' , // 服务器返回 json 格式数据
-						type : 'GET' , //HTTP 请求类型
-						timeout : 10000 , // 超时时间设置为 10 秒；
-						success : function (data){
+					var url = APPINFO.serverURL + '/mobileadmin/completeComputerProblems';
+					mui.ajax(url, {
+						data: {
+							id: plus.webview.currentWebview().thisId,
+							feedback: document.getElementById("feedback").value
+						},
+						dataType: 'json', // 服务器返回 json 格式数据
+						type: 'GET', //HTTP 请求类型
+						timeout: 10000, // 超时时间设置为 10 秒；
+						success: function(data) {
 							// 服务器返回响应，根据响应结果，分析是否成功；
-							if(data.success == 'true'){	
+							if(data.success == 'true') {
 								plus.nativeUI.toast(data.msg);
-							}else if(data.success == 'false'){
+							} else if(data.success == 'false') {
 								plus.nativeUI.toast(data.msg);
-							}else{
+							} else {
 								plus.nativeUI.toast("状态异常");
 							}
-							
-	
-						},	
-						error : function (xhr,type,errorThrown){
+
+						},
+						error: function(xhr, type, errorThrown) {
 							// 异常处理；
 							plus.nativeUI.toast('请保持网络畅通');
 						}
 					});
 				});
+
+				mui(".mui-scroll-wrapper").scroll({
+					//bounce: false,//滚动条是否有弹力默认是true
+					indicators: false, //是否显示滚动条,默认是true
+				});
 			}(mui, document));
-			
 		</script>
 	</body>
 

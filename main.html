@@ -17,23 +17,6 @@
 			})
 		</script>
 		<style>
-			body {
-				border: none;
-			}
-			
-			ul {
-				font-size: 14px;
-				color: #8f8f94;
-			}
-			
-			.mui-btn {
-				padding: 10px;
-			}
-			
-			.title {
-				margin: 35px 15px 10px;
-			}
-			
 			.flex-justify-sb {
 				-webkit-justify-content: flex-start;
 			}
@@ -100,21 +83,21 @@
 					<div class="mui-slider-group mui-slider-loop">
 						<!-- 额外增加的一个节点(循环轮播：第一个节点是最后一张轮播) -->
 						<div class="mui-slider-item mui-slider-item-duplicate">
-							<a href="#">
-								<img src="images/main.png">
-							</a>
+
+							<img src="images/main.png">
+
 						</div>
 						<!-- 第一张 -->
 						<div class="mui-slider-item">
-							<a href="#">
-								<img src="images/main.png">
-							</a>
+
+							<img src="images/main.png">
+
 						</div>
 						<!-- 额外增加的一个节点(循环轮播：最后一个节点是第一张轮播) -->
 						<div class="mui-slider-item mui-slider-item-duplicate">
-							<a href="#">
-								<img src="images/main.png">
-							</a>
+
+							<img src="images/main.png">
+
 						</div>
 					</div>
 				</div>
@@ -122,16 +105,16 @@
 					<h4>故障管理</h4>
 					<div class="ui-flex flex-justify-sb">
 						<div id='faultapplication'>
-							<a href="">
-								<img src="images\h8.ico" class="ico" />
-								<span class="name">故障申报</span>
-							</a>
+
+							<img src="images\h8.ico" class="ico" />
+							<span class="name">故障申报</span>
+
 						</div>
 						<div id='faultlist'>
-							<a href="">
-								<img src="images\h12.ico" class="ico" />
-								<span class="name">故障列表</span>
-							</a>
+
+							<img src="images\h12.ico" class="ico" />
+							<span class="name">故障列表</span>
+
 						</div>
 					</div>
 				</div>
@@ -139,16 +122,16 @@
 					<h4>申购管理</h4>
 					<div class="ui-flex flex-justify-sb">
 						<div id='materialapplication'>
-							<a href="">
-								<img src="images\h9.ico" class="ico" />
-								<span class="name">物资申购</span>
-							</a>
+
+							<img src="images\h9.ico" class="ico" />
+							<span class="name">物资申购</span>
+
 						</div>
 						<div id='materiallist'>
-							<a href="">
-								<img src="images\h12.ico" class="ico" />
-								<span class="name">申购列表</span>
-							</a>
+
+							<img src="images\h12.ico" class="ico" />
+							<span class="name">申购列表</span>
+
 						</div>
 					</div>
 				</div>
@@ -156,16 +139,12 @@
 					<h4>机房巡检管理</h4>
 					<div class="ui-flex flex-justify-sb">
 						<div id="inspectionengineroom">
-							<a href="">
-								<img src="images\h5.ico" class="ico" />
-								<span class="name">巡检机房</span>
-							</a>
+							<img src="images\h5.ico" class="ico" />
+							<span class="name">巡检机房</span>
 						</div>
 						<div id='inspectionlist'>
-							<a href="">
-								<img src="images\h12.ico" class="ico" />
-								<span class="name">巡检记录</span>
-							</a>
+							<img src="images\h12.ico" class="ico" />
+							<span class="name">巡检记录</span>
 						</div>
 					</div>
 				</div>
@@ -196,8 +175,6 @@
 					var userid = localStorage.getItem("occurUserId");
 
 					faultapplicationDiv.addEventListener('tap', function(event) {
-						
-						plus.webview.currentWebview().hide(); 
 						mui.openWindow({
 							url: 'InfoDept/Fault_Application.html',
 							id: 'Fault_Application',
@@ -299,34 +276,33 @@
 					//bounce: false,//滚动条是否有弹力默认是true
 					indicators: false, //是否显示滚动条,默认是true
 				});
-				
+
 				//依权限显示菜单
 				var current = localStorage.getItem("$role");
-				if(current.indexOf("normal") != -1){
+				if(current.indexOf("normal") != -1) {
 					jQuery("#fault_menu").show();
 					jQuery("#material_menu").show();
-				}else if(current.indexOf("material") != -1) {
+				} else if(current.indexOf("material") != -1) {
 					jQuery("#fault_menu").show();
 					jQuery("#material_menu").show();
-				}else if(current.indexOf("hardware") != -1){
+				} else if(current.indexOf("hardware") != -1) {
 					jQuery("#fault_menu").show();
 					jQuery("#inspect_menu").show();
-				}else if(current.indexOf("examiner") != -1){
-					jQuery("#fault_menu").show();
-					jQuery("#material_menu").show();
-					jQuery("#inspect_menu").show();
-				}else if(current.indexOf("alldean") != -1){
+				} else if(current.indexOf("examiner") != -1) {
 					jQuery("#fault_menu").show();
 					jQuery("#material_menu").show();
 					jQuery("#inspect_menu").show();
-				}else if(current.indexOf("infodean") != -1){
+				} else if(current.indexOf("alldean") != -1) {
 					jQuery("#fault_menu").show();
 					jQuery("#material_menu").show();
 					jQuery("#inspect_menu").show();
-				}else{
-					
+				} else if(current.indexOf("infodean") != -1) {
+					jQuery("#fault_menu").show();
+					jQuery("#material_menu").show();
+					jQuery("#inspect_menu").show();
+				} else {
+
 				}
-				
 
 			}(mui, document));
 		</script>

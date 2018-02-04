@@ -8,50 +8,58 @@
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link href="../css/mui.min.css" rel="stylesheet" />
 		<style type="text/css">
-		    #textareadetail {
-		    	min-height: 90px;
-		    }
+			#textareadetail {
+				min-height: 90px;
+			}
 		</style>
 	</head>
 
 	<body>
 		<header class="mui-bar mui-bar-nav">
-		  <button class="mui-action-back mui-btn mui-btn-blue mui-btn-link mui-btn-nav mui-pull-left">&nbsp;&nbsp;返回</button>
-		  <h1 class="mui-title">故障申报</h1>
-		  <button id="faultSavebtn" class="mui-btn mui-btn-blue mui-btn-link mui-btn-nav mui-pull-right">提交&nbsp;&nbsp;</button>
+			<button class="mui-action-back mui-btn mui-btn-blue mui-btn-link mui-btn-nav mui-pull-left">&nbsp;&nbsp;返回</button>
+			<h1 class="mui-title">故障申报</h1>
+			<button id="faultSavebtn" class="mui-btn mui-btn-blue mui-btn-link mui-btn-nav mui-pull-right">提交&nbsp;&nbsp;</button>
 		</header>
 		<div class="mui-content">
-		  	<form id="faultapplicationform" name="faultapplicationform" class="mui-input-group" method="post" action="" enctype="multipart/form-data">
-		      <div class="mui-input-row" style="display:none">
-		          <label>标题</label>
-		          <input name="title" id='title' type="text" class="mui-input-clear mui-input" placeholder="请输入标题">
-		      </div>
-		      <div class="mui-input-row">
-		          <label>故障类型</label>
-		          <select name="type" id="type">
-		          </select>		          
-		      </div>
-		      <div class="mui-input-row">
-		          <label>科室</label>
-		          <input name="dept" id="dept" type="text" class="mui-input-clear mui-input" placeholder="请输入科室">
-		      </div>
-		      <div class="mui-input-row">
-		          <label>申报人</label>
-		          <input name="name" id="name" type="text" class="mui-input-clear mui-input" placeholder="请输入姓名">
-		      </div>
-		      <div class="mui-input-row">
-		          <label>联系方式</label>
-		          <input name="tel" id="tel" type="text" class="mui-input-clear mui-input" placeholder="请输入联系方式">
-		      </div>
-		      <div id="textareadetail" class="mui-input-row">
-		          <label>详情描述</label>
-		          <textarea name="detail" id="detail" placeholder="请详细描述"></textarea>
-		      </div>		      
-		      <div class="mui-input-row">
-		          <label>上传图片</label>
-		          <input type="file" name="photo" id="photo">
-		      </div>
-		  </form>
+			<form id="faultapplicationform" name="faultapplicationform" class="mui-input-group" method="post" action="" enctype="multipart/form-data">
+				<div class="mui-input-row" style="display:none">
+					<label>标题</label>
+					<input name="title" id='title' type="text" class="mui-input-clear mui-input" placeholder="请输入标题">
+				</div>
+				<div class="mui-input-row">
+					<label>故障类型</label>
+					<select name="type" id="type">
+						<option value="1">硬件故障</option>
+						<option value="2">软件故障</option>
+						<option value="3">费用故障</option>
+					</select>
+				</div>
+				<div class="mui-input-row">
+					<label>故障细类</label>
+					<select name="typeSecondary" id="typeSecondary">
+					</select>
+				</div>
+				<div class="mui-input-row">
+					<label>科室</label>
+					<input name="dept" id="dept" type="text" class="mui-input-clear mui-input" placeholder="请输入科室">
+				</div>
+				<div class="mui-input-row">
+					<label>申报人</label>
+					<input name="name" id="name" type="text" class="mui-input-clear mui-input" placeholder="请输入姓名">
+				</div>
+				<div class="mui-input-row">
+					<label>联系方式</label>
+					<input name="tel" id="tel" type="text" class="mui-input-clear mui-input" placeholder="请输入联系方式">
+				</div>
+				<div id="textareadetail" class="mui-input-row">
+					<label>详情描述</label>
+					<textarea name="detail" id="detail" placeholder="请详细描述"></textarea>
+				</div>
+				<div class="mui-input-row">
+					<label>上传图片</label>
+					<input type="file" name="photo" id="photo">
+				</div>
+			</form>
 		</div>
 		<script src="../js/mui.min.js"></script>
 		<script src="../js/jquery.min.js"></script>
@@ -60,100 +68,123 @@
 		<script src="../js/APPINFO.js"></script>
 		<script type="text/javascript">
 			(function($, doc) {
-  				mui.init();
+				mui.init();
 				jQuery.noConflict();
 				mui.plusReady(function() {
 					var faultSavebtn = doc.getElementById('faultSavebtn');
 					faultSavebtn.addEventListener('tap', function(event) {
-						
+
 						//表单验证
-					 	if( !jQuery("#title").val() ){
-					        plus.nativeUI.toast("请输入标题");
-					        return false;
-					    }else if( !jQuery("#dept").val() ){
-					        plus.nativeUI.toast("请输入科室");
-					        return false;
-					    }else if( !jQuery("#name").val() ){
-					        plus.nativeUI.toast("请输入申报人");
-					        return false;
-					    }else if( !jQuery("#tel").val() ){
-					        plus.nativeUI.toast("请输入联系电话");
-					        return false; 
-					    }else if( jQuery("#type").val()==0 ){
-					        plus.nativeUI.toast("请选择类型");
-					        return false; 
-					    }
-					    
-					    //表单提交
-					    var form = new FormData(document.getElementById("faultapplicationform"));
-					    jQuery("#faultSavebtn").attr("disabled", true);
-					    jQuery.ajax({
-			                url:APPINFO.serverURL+'/mobileadmin/addComputerProblems',
-			                type:"post",
-			                data:form,
-			                processData:false,
-			                contentType:false,
-			                success:function(data){
-			                   // 服务器返回响应，根据响应结果，分析是否成功；
-							if(data.success == 'true'){	
-								plus.nativeUI.toast(data.msg);
-								
-							}else if(data.success == 'false'){
-								plus.nativeUI.toast(data.msg);
-								jQuery("#faultSavebtn").attr("disabled", false);
-							}else{
-								plus.nativeUI.toast("状态异常");
+						if(!jQuery("#dept").val()) {
+							plus.nativeUI.toast("请输入科室");
+							return false;
+						} else if(!jQuery("#name").val()) {
+							plus.nativeUI.toast("请输入申报人");
+							return false;
+						} else if(!jQuery("#tel").val()) {
+							plus.nativeUI.toast("请输入联系方式");
+							return false;
+						}
+
+						//表单提交
+						var form = new FormData(document.getElementById("faultapplicationform"));
+						jQuery("#faultSavebtn").attr("disabled", true);
+						jQuery.ajax({
+							url: APPINFO.serverURL + '/mobileadmin/addComputerProblems',
+							type: "post",
+							data: form,
+							processData: false,
+							contentType: false,
+							success: function(data) {
+								// 服务器返回响应，根据响应结果，分析是否成功；
+								if(data.success == 'true') {
+									plus.nativeUI.toast(data.msg);
+
+								} else if(data.success == 'false') {
+									plus.nativeUI.toast(data.msg);
+									jQuery("#faultSavebtn").attr("disabled", false);
+								} else {
+									plus.nativeUI.toast("状态异常");
+									jQuery("#faultSavebtn").attr("disabled", false);
+								}
+							},
+							error: function(e) {
+								plus.nativeUI.toast("提交错误");
 								jQuery("#faultSavebtn").attr("disabled", false);
 							}
-			                },
-			                error:function(e){
-			                    plus.nativeUI.toast("提交错误");
-			                    jQuery("#faultSavebtn").attr("disabled", false);
-			                }
-			          	});
-			          	
-			          	
-					    
-											    
+						});
+
 					}, false);
-					
-	  			});
-	  			
-	  					//用户信息填入
-			          	jQuery.ajax({
-					        url:APPINFO.serverURL+"/mobileadmin/getApplicantInfo",
-					        async:true,
-					        success: function(data){
-					            document.getElementById("dept").value = data.appliDept;
-					            document.getElementById("name").value = data.appliName;
+
+				});
+
+				//用户信息填入
+				jQuery.ajax({
+					url: APPINFO.serverURL + "/mobileadmin/getApplicantInfo",
+					async: true,
+					success: function(data) {
+						document.getElementById("dept").value = data.appliDept;
+						document.getElementById("name").value = data.appliName;
+					}
+				});
+
+				//网页打开时故障次级列表动态填入
+				var mainType = document.getElementById("type").value;
+				jQuery.ajax({
+					url: APPINFO.serverURL+"/admin/getProblemsTypeList",
+					async: true,
+					data: {
+						mainType: mainType
+					},
+					success: function(data) {
+						jQuery("#typeSecondary").find("option").remove();
+						var list = data.computerProblemsTypeList;
+						if(list) { //判断
+							for(var i = 0; i < list.length; i++) { //遍历，动态赋值
+								var optionString = "";
+								optionString = "<option value=\"" +
+									list[i].typeCode + "\">" +
+									list[i].typeName + "</option>"; //动态添加数据
+								jQuery("#typeSecondary").append(optionString); // 为当前Id为typeSecondary的select添加数据。
 							}
-					  	});
-					  	
-					  	//故障列表填入
-					    jQuery.ajax({
-					        url:APPINFO.serverURL+"/mobileadmin/getProblemsTypeList",
-					        async:true,
-					        success: function(data){
-					            var list = data.computerProblemsTypeList;
-					            if(list){                                               //判断
-					                for(var i=0; i<list.length; i++){                   //遍历，动态赋值
-					                    var optionString = "";
-					                    optionString ="<option value=\""
-					                                + list[i].typeCode+"\">"
-					                                + list[i].typeName+"</option>";     //动态添加数据
-					                    jQuery("#type").append(optionString);                // 为当前Id为type的select添加数据。
-					                }
-					            }
-					            //title初始值设置
-					            document.getElementById("title").value = jQuery("#type").find("option:selected").text();
-					        }
-					    });
-					    
-					    jQuery("#type").change(function(){
-					        document.getElementById("title").value = jQuery("#type").find("option:selected").text();
-					    });
-	  		
-  			}(mui, document));
+						}
+						//title初始值设置
+						document.getElementById("title").value = jQuery("#typeSecondary").find("option:selected").text();
+					}
+				});
+
+				jQuery("#type").change(function() {
+					var mainType = document.getElementById("type").value;
+					//故障次级列表动态填入
+					jQuery.ajax({
+						url: APPINFO.serverURL+"/mobileadmin/getProblemsTypeList",
+						async: true,
+						data: {
+							mainType: mainType
+						},
+						success: function(data) {
+							jQuery("#typeSecondary").find("option").remove();
+							var list = data.computerProblemsTypeList;
+							if(list) { //判断
+								for(var i = 0; i < list.length; i++) { //遍历，动态赋值
+									var optionString = "";
+									optionString = "<option value=\"" +
+										list[i].typeCode + "\">" +
+										list[i].typeName + "</option>"; //动态添加数据
+									jQuery("#typeSecondary").append(optionString); // 为当前Id为typeSecondary的select添加数据。
+								}
+							}
+							//title初始值设置
+							document.getElementById("title").value = jQuery("#typeSecondary").find("option:selected").text();
+						}
+					});
+				});
+
+				jQuery("#type").change(function() {
+					document.getElementById("title").value = jQuery("#type").find("option:selected").text();
+				});
+
+			}(mui, document));
 		</script>
 	</body>
 
