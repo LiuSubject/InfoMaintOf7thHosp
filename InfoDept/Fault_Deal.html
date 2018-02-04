@@ -12,12 +12,6 @@
 		<link rel="stylesheet" type="text/css" href="../css/all.css" />
 		<link rel="stylesheet" href="../css/style_time.css" />
 		<script src="../js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
-		<script type="text/javascript">
-			jQuery(window).load(function() {
-				jQuery(".loading").addClass("loader-chanage")
-				jQuery(".loading").fadeOut(1000)
-			})
-		</script>
 		<style type="text/css">
 			#textareadetail {
 				min-height: 90px;
@@ -26,34 +20,9 @@
 			#textareafeedback {
 				min-height: 90px;
 			}
-			.flex-justify-sb {
-				-webkit-justify-content: flex-start;
+			.loading {
+				z-index: 2;
 			}
-			
-			.ui-box {
-				background-color: #efeff4;
-				border: none;
-			}
-			
-			.home-qnav .ui-box {
-				border: none;
-			}
-			
-			.home-qnav .ico {
-				display: block;
-				width: 3.5rem;
-				margin: 0.5em 2.0rem 0.6rem;
-			}
-			
-			.home-qnav .name {
-				display: block;
-				text-align: center;
-				font-size: 0.9rem;
-				color: #363636;
-				margin: 0.5rem;
-				margin-bottom: 0rem;
-			}
-
 		</style>
 	</head>
 
@@ -62,7 +31,6 @@
 			<button class="mui-action-back mui-btn mui-btn-blue mui-btn-link mui-btn-nav mui-pull-left"><span class="mui-icon mui-icon-left-nav"></span>返回</button>
 			<h1 class="mui-title">申报详情</h1>
 		</header>
-		<div class="mui-clearfix">
 			<!--loading页开始-->
 			<div class="loading" style="background: #efeff4;">
 				<div class="loader">
@@ -172,6 +140,10 @@
 			</section>
 		</div>
 		<nav class="mui-bar mui-bar-tab">
+			<a id="approved" class="mui-tab-item mui-active" style="display: none;">
+				<span class="mui-icon mui-icon-download"></span>
+				<span class="mui-tab-label">标红</span>
+			</a>
 			<a id="deal" class="mui-tab-item mui-active">
 				<span class="mui-icon mui-icon-download"></span>
 				<span class="mui-tab-label">处理</span>
@@ -222,7 +194,9 @@
 								};
 								//此行一定要在onload之后
 								img.src = APPINFO.serverURL + "/upload/" + data.computerProblems.img;
-
+								//关闭等待动画
+								jQuery(".loading").addClass("loader-chanage")
+								jQuery(".loading").fadeOut(500)
 								if(!img.complete) {
 									plus.nativeUI.toast("图片加载中");
 								}
@@ -303,10 +277,6 @@
 					});
 				});
 
-				mui(".mui-scroll-wrapper").scroll({
-					//bounce: false,//滚动条是否有弹力默认是true
-					indicators: false, //是否显示滚动条,默认是true
-				});
 			}(mui, document));
 		</script>
 	</body>

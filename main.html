@@ -10,12 +10,6 @@
 		<link rel="stylesheet" type="text/css" href="css/loading.css" />
 		<link rel="stylesheet" type="text/css" href="css/all.css" />
 		<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
-		<script type="text/javascript">
-			jQuery(window).load(function() {
-				jQuery(".loading").addClass("loader-chanage")
-				jQuery(".loading").fadeOut(1000)
-			})
-		</script>
 		<style>
 			.flex-justify-sb {
 				-webkit-justify-content: flex-start;
@@ -303,6 +297,8 @@
 				} else {
 
 				}
+				jQuery(".loading").addClass("loader-chanage")
+				jQuery(".loading").fadeOut(1000)
 
 			}(mui, document));
 		</script>
