@@ -130,8 +130,9 @@
 
 				//网页打开时故障次级列表动态填入
 				var mainType = document.getElementById("type").value;
+				//故障次级列表动态填入
 				jQuery.ajax({
-					url: APPINFO.serverURL+"/admin/getProblemsTypeList",
+					url: APPINFO.serverURL+"/mobileadmin/getProblemsTypeList",
 					async: true,
 					data: {
 						mainType: mainType

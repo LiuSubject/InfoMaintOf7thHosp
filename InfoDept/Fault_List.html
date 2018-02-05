@@ -326,8 +326,14 @@
 							PagingVO.curentPageNo < 0 ||
 							typeof(PagingVO.curentPageNo) == "undefined" ||
 							PagingVO.curentPageNo == null) {
+							//关闭等待动画
+							jQuery(".loading").addClass("loader-chanage")
+							jQuery(".loading").fadeOut(500)
 							return;
-						} else if(PagingVO.curentPageNo == 0) {
+						} else if(PagingVO.curentPageNo == 1) {
+							//关闭等待动画
+							jQuery(".loading").addClass("loader-chanage")
+							jQuery(".loading").fadeOut(500)
 							return;
 						} else if(PagingVO.curentPageNo > 1) {
 							var url = APPINFO.serverURL + '/mobileadmin/showComputerProblems';
@@ -369,8 +375,14 @@
 							PagingVO.curentPageNo < 0 ||
 							typeof(PagingVO.curentPageNo) == "undefined" ||
 							PagingVO.curentPageNo == null) {
+							//关闭等待动画
+							jQuery(".loading").addClass("loader-chanage")
+							jQuery(".loading").fadeOut(500)
 							return;
 						} else if(PagingVO.curentPageNo >= PagingVO.totalCount) {
+							//关闭等待动画
+							jQuery(".loading").addClass("loader-chanage")
+							jQuery(".loading").fadeOut(500)
 							return;
 						} else if(PagingVO.curentPageNo >= 1) {
 							var url = APPINFO.serverURL + '/mobileadmin/showComputerProblems';
