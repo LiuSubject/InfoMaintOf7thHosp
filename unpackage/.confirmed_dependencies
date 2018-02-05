@@ -50,5 +50,10 @@
 			"InfoDept/Inspection_Details.html",
 			"InfoDept/Inspection_Deal.html"
 		]
+	},
+	"InfoDept/Fault_Application.html": {
+		"refer": [
+			"main.html"
+		]
 	}
 }

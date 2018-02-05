@@ -1,10 +1,5 @@
+<!doctype html>	
 <!--电脑故障-->
-<!doctype html>
-<style type="text/css">
-	#searchInput {
-		margin-bottom: 0px;
-	}
-</style>
 <html>
 
 	<head>
@@ -16,30 +11,64 @@
 		<link rel="stylesheet" type="text/css" href="../css/mobile.css">
 		<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
 		<link rel="stylesheet" type="text/css" href="../css/tether.min.css">
+		<link rel="stylesheet" type="text/css" href="../css/loaders.min.css" />
+		<link rel="stylesheet" type="text/css" href="../css/loading.css" />
+		<style type="text/css">
+			.loading {
+				z-index: 3;
+			}
+			#searchInput {
+				margin-bottom: 0px;
+			}
+			.mui-scroll{
+				height: 100%;
+			}
+			.mui-scroll-wrapper {
+			    height: 100%;
+			}
+		</style>
 	</head>
 
 	<body>
 		<header id="header" class="mui-bar mui-bar-nav">
 			<button class="mui-action-back mui-btn mui-btn-blue mui-btn-link mui-btn-nav mui-pull-left">&nbsp;&nbsp;返回</button>
 			<h1 class="mui-title">故障列表</h1>
-			<button id="searchMyself" class="mui-btn mui-btn-link mui-btn-nav mui-pull-right">我的&nbsp;&nbsp;</button>
 		</header>
-		<div id="fillingTop">
-			<div style="height:45px;"></div>
+		<div class="mui-content mui-scroll-wrapper">
+			<div class="mui-scroll">
+			<!--loading页开始-->
+			<div class="loading" style="background: #efeff4;">
+				<div class="loader">
+					<div class="loader-inner ball-grid-beat">
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+					</div>
+				</div>
+			</div>
+			<!--loading页结束-->
+			<div style="height:5px;"></div>
 			<!--防遮挡-->
 			<div class="mui-input-row mui-search" id="searchInDiv">
 				<input type="search" id="searchIn" class="mui-input-clear" placeholder="搜索">
 			</div>
+			<table id="faultlistgrid" data-options="
+					header:'#fillingTop',
+					iconCls: 'icon-edit',
+					singleSelect: true,
+					fit:true,
+					fitColumns:true,
+					border: false,
+					scrollbarSize: 0">
+			</table>
+			</div>
 		</div>
-		<table id="faultlistgrid" data-options="
-				header:'#fillingTop',
-				iconCls: 'icon-edit',
-				singleSelect: true,
-				fit:true,
-				fitColumns:true,
-				border: false,
-				scrollbarSize: 0">
-		</table>
 		<nav class="mui-bar mui-bar-tab">
 			<a id="frontPage" class="mui-tab-item mui-active">
 				<span class="mui-icon mui-icon-arrowthinleft"></span>
@@ -56,6 +85,12 @@
 		</nav>
 		<script src="../js/mui.min.js"></script>
 		<script src="../js/jquery.min.js"></script>
+		<script type="text/javascript">
+			jQuery(window).load(function() {
+				jQuery(".loading").addClass("loader-chanage")
+				jQuery(".loading").fadeOut(1000)
+			})
+		</script>
 		<script src="../js/jquery.easyui.min.js"></script>
 		<script src="../js/jquery.easyui.mobile.js"></script>
 		<script src="../js/tether.min.js"></script>
@@ -122,16 +157,28 @@
 											var role = localStorage.getItem('$role') || '[]';
 											var res = '';
 											//按钮动态生成
-											if(role.indexOf("admin")!= -1) {
+											if(role.indexOf("admin") != -1) {
 												res = '<button style="color: #fff;background-color: #31b0d5; border-color: #269abc;" type="button" class="mui-btn btn-default btn-sm editBtn" id="' + value + '">处理</button>';
 											} else {
 												res = '<button style="color: #fff;background-color: #ec971f; border-color: #d58512;" type="button" class="mui-btn btn-default btn-sm viewDetail" id="' + value + '">详情</button>';
 											}
 											return res;
 										}
+									},
+									{
+										field: 'faultUrgent',
+										title: '标红',
+										width: 15,
+										align: 'center',
+										hidden:'true'
 									}
 								]
-							]
+							],
+							rowStyler:function(index,row){
+								if (row.faultUrgent == 1){
+									return 'background-color: pink;';
+								}
+							}
 						})
 
 						//模拟数据
@@ -201,8 +248,17 @@
 												}else{
 													plus.nativeUI.toast("抱歉，获取失败");
 												}*/
-							jQuery("#faultlistgrid").datagrid("loadData", data.computerProblemsList);
-							PagingVO = data.pagingVO;
+							if(data.success == 'true') {
+								jQuery("#faultlistgrid").datagrid("loadData", data.computerProblemsList);
+								PagingVO = data.pagingVO;
+								//关闭等待动画
+								jQuery(".loading").addClass("loader-chanage")
+								jQuery(".loading").fadeOut(500)
+							} else if(data.success == 'false') {
+								plus.nativeUI.toast(data.msg);
+							} else {
+								plus.nativeUI.toast("操作异常");
+							}
 						},
 						error: function(xhr, type, errorThrown) {
 							// 异常处理；
@@ -218,21 +274,22 @@
 					var reloadButton = doc.getElementById('reloadPage');
 					//搜索按钮
 					var searchInput = doc.getElementById('searchIn');
-					//“我的”按钮
-					var searchMyButton = doc.getElementById('searchMyself');
-					if(typeof(searchMyButton) != "undefined" && searchMyButton != null) {
-						
+					if(typeof(searchInput) != "undefined" && searchInput != null) {
 
 						//搜索框回车触发
 						searchInput.addEventListener('keyup', function(event) {
+							
 							if(event.keyCode == 13) {
+								//打开等待动画
+								jQuery(".loading").fadeIn(500);
 								var url = APPINFO.serverURL + '/mobileadmin/searchComputerProblems';
 								var searchKey = document.getElementById("searchIn").value;
 								mui.ajax(url, {
 									data: {
-										findByDept: searchKey,
+										//只支持按提交人搜索
+										findByDept: "",
 										findByName: searchKey,
-										findByFlag: searchKey,
+										findByFlag: "3",
 									},
 									dataType: 'json', // 服务器返回 json 格式数据
 									type: 'post', //HTTP 请求类型
@@ -242,6 +299,9 @@
 										if(data.success == 'true') {
 
 											jQuery("#faultlistgrid").datagrid("loadData", data.computerProblemsList);
+											//关闭等待动画
+											jQuery(".loading").addClass("loader-chanage")
+											jQuery(".loading").fadeOut(500)
 										} else if(data.success == 'false') {
 											plus.nativeUI.toast(data.msg);
 										} else {
@@ -255,140 +315,143 @@
 								});
 							}
 						});
+					}
 
-						searchMyButton.addEventListener('tap', function(event) {
-							//搜索用户相关记录
-							var url = APPINFO.serverURL + '/mobileadmin/searchMyComputerProblems';
+					frontPageButton.addEventListener('tap', function(event) {
+						//打开等待动画
+						jQuery(".loading").fadeIn(500);
+						//上一页按钮点击事件
+						//页码边界判断
+						if(typeof(PagingVO) == "undefined" ||
+							PagingVO.curentPageNo < 0 ||
+							typeof(PagingVO.curentPageNo) == "undefined" ||
+							PagingVO.curentPageNo == null) {
+							//关闭等待动画
+							jQuery(".loading").addClass("loader-chanage")
+							jQuery(".loading").fadeOut(500)
+							return;
+						} else if(PagingVO.curentPageNo == 1) {
+							//关闭等待动画
+							jQuery(".loading").addClass("loader-chanage")
+							jQuery(".loading").fadeOut(500)
+							return;
+						} else if(PagingVO.curentPageNo > 1) {
+							var url = APPINFO.serverURL + '/mobileadmin/showComputerProblems';
 							mui.ajax(url, {
+								data: {
+									page: PagingVO.curentPageNo - 1
+								},
 								dataType: 'json', // 服务器返回 json 格式数据
-								type: 'post', //HTTP 请求类型
+								type: 'get', //HTTP 请求类型
 								timeout: 10000, // 超时时间设置为 10 秒；
 								success: function(data) {
 									// 服务器返回响应，根据响应结果，分析是否登录成功；
 									if(data.success == 'true') {
-
 										jQuery("#faultlistgrid").datagrid("loadData", data.computerProblemsList);
+										PagingVO = data.pagingVO;
+										//关闭等待动画
+										jQuery(".loading").addClass("loader-chanage")
+										jQuery(".loading").fadeOut(500)
+									} else if(data.success == 'false') {
+										plus.nativeUI.toast(data.msg);
 									} else {
-										plus.nativeUI.toast("抱歉，查询失败");
+										plus.nativeUI.toast("操作异常");
 									}
-
 								},
 								error: function(xhr, type, errorThrown) {
 									// 异常处理；
 									plus.nativeUI.toast('请保持网络畅通');
 								}
 							});
-						});
-					}
-					
-					frontPageButton.addEventListener('tap', function(event) {
-							//上一页按钮点击事件
-							//页码边界判断
-							if(typeof(PagingVO) == "undefined" ||
-								PagingVO.curentPageNo < 0 ||								
-								typeof(PagingVO.curentPageNo) == "undefined" ||
-								PagingVO.curentPageNo == null) {
-								return;
-							} else if(PagingVO.curentPageNo == 0) {
-								return;
-							} else if(PagingVO.curentPageNo > 1) {
-								var url = APPINFO.serverURL + '/mobileadmin/showComputerProblems';
-								mui.ajax(url, {
-									data: {
-										page: PagingVO.curentPageNo - 1
-									},
-									dataType: 'json', // 服务器返回 json 格式数据
-									type: 'get', //HTTP 请求类型
-									timeout: 10000, // 超时时间设置为 10 秒；
-									success: function(data) {
-										// 服务器返回响应，根据响应结果，分析是否登录成功；
-										/*					if(data.success == 'true'){
-																
-																toMain(data);
-															}else if(data.success == 'false'){
-																plus.nativeUI.toast(data.msg);
-															}else{
-																plus.nativeUI.toast("抱歉，登陆失败");
-															}*/
-										jQuery("#faultlistgrid").datagrid("loadData", data.computerProblemsList);
-										PagingVO = data.pagingVO;
-									},
-									error: function(xhr, type, errorThrown) {
-										// 异常处理；
-										plus.nativeUI.toast('请保持网络畅通');
-									}
-								});
-							}
-						});
-
-						nextPageButton.addEventListener('tap', function(event) {
-							//下一页按钮点击事件
-							//页码边界判断
-							if(typeof(PagingVO) == "undefined" ||
-								PagingVO.curentPageNo < 0 ||
-								typeof(PagingVO.curentPageNo) == "undefined" ||
-								PagingVO.curentPageNo == null) {
-								return;
-							} else if(PagingVO.curentPageNo >= PagingVO.totalCount) {
-								return;
-							} else if(PagingVO.curentPageNo >= 1) {
-								var url = APPINFO.serverURL + '/mobileadmin/showComputerProblems';
-								mui.ajax(url, {
-									data: {
-										page: PagingVO.curentPageNo + 1
-									},
-									dataType: 'json', // 服务器返回 json 格式数据
-									type: 'get', //HTTP 请求类型
-									timeout: 10000, // 超时时间设置为 10 秒；
-									success: function(data) {
-										// 服务器返回响应，根据响应结果，分析是否登录成功；
-										/*					if(data.success == 'true'){
-																
-																toMain(data);
-															}else if(data.success == 'false'){
-																plus.nativeUI.toast(data.msg);
-															}else{
-																plus.nativeUI.toast("抱歉，登陆失败");
-															}*/
-										jQuery("#faultlistgrid").datagrid("loadData", data.computerProblemsList);
-										PagingVO = data.pagingVO;
-									},
-									error: function(xhr, type, errorThrown) {
-										// 异常处理；
-										plus.nativeUI.toast('请保持网络畅通');
-									}
-								});
-							}
-						});
-					
-					//刷新按钮
-					reloadButton.addEventListener('tap', function(event) {
-						mui.ajax(url, {
-						dataType: 'json', // 服务器返回 json 格式数据
-						type: 'post', //HTTP 请求类型
-						timeout: 5000, // 超时时间设置为 10 秒；
-						success: function(data) {
-							// 服务器返回响应，根据响应结果，分析是否登录成功；
-							/*					if(data.success == 'true'){
-													
-													toMain(data);
-												}else if(data.success == 'false'){
-													plus.nativeUI.toast(data.msg);
-												}else{
-													plus.nativeUI.toast("抱歉，获取失败");
-												}*/
-							jQuery("#faultlistgrid").datagrid("loadData", data.computerProblemsList);
-							PagingVO = data.pagingVO;
-						},
-						error: function(xhr, type, errorThrown) {
-							// 异常处理；
-							plus.nativeUI.toast('请保持网络畅通');
 						}
 					});
+
+					nextPageButton.addEventListener('tap', function(event) {
+						//打开等待动画
+						jQuery(".loading").fadeIn(500);
+						//下一页按钮点击事件
+						//页码边界判断
+						if(typeof(PagingVO) == "undefined" ||
+							PagingVO.curentPageNo < 0 ||
+							typeof(PagingVO.curentPageNo) == "undefined" ||
+							PagingVO.curentPageNo == null) {
+							//关闭等待动画
+							jQuery(".loading").addClass("loader-chanage")
+							jQuery(".loading").fadeOut(500)
+							return;
+						} else if(PagingVO.curentPageNo >= PagingVO.totalCount) {
+							//关闭等待动画
+							jQuery(".loading").addClass("loader-chanage")
+							jQuery(".loading").fadeOut(500)
+							return;
+						} else if(PagingVO.curentPageNo >= 1) {
+							var url = APPINFO.serverURL + '/mobileadmin/showComputerProblems';
+							mui.ajax(url, {
+								data: {
+									page: PagingVO.curentPageNo + 1
+								},
+								dataType: 'json', // 服务器返回 json 格式数据
+								type: 'get', //HTTP 请求类型
+								timeout: 10000, // 超时时间设置为 10 秒；
+								success: function(data) {
+									// 服务器返回响应，根据响应结果，分析是否登录成功；
+									if(data.success == 'true') {
+										jQuery("#faultlistgrid").datagrid("loadData", data.computerProblemsList);
+										PagingVO = data.pagingVO;
+										//关闭等待动画
+										jQuery(".loading").addClass("loader-chanage")
+										jQuery(".loading").fadeOut(500)
+									} else if(data.success == 'false') {
+										plus.nativeUI.toast(data.msg);
+									} else {
+										plus.nativeUI.toast("操作异常");
+									}
+								},
+								error: function(xhr, type, errorThrown) {
+									// 异常处理；
+									plus.nativeUI.toast('请保持网络畅通');
+								}
+							});
+						}
+					});
+
+					//刷新按钮
+					reloadButton.addEventListener('tap', function(event) {
+						//打开等待动画
+						jQuery(".loading").fadeIn(100);
+
+						mui.ajax(url, {
+							dataType: 'json', // 服务器返回 json 格式数据
+							type: 'post', //HTTP 请求类型
+							timeout: 5000, // 超时时间设置为 10 秒；
+							success: function(data) {
+								// 服务器返回响应，根据响应结果，分析是否登录成功；
+								if(data.success == 'true') {
+									jQuery("#faultlistgrid").datagrid("loadData", data.computerProblemsList);
+									PagingVO = data.pagingVO;
+									//关闭等待动画
+									jQuery(".loading").addClass("loader-chanage")
+									jQuery(".loading").fadeOut(500)
+								} else if(data.success == 'false') {
+									plus.nativeUI.toast(data.msg);
+								} else {
+									plus.nativeUI.toast("操作异常");
+								}
+							},
+							error: function(xhr, type, errorThrown) {
+								// 异常处理；
+								plus.nativeUI.toast('请保持网络畅通');
+							}
+						});
 					});
 
 				});
-
+				
+				$(".mui-scroll-wrapper").scroll({
+			        //bounce: false,//滚动条是否有弹力默认是true
+			        //indicators: false, //是否显示滚动条,默认是true
+			        deceleration: 0.0005
+				}); 	
 			}(mui, document));
 		</script>
 	</body>

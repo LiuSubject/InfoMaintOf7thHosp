@@ -326,6 +326,13 @@
 					"InfoDept/Inspection_Deal.html"
 				],
 				"priority": 0
+			},
+			"InfoDept/Fault_Application.html": {
+				"resources": [],
+				"refer": [
+					"main.html"
+				],
+				"priority": 0
 			}
 		},
 		"idle": {

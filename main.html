@@ -1,4 +1,5 @@
 <!doctype html>
+
 <html>
 
 	<head>
@@ -6,18 +7,45 @@
 		<title></title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="css/loaders.min.css" />
+		<link rel="stylesheet" type="text/css" href="css/loading.css" />
+		<link rel="stylesheet" type="text/css" href="css/all.css" />
+		<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
 		<style>
-			ul {
-				font-size: 14px;
-				color: #8f8f94;
+			.flex-justify-sb {
+				-webkit-justify-content: flex-start;
 			}
 			
-			.mui-btn {
-				padding: 10px;
+			.ui-box {
+				background-color: #efeff4;
+				border: none;
 			}
 			
-			.title {
-				margin: 35px 15px 10px;
+			.home-qnav .ui-box {
+				border: none;
+			}
+			
+			.home-qnav .ico {
+				display: block;
+				width: 3.5rem;
+				margin: 0.5em 2.0rem 0.6rem;
+			}
+			
+			.home-qnav .name {
+				display: block;
+				text-align: center;
+				font-size: 0.9rem;
+				color: #363636;
+				margin: 0.5rem;
+				margin-bottom: 0rem;
+			}
+			
+			h4 {
+				line-height: 1;
+				margin-left: 0.5rem;
+				margin-top: 1rem;
+				margin-bottom: 0rem;
+				border: none;
 			}
 		</style>
 	</head>
@@ -26,72 +54,98 @@
 		<header class="mui-bar mui-bar-nav">
 			<h1 class="mui-title">信息维护管理平台</h1>
 		</header>
-				<div class="mui-content mui-scroll-wrapper">
-					<div class="mui-scroll">
-
-						<div id="slider" class="mui-slider">
-							<div class="mui-slider-group mui-slider-loop">
-								<!-- 额外增加的一个节点(循环轮播：第一个节点是最后一张轮播) -->
-								<div class="mui-slider-item mui-slider-item-duplicate">
-									<a href="#">
-										<img src="images/main.png">
-									</a>
-								</div>
-								<!-- 第一张 -->
-								<div class="mui-slider-item">
-									<a href="#">
-										<img src="images/main.png">
-									</a>
-								</div>
-								<!-- 额外增加的一个节点(循环轮播：最后一个节点是第一张轮播) -->
-								<div class="mui-slider-item mui-slider-item-duplicate">
-									<a href="#">
-										<img src="images/main.png">
-									</a>
-								</div>
-							</div>
-						</div>
-						<ul class="mui-table-view mui-grid-view mui-grid-9">
-							<li id='faultapplication' class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-								<a href="#">
-									<span class="mui-icon mui-icon-help"></span>
-									<div class="mui-media-body">故障申报</div>
-								</a>
-							</li>
-							<li id='materialapplication' class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-								<a href="#">
-									<span class="mui-icon mui-icon-paperclip"></span>
-									<div class="mui-media-body">物资申购</div>
-								</a>
-							</li>
-							<li id="inspectionengineroom" class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-								<a href="#">
-									<span class="mui-icon mui-icon-flag"></span>
-									<div class="mui-media-body">巡检机房</div>
-								</a>
-							</li>
-							<li id='faultlist' class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-								<a href="#">
-									<span class="mui-icon mui-icon-spinner-cycle mui-spin"></span>
-									<div class="mui-media-body">故障列表</div>
-								</a>
-							</li>
-							<li id='materiallist' class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-								<a href="#">
-									<span class="mui-icon mui-icon-paperplane"></span>
-									<div class="mui-media-body">申购列表</div>
-								</a>
-							</li>
-							<li id='inspectionlist' class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-								<a href="#">
-									<span class="mui-icon mui-icon-bars"></span>
-									<div class="mui-media-body">巡检记录</div>
-								</a>
-							</li>
-						</ul>
+		<div class="mui-content mui-scroll-wrapper">
+			<!--loading页开始-->
+			<div class="loading" style="background: #efeff4;">
+				<div class="loader">
+					<div class="loader-inner ball-grid-beat">
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
 					</div>
 				</div>
-			
+			</div>
+			<!--loading页结束-->
+			<div class="mui-scroll">
+
+				<div id="slider" class="mui-slider">
+					<div class="mui-slider-group mui-slider-loop">
+						<!-- 额外增加的一个节点(循环轮播：第一个节点是最后一张轮播) -->
+						<div class="mui-slider-item mui-slider-item-duplicate">
+
+							<img src="images/main.png">
+
+						</div>
+						<!-- 第一张 -->
+						<div class="mui-slider-item">
+
+							<img src="images/main.png">
+
+						</div>
+						<!-- 额外增加的一个节点(循环轮播：最后一个节点是第一张轮播) -->
+						<div class="mui-slider-item mui-slider-item-duplicate">
+
+							<img src="images/main.png">
+
+						</div>
+					</div>
+				</div>
+				<div id="fault_menu" class="home-qnav ui-box" style="display: none;">
+					<h4>故障管理</h4>
+					<div class="ui-flex flex-justify-sb">
+						<div id='faultapplication'>
+
+							<img src="images\h8.ico" class="ico" />
+							<span class="name">故障申报</span>
+
+						</div>
+						<div id='faultlist'>
+
+							<img src="images\h12.ico" class="ico" />
+							<span class="name">故障列表</span>
+
+						</div>
+					</div>
+				</div>
+				<div id="material_menu" class="home-qnav ui-box" style="display: none;">
+					<h4>申购管理</h4>
+					<div class="ui-flex flex-justify-sb">
+						<div id='materialapplication'>
+
+							<img src="images\h9.ico" class="ico" />
+							<span class="name">物资申购</span>
+
+						</div>
+						<div id='materiallist'>
+
+							<img src="images\h12.ico" class="ico" />
+							<span class="name">申购列表</span>
+
+						</div>
+					</div>
+				</div>
+				<div id="inspect_menu" class="home-qnav ui-box" style="display: none;">
+					<h4>机房巡检管理</h4>
+					<div class="ui-flex flex-justify-sb">
+						<div id="inspectionengineroom">
+							<img src="images\h5.ico" class="ico" />
+							<span class="name">巡检机房</span>
+						</div>
+						<div id='inspectionlist'>
+							<img src="images\h12.ico" class="ico" />
+							<span class="name">巡检记录</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
 		<script src="js/mui.min.js"></script>
 		<script>
 			(function($, doc) {
@@ -110,13 +164,11 @@
 					//巡检信息按钮
 					var inspectionlistDiv = doc.getElementById('inspectionlist');
 					//部门统计按钮
-					var deptstaticDiv = doc.getElementById('deptstatic');					
-					
+					var deptstaticDiv = doc.getElementById('deptstatic');
+
 					//获取当前用户ID
-					var userid= localStorage.getItem("occurUserId");
-					
-					
-					
+					var userid = localStorage.getItem("occurUserId");
+
 					faultapplicationDiv.addEventListener('tap', function(event) {
 						mui.openWindow({
 							url: 'InfoDept/Fault_Application.html',
@@ -124,12 +176,12 @@
 							styles: {
 								popGesture: 'hide'
 							},
-							show:{
+							show: {
 								duration: 150
 							},
-							waiting: { 
+							waiting: {
 								autoShow: false, //自动显示等待框，默认为true  
-							}	
+							}
 						});
 					}, false);
 
@@ -140,10 +192,10 @@
 							styles: {
 								popGesture: 'hide'
 							},
-							show:{
+							show: {
 								duration: 150
 							},
-							waiting: { 
+							waiting: {
 								autoShow: false, //自动显示等待框，默认为true  
 							}
 						});
@@ -156,10 +208,10 @@
 							styles: {
 								popGesture: 'hide'
 							},
-							show:{
+							show: {
 								duration: 150
 							},
-							waiting: { 
+							waiting: {
 								autoShow: false, //自动显示等待框，默认为true  
 							}
 						});
@@ -172,10 +224,10 @@
 							styles: {
 								popGesture: 'hide'
 							},
-							show:{
+							show: {
 								duration: 150
 							},
-							waiting: { 
+							waiting: {
 								autoShow: false, //自动显示等待框，默认为true  
 							}
 						});
@@ -188,10 +240,10 @@
 							styles: {
 								popGesture: 'hide'
 							},
-							show:{
+							show: {
 								duration: 150
 							},
-							waiting: { 
+							waiting: {
 								autoShow: false, //自动显示等待框，默认为true  
 							}
 						});
@@ -204,24 +256,52 @@
 							styles: {
 								popGesture: 'hide'
 							},
-							show:{
+							show: {
 								duration: 150
 							},
-							waiting: { 
+							waiting: {
 								autoShow: false, //自动显示等待框，默认为true  
 							}
 						});
 					}, false);
-					
-					
-					
-					
-					
 
 				});
-				
+
+				mui(".mui-scroll-wrapper").scroll({
+					//bounce: false,//滚动条是否有弹力默认是true
+					indicators: false, //是否显示滚动条,默认是true
+				});
+
+				//依权限显示菜单
+				var current = localStorage.getItem("$role");
+				if(current.indexOf("normal") != -1) {
+					jQuery("#fault_menu").show();
+					jQuery("#material_menu").show();
+				} else if(current.indexOf("material") != -1) {
+					jQuery("#fault_menu").show();
+					jQuery("#material_menu").show();
+				} else if(current.indexOf("hardware") != -1) {
+					jQuery("#fault_menu").show();
+					jQuery("#inspect_menu").show();
+				} else if(current.indexOf("examiner") != -1) {
+					jQuery("#fault_menu").show();
+					jQuery("#material_menu").show();
+					jQuery("#inspect_menu").show();
+				} else if(current.indexOf("alldean") != -1) {
+					jQuery("#fault_menu").show();
+					jQuery("#material_menu").show();
+					jQuery("#inspect_menu").show();
+				} else if(current.indexOf("infodean") != -1) {
+					jQuery("#fault_menu").show();
+					jQuery("#material_menu").show();
+					jQuery("#inspect_menu").show();
+				} else {
+
+				}
+				jQuery(".loading").addClass("loader-chanage")
+				jQuery(".loading").fadeOut(1000)
+
 			}(mui, document));
-				
 		</script>
 	</body>
 

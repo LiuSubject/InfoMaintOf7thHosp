@@ -7,117 +7,341 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link href="../css/mui.min.css" rel="stylesheet" />
-		<script src="../js/jquery.min.js 	"></script>
+		<link rel="stylesheet" type="text/css" href="../css/loaders.min.css" />
+		<link rel="stylesheet" type="text/css" href="../css/loading.css" />
+		<link rel="stylesheet" type="text/css" href="../css/all.css" />
+		<link rel="stylesheet" href="../css/style_time.css" />
 		<style type="text/css">
-		    #textareadetail {
-		    	min-height: 90px;
-		    }
+			#textareadetail {
+				min-height: 90px;
+			}
+			
+			#textareafeedback {
+				min-height: 90px;
+			}
+			
+			.loading {
+				z-index: 2;
+			}
+			
+			.Urgent {
+				color: #c9302c;
+			}
+			
+			.cd-timeline-img.cd-warn {
+				background: #f0ca45;
+			}
+			
+			.cd-timeline-img.cd-wait {
+				background: #A29F9F;
+			}
+			
+			.cd-timeline-img.cd-success {
+				background: #449d44;
+			}
+			
+			.cd-timeline-img.cd-info {
+				background: #31b0d5;
+			}
+			
+			.cd-timeline-img.cd-approve {
+				background: #D9534F;
+			}
 		</style>
 	</head>
 
 	<body>
 		<header class="mui-bar mui-bar-nav">
-		  <button class="mui-action-back mui-btn mui-btn-blue mui-btn-link mui-btn-nav mui-pull-left"><span class="mui-icon mui-icon-left-nav"></span>返回</button>
-		  <h1 class="mui-title">申报详情</h1>
+			<button class="mui-action-back mui-btn mui-btn-blue mui-btn-link mui-btn-nav mui-pull-left"><span class="mui-icon mui-icon-left-nav"></span>返回</button>
+			<h1 id="faultUrgentTitle" class="mui-title">申报详情</h1>
 		</header>
-		<div class="mui-content">
-		  	<form id="faultapplicationform" name="faultapplicationform" class="mui-input-group" method="post" action="" enctype="multipart/form-data">
-		      <div class="mui-input-row">
-		          <label>故障类型</label>
-		          <input name="title" id='title' type="text" class="mui-input" 
-		          	readonly="readonly">
-		      </div>
-		      <div class="mui-input-row">
-		          <label>科室</label>
-		          <input name="dept" id="dept" type="text" class="mui-input"
-		          	readonly="readonly">
-		      </div>
-		      <div class="mui-input-row">
-		          <label>申报人</label>
-		          <input name="name" id="name" type="text" class="mui-input"
-		          	readonly="readonly">
-		      </div>
-		      <div class="mui-input-row">
-		          <label>联系方式</label>
-		          <input name="tel" id="tel" type="text" class="mui-input"
-		          	readonly="readonly">
-		      </div>
-		      <div id="textareadetail" class="mui-input-row">
-		          <label>详情描述</label>
-		          <textarea name="detail" id="detail" readonly="readonly"></textarea>
-		      </div>
-		      <div class="mui-input-row">
-		          <label style="color: #0680FF;">负责人:</label>
-		          <input name="leader" id="leader" type="text" class="mui-input"
-		          	readonly="readonly">
-		      </div>
-		      <div id="textareafeedback" class="mui-input-row">
-		          <label style="color: #0680FF;">反馈:</label>
-		          <textarea name="feedback" id="feedback" readonly="readonly"></textarea>
-		      </div>
-		  </form>
+		<!--loading页开始-->
+		<div class="loading" style="background: #efeff4;">
+			<div class="loader">
+				<div class="loader-inner ball-grid-beat">
+					<div></div>
+					<div></div>
+					<div></div>
+					<div></div>
+					<div></div>
+					<div></div>
+					<div></div>
+					<div></div>
+					<div></div>
+				</div>
+			</div>
 		</div>
-		
+		<!--loading页结束-->
+        <div style="height:45px;"></div>
+		<!--防遮挡-->
+		<form id="faultapplicationform" name="faultapplicationform" class="mui-input-group" method="post" action="" enctype="multipart/form-data">
+			<div class="mui-input-row">
+				<label>故障类型</label>
+				<input name="title" id='title' type="text" class="mui-input" readonly="readonly">
+			</div>
+			<div class="mui-input-row">
+				<label>科室</label>
+				<input name="dept" id="dept" type="text" class="mui-input" readonly="readonly">
+			</div>
+			<div class="mui-input-row">
+				<label>申报人</label>
+				<input name="name" id="name" type="text" class="mui-input" readonly="readonly">
+			</div>
+			<div class="mui-input-row">
+				<label>联系方式</label>
+				<input name="tel" id="tel" type="text" class="mui-input" readonly="readonly">
+			</div>
+			<div id="textareadetail" class="mui-input-row">
+				<label>详情描述</label>
+				<textarea name="detail" id="detail" readonly="readonly"></textarea>
+			</div>
+			<div id="textareafeedback" class="mui-input-row">
+				<label>反馈:</label>
+				<textarea name="feedback" id="feedback" readonly="readonly"></textarea>
+			</div>
+		</form>
+		<section id="cd-timeline" class="cd-container">
+			<div id="ctb1" class="cd-timeline-block">
+				<div class="cd-timeline-img cd-warn">
+				</div>
+				<div id="ctcw" class="cd-timeline-content">
+					<h4></h4>
+					<p></p>
+					<span class="cd-date"></span>
+				</div>
+			</div>
+			<div id="ctb2" class="cd-timeline-block" style="display: none;">
+				<div class="cd-timeline-img cd-info">
+				</div>
+				<div id="ctci1" class="cd-timeline-content">
+					<h4></h4>
+					<p></p>
+					<span class="cd-date"></span>
+				</div>
+			</div>
+			<div id="ctb3" class="cd-timeline-block" style="display: none;">
+				<div class="cd-timeline-img cd-info">
+				</div>
+				<div id="ctci2" class="cd-timeline-content">
+					<h4></h4>
+					<p></p>
+					<span class="cd-date"></span>
+				</div>
+			</div>
+			<div id="ctb4" class="cd-timeline-block" style="display: none;">
+				<div class="cd-timeline-img cd-info">
+				</div>
+				<div id="ctci3" class="cd-timeline-content">
+					<h4></h4>
+					<p></p>
+					<span class="cd-date"></span>
+				</div>
+			</div>
+			<div id="ctb5" class="cd-timeline-block" style="display: none;">
+				<div class="cd-timeline-img cd-info">
+				</div>
+				<div id="ctci4" class="cd-timeline-content">
+					<h4></h4>
+					<p></p>
+					<span class="cd-date"></span>
+				</div>
+			</div>
+			<div id="ctb6" class="cd-timeline-block" style="display: none;">
+				<div class="cd-timeline-img cd-info">
+				</div>
+				<div id="ctci5" class="cd-timeline-content">
+					<h4></h4>
+					<p></p>
+					<span class="cd-date"></span>
+				</div>
+			</div>
+			<div id="ctb7" class="cd-timeline-block" style="display: none;">
+				<div class="cd-timeline-img cd-wait">
+				</div>
+				<div id="ctcw2" style="height: 40px;">
+				</div>
+			</div>
+			<div id="ctb8" class="cd-timeline-block" style="display: none;">
+				<div class="cd-timeline-img cd-success">
+				</div>
+				<div id="ctcs" class="cd-timeline-content">
+					<h4></h4>
+					<p></p>
+					<span class="cd-date"></span>
+				</div>
+			</div>
+		</section>
+
 		<script src="../js/mui.min.js"></script>
 		<script src="../js/jquery.min.js"></script>
 		<script src="../js/jquery.easyui.min.js"></script>
 		<script src="../js/jquery.easyui.mobile.js"></script>
 		<script src="../js/APPINFO.js"></script>
-		<script type="text/javascript">   
+		<script type="text/javascript">
 			(function($, doc) {
 				mui.init();
 				jQuery.noConflict();
 				mui.plusReady(function() {
 					//加载数据
-					var url = APPINFO.serverURL+'/mobileadmin/checkComputerProblems';
-					mui.ajax( url ,{
-						data : {
-									id:plus.webview.currentWebview().thisId
-								},
-						dataType : 'json' , // 服务器返回 json 格式数据
-						type : 'GET' , //HTTP 请求类型
-						timeout : 5000 , // 超时时间设置为 5 秒；
-						success : function (data){
+					var url = APPINFO.serverURL + '/mobileadmin/checkComputerProblems';
+					mui.ajax(url, {
+						data: {
+							id: plus.webview.currentWebview().thisId
+						},
+						dataType: 'json', // 服务器返回 json 格式数据
+						type: 'GET', //HTTP 请求类型
+						timeout: 10000, // 超时时间设置为 10 秒；
+						success: function(data) {
 							// 服务器返回响应，根据响应结果，分析是否登录成功；
-							if(data.success == 'true'){	
+							if(data.success == 'true') {
 								jQuery('#faultapplicationform').form('load', data.computerProblems);
-							    //图片加载
-							    var img=new Image();  
-							    img.onload=function(){
-							    	plus.nativeUI.toast("图片加载成功");							    	
-							    	//调整图片尺寸
-							    	var mobileWidth = document.body.clientWidth;
-							    	if(img .width > mobileWidth){
-							    		img.height = img.height * mobileWidth / img.width;
-            							img.width = mobileWidth;
-							    	}
-							    	//加载完毕，显示图片
-							    	document.body.appendChild(img);
-							    	};
-							    img.onerror=function(){
-							    	plus.nativeUI.toast("图片信息有误")
-							    	};
-							    //此行一定要在onload之后
-							    img.src=APPINFO.serverURL+"/upload/"+ data.computerProblems.img;
-							    if (!img.complete) {
-							    	plus.nativeUI.toast("图片加载中");
-				                }
-							}else if(data.success == 'false'){
+								//图片加载
+								var img = new Image();
+								img.onload = function() {
+									plus.nativeUI.toast("图片加载成功");
+									//调整图片尺寸
+									var mobileWidth = document.body.clientWidth;
+									if(img.width > mobileWidth) {
+										img.height = img.height * mobileWidth / img.width;
+										img.width = mobileWidth;
+									}
+									//加载完毕，显示图片
+									document.body.appendChild(img);
+								};
+								img.onerror = function() {
+									plus.nativeUI.toast("图片信息不存在")
+								};
+								//此行一定要在onload之后
+								img.src = APPINFO.serverURL + "/upload/" + data.computerProblems.img;
+                                //标红处理
+								if(data.computerProblems.faultUrgent == 1) {
+									jQuery("#faultUrgentTitle").addClass("Urgent");
+								}
+								timeLine(data.computerProblems);
+								//关闭等待动画
+								jQuery(".loading").addClass("loader-chanage")
+								jQuery(".loading").fadeOut(500)
+								if(!img.complete) {
+									plus.nativeUI.toast("图片加载中");
+								}
+							} else if(data.success == 'false') {
 								plus.nativeUI.toast(data.msg);
-							}else{
+							} else {
 								plus.nativeUI.toast("状态异常");
 							}
-							
-	
-						},	
-						error : function (xhr,type,errorThrown){
+
+						},
+						error: function(xhr, type, errorThrown) {
 							// 异常处理；
 							plus.nativeUI.toast('请保持网络畅通');
 						}
 					});
-					});							
+				});
+                
+                
+					//时间轴加载
+					function timeLine(computerProblems) {
+						//提交节点
+						var elem_child1 = doc.getElementById('ctcw').childNodes; //得到参数元素的所有子元素
+						for(var i = 0; i < elem_child1.length; i++) { //遍历子元素
+							if(elem_child1[i].nodeName == "H4") {
+								elem_child1[i].textContent = computerProblems.name;
+							} else if(elem_child1[i].nodeName == "P") {
+								elem_child1[i].textContent = computerProblems.title;
+							} else if(elem_child1[i].nodeName == "SPAN") {
+								elem_child1[i].textContent = computerProblems.createTime;
+							}
+						}
+						//处理节点1
+						if(computerProblems.feedbackId1 != null && computerProblems.feedbackId1 != "") {
+							var elem_child2 = doc.getElementById('ctci1').childNodes; //得到参数元素的所有子元素
+							for(var i = 0; i < elem_child2.length; i++) { //遍历子元素
+								if(elem_child2[i].nodeName == "H4") {
+									elem_child2[i].textContent = computerProblems.feedbackName1;
+								} else if(elem_child2[i].nodeName == "P") {
+									elem_child2[i].textContent = computerProblems.feedbackContent1;
+								} else if(elem_child2[i].nodeName == "SPAN") {
+									elem_child2[i].textContent = computerProblems.feedbackTime1;
+								}
+							}
+							jQuery("#ctb2").show();
+						}
+						//处理节点2
+						if(computerProblems.feedbackId2 != null && computerProblems.feedbackId2 != "") {
+							var elem_child3 = doc.getElementById('ctci2').childNodes; //得到参数元素的所有子元素
+							for(var i = 0; i < elem_child3.length; i++) { //遍历子元素
+								if(elem_child3[i].nodeName == "H4") {
+									elem_child3[i].textContent = computerProblems.feedbackName2;
+								} else if(elem_child3[i].nodeName == "P") {
+									elem_child3[i].textContent = computerProblems.feedbackContent2;
+								} else if(elem_child3[i].nodeName == "SPAN") {
+									elem_child3[i].textContent = computerProblems.feedbackTime2;
+								}
+							}
+							jQuery("#ctb3").show();
+						}
+						//处理节点3
+						if(computerProblems.feedbackId3 != null && computerProblems.feedbackId3 != "") {
+							var elem_child4 = doc.getElementById('ctci3').childNodes; //得到参数元素的所有子元素
+							for(var i = 0; i < elem_child4.length; i++) { //遍历子元素
+								if(elem_child4[i].nodeName == "H4") {
+									elem_child4[i].textContent = computerProblems.feedbackName3;
+								} else if(elem_child4[i].nodeName == "P") {
+									elem_child4[i].textContent = computerProblems.feedbackContent3;
+								} else if(elem_child4[i].nodeName == "SPAN") {
+									elem_child4[i].textContent = computerProblems.feedbackTime3;
+								}
+							}
+							jQuery("#ctb4").show();
+						}
+						//处理节点4
+						if(computerProblems.feedbackId4 != null && computerProblems.feedbackId4 != "") {
+							var elem_child5 = doc.getElementById('ctci4').childNodes; //得到参数元素的所有子元素
+							for(var i = 0; i < elem_child5.length; i++) { //遍历子元素
+								if(elem_child5[i].nodeName == "H4") {
+									elem_child5[i].textContent = computerProblems.feedbackName4;
+								} else if(elem_child5[i].nodeName == "P") {
+									elem_child5[i].textContent = computerProblems.feedbackContent4;
+								} else if(elem_child5[i].nodeName == "SPAN") {
+									elem_child5[i].textContent = computerProblems.feedbackTime4;
+								}
+							}
+							jQuery("#ctb5").show();
+						}
+						//处理节点5
+						if(computerProblems.feedbackId5 != null && computerProblems.feedbackId5 != "") {
+							var elem_child6 = doc.getElementById('ctci5').childNodes; //得到参数元素的所有子元素
+							for(var i = 0; i < elem_child6.length; i++) { //遍历子元素
+								if(elem_child6[i].nodeName == "H4") {
+									elem_child6[i].textContent = computerProblems.feedbackName5;
+								} else if(elem_child6[i].nodeName == "P") {
+									elem_child6[i].textContent = computerProblems.feedbackContent5;
+								} else if(elem_child6[i].nodeName == "SPAN") {
+									elem_child6[i].textContent = computerProblems.feedbackTime5;
+								}
+							}
+							jQuery("#ctb6").show();
+						}
+						//完成节点
+						if(computerProblems.flag == 2) {
+							var elem_child8 = doc.getElementById('ctcs').childNodes; //得到参数元素的所有子元素
+							for(var i = 0; i < elem_child8.length; i++) { //遍历子元素
+								if(elem_child8[i].nodeName == "H4") {
+									elem_child8[i].textContent = computerProblems.leaderName;
+								} else if(elem_child8[i].nodeName == "P") {
+									elem_child8[i].textContent = computerProblems.reback;
+								} else if(elem_child8[i].nodeName == "SPAN") {
+									elem_child8[i].textContent = computerProblems.doneTime;
+								}
+							}
+							jQuery("#ctb8").show();
+						} else {
+							//等待节点
+							jQuery("#ctb7").show();
+						}
+
+					}
 			}(mui, document));
-			
 		</script>
 	</body>
 
