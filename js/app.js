@@ -16,7 +16,7 @@
 			return callback('账号最短为 4 个字符');
 		}
 		if (loginInfo.password.length < 6) {
-			return callback('密码最短为 6 个字符');
+			return callback('密码过短');
 		}
 		var users = JSON.parse(localStorage.getItem('$users') || '[]');
 		var authed = users.some(function(user) {
@@ -58,7 +58,7 @@
 			return callback('用户名最短需要 5 个字符');
 		}
 		if (regInfo.password.length < 6) {
-			return callback('密码最短需要 6 个字符');
+			return callback('密码过短');
 		}
 		if (!checkEmail(regInfo.email)) {
 			return callback('邮箱地址不合法');

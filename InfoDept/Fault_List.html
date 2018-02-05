@@ -1,5 +1,5 @@
+<!doctype html>	
 <!--电脑故障-->
-<!doctype html>
 <html>
 
 	<head>
@@ -164,9 +164,21 @@
 											}
 											return res;
 										}
+									},
+									{
+										field: 'faultUrgent',
+										title: '标红',
+										width: 15,
+										align: 'center',
+										hidden:'true'
 									}
 								]
-							]
+							],
+							rowStyler:function(index,row){
+								if (row.faultUrgent == 1){
+									return 'background-color: pink;';
+								}
+							}
 						})
 
 						//模拟数据
