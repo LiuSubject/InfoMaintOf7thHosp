@@ -140,7 +140,7 @@
 			</section>
 		</div>
 		<nav class="mui-bar mui-bar-tab">
-			<a id="approved" class="mui-tab-item mui-active" style="display: none;">
+			<a id="urgent" class="mui-tab-item mui-active" style="display: none;">
 				<span class="mui-icon mui-icon-download"></span>
 				<span class="mui-tab-label">标红</span>
 			</a>
@@ -213,11 +213,22 @@
 						}
 					});
 				});
-
+				
+				//依权限显示标红按钮
+				var current = localStorage.getItem("$role");
+				if(current.indexOf("examiner") != -1) {
+					jQuery("#urgentBtn").show();
+				}
+				
+				//标红按钮
+				var urgentBtn = doc.getElementById('approved');
 				//处理按钮
 				var dealBtn = doc.getElementById('deal');
 				//完成按钮
 				var completeBtn = doc.getElementById('complete');
+				
+				if(typeof(searchInput) != "undefined" && searchInput != null) {
+				}
 
 				dealBtn.addEventListener('tap', function(event) {
 					//处理按钮点击事件
