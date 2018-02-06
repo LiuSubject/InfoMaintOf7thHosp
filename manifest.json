@@ -333,6 +333,13 @@
 					"main.html"
 				],
 				"priority": 0
+			},
+			"InfoDept/Material_Deal.html": {
+				"resources": [],
+				"refer": [
+					"InfoDept/Materrial_Approved.html"
+				],
+				"priority": 0
 			}
 		},
 		"idle": {

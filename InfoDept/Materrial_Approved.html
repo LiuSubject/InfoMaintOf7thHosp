@@ -1,9 +1,197 @@
-<!DOCTYPE html>
+<!doctype html>
+
+<!--管理用物资申购处理页-->
 <html>
+
 	<head>
 		<meta charset="UTF-8">
-		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../css/loaders.min.css" />
+		<link rel="stylesheet" type="text/css" href="../css/loading.css" />
+		<link rel="stylesheet" type="text/css" href="../css/all.css" />
+		<link rel="stylesheet" href="../css/style_time.css" />
+		<style type="text/css">
+			#textareadetail {
+				min-height: 90px;
+			}
+			
+			#textareafeedback {
+				min-height: 90px;
+			}
+			
+			.loading {
+				z-index: 2;
+			}
+			
+			.Urgent {
+				color: #c9302c;
+			}
+			
+			.cd-timeline-img.cd-warn {
+				background: #f0ca45;
+			}
+			
+			.cd-timeline-img.cd-wait {
+				background: #A29F9F;
+			}
+			
+			.cd-timeline-img.cd-success {
+				background: #449d44;
+			}
+			
+			.cd-timeline-img.cd-info {
+				background: #31b0d5;
+			}
+			
+			.cd-timeline-img.cd-approve {
+				background: #D9534F;
+			}
+		</style>
 	</head>
+
 	<body>
+		<header class="mui-bar mui-bar-nav">
+			<button class="mui-action-back mui-btn mui-btn-blue mui-btn-link mui-btn-nav mui-pull-left">&nbsp;&nbsp;返回</button>
+			<h1 class="mui-title">审批推送</h1>
+
+		</header>
+		<!--loading页开始-->
+		<div class="loading" style="background: #efeff4;">
+			<div class="loader">
+				<div class="loader-inner ball-grid-beat">
+					<div></div>
+					<div></div>
+					<div></div>
+					<div></div>
+					<div></div>
+					<div></div>
+					<div></div>
+					<div></div>
+					<div></div>
+				</div>
+			</div>
+		</div>
+		<!--loading页结束-->
+		<div style="height:45px;"></div>
+		<!--防遮挡-->
+		<form id="materialapplicationform" class="mui-input-group" method="post" enctype="multipart/form-data">
+			<div class="mui-input-row" style="height:30px;"></div>
+			<div class="mui-input-row" style="height: 50px; ">
+				<label>分管院长</label>
+				<select name="viceDean" id="viceDean" style="color:#0680FF;">
+					<option value="-1" >不推送</option>
+				</select>
+			</div>
+			<div class="mui-input-row" style="height:20px;"></div>
+			<div class="mui-input-row" style="height: 50px;">
+				<label>信息主管院长</label>
+				<select name="infoVice" id="infoVice" style="color:#0680FF;">
+					<option value="-1">不推送</option>
+				</select>
+			</div>
+			<div class="mui-input-row" style="height:20px;"></div>
+			<div class="mui-input-row" style="height: 50px;">
+				<label>院长</label>
+				<select name="alldean" id="alldean" style="color:#0680FF;">
+					<option value="-1">不推送</option>
+				</select>
+				<input name="material_id" id='material_id' type="text" class="mui-input-clear mui-input" style="display: none;">
+				<input name="material_feedback" id='material_feedback' type="text" class="mui-input-clear mui-input" style="display: none;" >
+			</div>
+			<div class="mui-input-row" style="height:45px;"></div>
+			
+		</form>
+		
+		<nav class="mui-bar mui-bar-tab">
+			<a id="send" class="mui-tab-item">
+				<span class="mui-icon mui-icon-upload"></span>
+				<span class="mui-tab-label">发送</span>
+			</a>
+			<a id="return" class="mui-tab-item">
+				<span class="mui-icon mui-icon-download"></span>
+				<span class="mui-tab-label">返回</span>
+			</a>
+		</nav>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/jquery.min.js"></script>
+		<script src="../js/jquery.easyui.min.js"></script>
+		<script src="../js/jquery.easyui.mobile.js"></script>
+		<script src="../js/APPINFO.js"></script>
+		<script type="text/javascript">
+			(function($, doc) {
+				mui.init();
+				jQuery.noConflict();
+				mui.plusReady(function() {
+					//加载数据
+					var mapData = plus.webview.currentWebview().mapData;
+					document.getElementById("material_id").value = mapData.material_id;
+					document.getElementById("material_feedback").value = mapData.material_feedback;
+					var deans = mapData.deans;
+					if(deans){
+						for(var i = 0; i < deans.length; i++){
+							var optionString = "";
+							optionString ="<option value=\""
+			                        + deans[i].roleid+"\">"
+			                        + deans[i].realName+"</option>";         //动态添加数据
+							if(deans[i].rolename.indexOf("dpdean") != -1){
+			                    jQuery("#viceDean").append(optionString);    
+							}else if(deans[i].rolename.indexOf("infodean") != -1){ 
+			                    jQuery("#infoVice").append(optionString);    
+							}else if(deans[i].rolename.indexOf("alldean") != -1){    
+			                    jQuery("#alldean").append(optionString);    
+							}else{
+							}
+						}
+					}
+					
+					
+					//关闭等待动画
+					jQuery(".loading").addClass("loader-chanage")
+					jQuery(".loading").fadeOut(500)
+					//推送按钮
+					var sendBtn = doc.getElementById('send');
+					//返回按钮
+					var returnBtn = doc.getElementById('return');
+					
+					sendBtn.addEventListener('tap', function(event) {
+						var url = APPINFO.serverURL + '/mobileadmin/pushMaterialApplication';
+						mui.ajax(url, {
+							data: {
+								material_id: document.getElementById("material_id").value,
+								material_feedback: document.getElementById("material_feedback").value,
+								viceDean: document.getElementById("viceDean").value,
+								infoVice: document.getElementById("infoVice").value,
+								dean: document.getElementById("alldean").value
+							},
+							dataType: 'json', // 服务器返回 json 格式数据
+							type: 'GET', //HTTP 请求类型
+							timeout: 10000, // 超时时间设置为 10 秒；
+							success: function(data) {
+								// 服务器返回响应，根据响应结果，分析是否成功；
+								if(data.success == 'true') {
+									plus.nativeUI.toast(data.msg);
+								} else if(data.success == 'false') {
+									plus.nativeUI.toast(data.msg);
+								} else {
+									plus.nativeUI.toast("状态异常");
+								}
+							},
+							error: function(xhr, type, errorThrown) {
+								// 异常处理；
+								plus.nativeUI.toast('请保持网络畅通');
+							}
+						});
+					});
+
+					returnBtn.addEventListener('tap', function(event) {
+						//处理按钮点击事件
+						mui.back();
+					});
+				});
+
+			}(mui, document));
+		</script>
 	</body>
+
 </html>

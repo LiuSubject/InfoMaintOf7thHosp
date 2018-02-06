@@ -73,7 +73,7 @@
 		<!--loading页结束-->
 		<div style="height:45px;"></div>
 		<!--防遮挡-->
-		<form id="faultapplicationform" name="faultapplicationform" class="mui-input-group" method="post" action="" enctype="multipart/form-data">
+		<form id="faultapplicationform" name="faultapplicationform" class="mui-input-group" method="post" enctype="multipart/form-data">
 			<div class="mui-input-row">
 				<label>故障类型</label>
 				<input name="title" id='title' type="text" class="mui-input" readonly="readonly">
@@ -173,7 +173,7 @@
 		</section>
 		<nav class="mui-bar mui-bar-tab">
 			<a id="urgent" class="mui-tab-item" style="display: none;">
-				<span class="mui-icon mui-icon-download"></span>
+				<span class="mui-icon mui-icon-location"></span>
 				<span class="mui-tab-label">标红</span>
 			</a>
 			<a id="deal" class="mui-tab-item">
@@ -194,6 +194,7 @@
 			(function($, doc) {
 				mui.init();
 				jQuery.noConflict();
+				
 				mui.plusReady(function() {
 					//加载数据
 					var url = APPINFO.serverURL + '/mobileadmin/checkComputerProblems';
@@ -230,6 +231,7 @@
 								if(data.computerProblems.faultUrgent == 1) {
 									jQuery("#faultUrgentTitle").addClass("Urgent");
 								}
+								//加载时间轴
 								timeLine(data.computerProblems);
 								//关闭等待动画
 								jQuery(".loading").addClass("loader-chanage")

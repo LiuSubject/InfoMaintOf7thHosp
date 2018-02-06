@@ -1,10 +1,6 @@
-<!--物资申购记录-->
 <!doctype html>
-<style type="text/css">
-	#searchInput {
-		margin-bottom: 0px;
-	}
-</style>
+
+<!--物资申购记录-->
 <html>
 
 	<head>
@@ -16,37 +12,78 @@
 		<link rel="stylesheet" type="text/css" href="../css/mobile.css">
 		<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
 		<link rel="stylesheet" type="text/css" href="../css/tether.min.css">
+		<link rel="stylesheet" type="text/css" href="../css/loaders.min.css" />
+		<link rel="stylesheet" type="text/css" href="../css/loading.css" />
+		<style type="text/css">
+			.loading {
+				z-index: 3;
+			}
+			
+			#searchInput {
+				margin-bottom: 0px;
+			}
+			
+			.mui-scroll {
+				height: 100%;
+			}
+			
+			.mui-scroll-wrapper {
+				height: 100%;
+			}
+			
+			.loading .loader {
+				top: 40%;
+			}
+		</style>
 	</head>
 
 	<body>
 		<header id="header" class="mui-bar mui-bar-nav">
 			<button class="mui-action-back mui-btn mui-btn-blue mui-btn-link mui-btn-nav mui-pull-left">&nbsp;&nbsp;返回</button>
 			<h1 class="mui-title">申购列表</h1>
-			<button id="searchMyself" class="mui-btn mui-btn-link mui-btn-nav mui-pull-right" onkeyup="enterSearchUser(event)">我的&nbsp;&nbsp;</button>
 		</header>
-		<div id="fillingTop">
-			<div style="height:45px;"></div>
-			<!--防遮挡-->
-			<div class="mui-input-row mui-search" id="searchInDiv">
-				<input type="search" id="searchIn" class="mui-input-clear" placeholder="搜索">
+		<div class="mui-content mui-scroll-wrapper">
+			<div class="mui-scroll">
+				<!--loading页开始-->
+				<div class="loading" style="background: #efeff4;">
+					<div class="loader">
+						<div class="loader-inner ball-grid-beat">
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
+						</div>
+					</div>
+				</div>
+				<!--loading页结束-->
+				<div style="height:5px;"></div>
+				<!--防遮挡-->
+				<div class="mui-input-row mui-search" id="searchInDiv" style="display: none;">
+					<input type="search" id="searchIn" class="mui-input-clear" placeholder="搜索">
+				</div>
+				<table id="materiallistgrid" data-options="
+					header:'#fillingTop',
+					iconCls: 'icon-edit',
+					singleSelect: true,
+					fit:true,
+					fitColumns:true,
+					border: false,
+					scrollbarSize: 0">
+				</table>
 			</div>
 		</div>
-		<table id="materiallistgrid" data-options="
-				header:'#fillingTop',
-				iconCls: 'icon-edit',
-				singleSelect: true,
-				fit:true,
-				fitColumns:true,
-				border: false,
-				scrollbarSize: 0">
-		</table>
 		<nav class="mui-bar mui-bar-tab">
 			<a id="frontPage" class="mui-tab-item mui-active">
 				<span class="mui-icon mui-icon-arrowthinleft"></span>
 				<span class="mui-tab-label">上一页</span>
 			</a>
 			<a id="reloadPage" class="mui-tab-item mui-active">
-				<span class="mui-icon mui-icon mui-icon-loop"></span>
+				<span class="mui-icon mui-icon-loop"></span>
 				<span class="mui-tab-label">刷新</span>
 			</a>
 			<a id="nextPage" class="mui-tab-item">
@@ -66,13 +103,13 @@
 				mui.init();
 				jQuery.noConflict();
 				var PagingVO = null;
-				//隐藏普通用户搜索及前后翻页、“我的”功能
-				var current = localStorage.getItem("$role");
-				if(current == "normal") {
-					jQuery("#searchInDiv").remove();
-					jQuery("#searchMyself").remove();
-				}
+
 				mui.plusReady(function() {
+					//隐藏普通用户搜索功能
+					var current = localStorage.getItem("$role");
+					if(current.indexOf("admin") != -1) {
+						jQuery("#searchInDiv").show();
+					}
 					jQuery(function() {
 						jQuery('#materiallistgrid').datagrid({
 							url: '',
@@ -80,13 +117,25 @@
 								[{
 										field: 'useDate',
 										title: '使用日期',
-										width: 30,
+										width: 25,
+										align: 'center'
+									},
+									{
+										field: 'applicant',
+										title: '申请人',
+										width: 18,
 										align: 'center'
 									},
 									{
 										field: 'name',
 										title: '名称',
-										width: 40,
+										width: 20,
+										align: 'center'
+									},
+									{
+										field: 'total',
+										title: '总价',
+										width: 17,
 										align: 'center'
 									},
 									{
@@ -114,6 +163,27 @@
 										}
 									},
 									{
+										field: 'highApproved',
+										title: '审批',
+										width: 10,
+										align: 'center',
+										formatter: function(value, row, index) {
+											var res = '';
+											//状态色块标识
+											switch(value) {
+												case 0:
+													res = '<font style="color:#31b0d5;">■</font>'; //未处理  
+													break;
+												case 1:
+													res = '<font style="color:#f0ad4e;">■</font>'; //处理中 
+													break;
+												default:
+													break;
+											}
+											return res;
+										}
+									},
+									{
 										field: 'id',
 										title: '',
 										width: 20,
@@ -122,8 +192,15 @@
 											var role = localStorage.getItem('$role') || '[]';
 											var res = '';
 											//按钮动态生成
-											if(role.indexOf("admin")!= -1) {
+											if(role.indexOf("material") != -1 || role.indexOf("examiner") != -1) {
 												res = '<button style="color: #fff;background-color: #31b0d5; border-color: #269abc;" type="button" class="mui-btn btn-default btn-sm editBtn" id="' + value + '">处理</button>';
+											} else if((role.indexOf("dpdean") != -1 && row.flag != 2 && row.highApproved == 1 &&
+													row.approvedFlag == 0 && row.highLeaderApproved1 == 1) ||
+												(role.indexOf("infodean") != -1 && row.flag != 2 && row.highApproved == 1 &&
+													row.approvedFlag == 0 && row.highLeaderApproved2 == 1) ||
+												(role.indexOf("alldean") != -1 && row.flag != 2 && row.highApproved == 1 &&
+													row.approvedFlag == 0 && row.highLeaderApproved3 == 1)) {
+												res = '<button style="color: #fff;background-color: #C9302C; border-color: #D9534F;" type="button" class="mui-btn btn-default btn-sm approveBtn" id="' + value + '">审批</button>';
 											} else {
 												res = '<button style="color: #fff;background-color: #ec971f; border-color: #d58512;" type="button" class="mui-btn btn-default btn-sm viewDetail" id="' + value + '">详情</button>';
 											}
@@ -131,7 +208,15 @@
 										}
 									}
 								]
-							]
+							],
+							rowStyler: function(index, row) {
+								var current = localStorage.getItem("$role");
+								if(row.groupVisible == 1 &&  row.flag != 2 
+									&&(current.indexOf("material") != -1 ||
+										current.indexOf("examiner") != -1)) {
+									return 'background-color: lightskyblue;';
+								}
+							}
 						})
 
 						/*//模拟数据加载
@@ -162,6 +247,28 @@
 								}
 							});
 						});
+
+						//审批按钮点击事件
+						jQuery(document).on('click', '.approveBtn', function() {
+							var thisid = jQuery(this).parents("tr").find(".approveBtn").attr("id");
+							mui.openWindow({
+								url: 'Material_Detail.html',
+								id: 'Material_Detail',
+								extras: {
+									thisId: thisid
+								},
+								styles: {
+									popGesture: 'hide'
+								},
+								show: {
+									duration: 150
+								},
+								waiting: {
+									autoShow: false, //自动显示等待框，默认为true  
+								}
+							});
+						});
+
 						//查看按钮点击事件
 						jQuery(document).on("click", ".viewDetail", function() {
 							var thisid = jQuery(this).parents("tr").find(".viewDetail").attr("id");
@@ -192,16 +299,17 @@
 						timeout: 10000, // 超时时间设置为 10 秒；
 						success: function(data) {
 							// 服务器返回响应，根据响应结果，分析是否登录成功；
-							/*					if(data.success == 'true'){
-													
-													toMain(data);
-												}else if(data.success == 'false'){
-													plus.nativeUI.toast(data.msg);
-												}else{
-													plus.nativeUI.toast("抱歉，登陆失败");
-												}*/
-							jQuery("#materiallistgrid").datagrid("loadData", data.materialApplicationList);
-							PagingVO = data.pagingVO;
+							if(data.success == 'true') {
+								jQuery("#materiallistgrid").datagrid("loadData", data.materialApplicationList);
+								PagingVO = data.pagingVO;
+								//关闭等待动画
+								jQuery(".loading").addClass("loader-chanage")
+								jQuery(".loading").fadeOut(500)
+							} else if(data.success == 'false') {
+								plus.nativeUI.toast(data.msg);
+							} else {
+								plus.nativeUI.toast("操作异常");
+							}
 						},
 						error: function(xhr, type, errorThrown) {
 							// 异常处理；
@@ -217,46 +325,21 @@
 					var reloadButton = doc.getElementById('reloadPage');
 					//搜索按钮
 					var searchInput = doc.getElementById('searchIn');
-					//“我的”按钮
-					var searchMyButton = doc.getElementById('searchMyself');
-
-					if(typeof(searchMyButton) != "undefined" && searchMyButton != null) {
-						
-
-						searchMyButton.addEventListener('tap', function(event) {
-							//搜索用户相关记录
-							var url = APPINFO.serverURL + '/mobileadmin/searchMyComputerProblems';
-							mui.ajax(url, {
-								dataType: 'json', // 服务器返回 json 格式数据
-								type: 'post', //HTTP 请求类型
-								timeout: 10000, // 超时时间设置为 10 秒；
-								success: function(data) {
-									// 服务器返回响应，根据响应结果，分析是否登录成功；
-									if(data.success == 'true') {
-
-										jQuery("#materiallistgrid").datagrid("loadData", data.materialApplicationList);
-									} else {
-										plus.nativeUI.toast("抱歉，查询失败");
-									}
-
-								},
-								error: function(xhr, type, errorThrown) {
-									// 异常处理；
-									plus.nativeUI.toast('请保持网络畅通');
-								}
-							});
-						});
+					if(typeof(searchInput) != "undefined" && searchInput != null) {
 
 						//搜索框回车触发
 						searchInput.addEventListener('keyup', function(event) {
 							if(event.keyCode == 13) {
+								//打开等待动画
+								jQuery(".loading").fadeIn(500);
 								var url = APPINFO.serverURL + '/mobileadmin/searchMaterialApplication';
 								var searchKey = document.getElementById("searchIn").value;
 								mui.ajax(url, {
 									data: {
-										findByDept: searchKey,
+										//只支持按提交人搜索
+										findByDept: "",
 										findByName: searchKey,
-										findByFlag: searchKey,
+										findByFlag: "3",
 									},
 									dataType: 'json', // 服务器返回 json 格式数据
 									type: 'post', //HTTP 请求类型
@@ -266,6 +349,9 @@
 										if(data.success == 'true') {
 
 											jQuery("#materiallistgrid").datagrid("loadData", data.materialApplicationList);
+											//关闭等待动画
+											jQuery(".loading").addClass("loader-chanage")
+											jQuery(".loading").fadeOut(500)
 										} else if(data.success == 'false') {
 											plus.nativeUI.toast(data.msg);
 										} else {
@@ -281,112 +367,139 @@
 							}
 						});
 					}
-					
-					frontPageButton.addEventListener('tap', function(event) {
-							//上一页按钮点击事件
-							//页码边界判断
-							if(typeof(PagingVO) == "undefined" ||
-								PagingVO.curentPageNo < 0 ||
-								typeof(PagingVO.curentPageNo) == "undefined" ||
-								PagingVO.curentPageNo == null) {
-								return;
-							} else if(PagingVO.curentPageNo == 0) {
-								return;
-							} else if(PagingVO.curentPageNo > 1) {
-								var url = APPINFO.serverURL + '/mobileadmin/showComputerProblems';
-								mui.ajax(url, {
-									data: {
-										page: PagingVO.curentPageNo - 1
-									},
-									dataType: 'json', // 服务器返回 json 格式数据
-									type: 'get', //HTTP 请求类型
-									timeout: 10000, // 超时时间设置为 10 秒；
-									success: function(data) {
-										// 服务器返回响应，根据响应结果，分析是否登录成功；
-										/*					if(data.success == 'true'){
-																
-																toMain(data);
-															}else if(data.success == 'false'){
-																plus.nativeUI.toast(data.msg);
-															}else{
-																plus.nativeUI.toast("抱歉，登陆失败");
-															}*/
-										jQuery("#materiallistgrid").datagrid("loadData", data.materialApplicationList);
-										PagingVO = data.pagingVO;
-									},
-									error: function(xhr, type, errorThrown) {
-										// 异常处理；
-										plus.nativeUI.toast('请保持网络畅通');
-									}
-								});
-							}
-						});
 
-						nextPageButton.addEventListener('tap', function(event) {
-							//下一页按钮点击事件
-							//页码边界判断
-							if(typeof(PagingVO) == "undefined" ||
-								PagingVO.curentPageNo < 0 ||
-								typeof(PagingVO.curentPageNo) == "undefined" ||
-								PagingVO.curentPageNo == null) {
-								return;
-							} else if(PagingVO.curentPageNo >= PagingVO.totalCount) {
-								return;
-							} else if(PagingVO.curentPageNo >= 1) {
-								var url = APPINFO.serverURL + '/mobileadmin/showComputerProblems';
-								mui.ajax(url, {
-									data: {
-										page: PagingVO.curentPageNo + 1
-									},
-									dataType: 'json', // 服务器返回 json 格式数据
-									type: 'get', //HTTP 请求类型
-									timeout: 10000, // 超时时间设置为 10 秒；
-									success: function(data) {
-										// 服务器返回响应，根据响应结果，分析是否登录成功；
-										/*					if(data.success == 'true'){
-																
-																toMain(data);
-															}else if(data.success == 'false'){
-																plus.nativeUI.toast(data.msg);
-															}else{
-																plus.nativeUI.toast("抱歉，登陆失败");
-															}*/
+					frontPageButton.addEventListener('tap', function(event) {
+						//打开等待动画
+						jQuery(".loading").fadeIn(500);
+						//上一页按钮点击事件
+						//页码边界判断
+						if(typeof(PagingVO) == "undefined" ||
+							PagingVO.curentPageNo < 0 ||
+							typeof(PagingVO.curentPageNo) == "undefined" ||
+							PagingVO.curentPageNo == null) {
+							//关闭等待动画
+							jQuery(".loading").addClass("loader-chanage")
+							jQuery(".loading").fadeOut(500)
+							return;
+						} else if(PagingVO.curentPageNo == 1) {
+							//关闭等待动画
+							jQuery(".loading").addClass("loader-chanage")
+							jQuery(".loading").fadeOut(500)
+							return;
+						} else if(PagingVO.curentPageNo > 1) {
+							var url = APPINFO.serverURL + '/mobileadmin/showMaterialApplication';
+							mui.ajax(url, {
+								data: {
+									page: PagingVO.curentPageNo - 1
+								},
+								dataType: 'json', // 服务器返回 json 格式数据
+								type: 'get', //HTTP 请求类型
+								timeout: 10000, // 超时时间设置为 10 秒；
+								success: function(data) {
+									// 服务器返回响应，根据响应结果，分析是否登录成功；
+									if(data.success == 'true') {
 										jQuery("#materiallistgrid").datagrid("loadData", data.materialApplicationList);
 										PagingVO = data.pagingVO;
-									},
-									error: function(xhr, type, errorThrown) {
-										// 异常处理；
-										plus.nativeUI.toast('请保持网络畅通');
+										//关闭等待动画
+										jQuery(".loading").addClass("loader-chanage")
+										jQuery(".loading").fadeOut(500)
+									} else if(data.success == 'false') {
+										plus.nativeUI.toast(data.msg);
+									} else {
+										plus.nativeUI.toast("操作异常");
 									}
-								});
-							}
-						});
-					
-					//刷新按钮
-					reloadButton.addEventListener('tap', function(event) {
-						mui.ajax(url, {
-						dataType: 'json', // 服务器返回 json 格式数据
-						type: 'post', //HTTP 请求类型
-						timeout: 5000, // 超时时间设置为 10 秒；
-						success: function(data) {
-							// 服务器返回响应，根据响应结果，分析是否登录成功；
-							/*					if(data.success == 'true'){
-													
-													toMain(data);
-												}else if(data.success == 'false'){
-													plus.nativeUI.toast(data.msg);
-												}else{
-													plus.nativeUI.toast("抱歉，登陆失败");
-												}*/
-							jQuery("#materiallistgrid").datagrid("loadData", data.materialApplicationList);
-							PagingVO = data.pagingVO;
-						},
-						error: function(xhr, type, errorThrown) {
-							// 异常处理；
-							plus.nativeUI.toast('请保持网络畅通');
+								},
+								error: function(xhr, type, errorThrown) {
+									// 异常处理；
+									plus.nativeUI.toast('请保持网络畅通');
+								}
+							});
 						}
 					});
+
+					nextPageButton.addEventListener('tap', function(event) {
+						//打开等待动画
+						jQuery(".loading").fadeIn(500);
+						//下一页按钮点击事件
+						//页码边界判断
+						if(typeof(PagingVO) == "undefined" ||
+							PagingVO.curentPageNo < 0 ||
+							typeof(PagingVO.curentPageNo) == "undefined" ||
+							PagingVO.curentPageNo == null) {
+							//关闭等待动画
+							jQuery(".loading").addClass("loader-chanage")
+							jQuery(".loading").fadeOut(500)
+							return;
+						} else if(PagingVO.curentPageNo >= PagingVO.totalCount) {
+							//关闭等待动画
+							jQuery(".loading").addClass("loader-chanage")
+							jQuery(".loading").fadeOut(500)
+							return;
+						} else if(PagingVO.curentPageNo >= 1) {
+							var url = APPINFO.serverURL + '/mobileadmin/showComputerProblems';
+							mui.ajax(url, {
+								data: {
+									page: PagingVO.curentPageNo + 1
+								},
+								dataType: 'json', // 服务器返回 json 格式数据
+								type: 'get', //HTTP 请求类型
+								timeout: 10000, // 超时时间设置为 10 秒；
+								success: function(data) {
+									// 服务器返回响应，根据响应结果，分析是否登录成功；
+									if(data.success == 'true') {
+										jQuery("#materiallistgrid").datagrid("loadData", data.materialApplicationList);
+										PagingVO = data.pagingVO;
+										//关闭等待动画
+										jQuery(".loading").addClass("loader-chanage")
+										jQuery(".loading").fadeOut(500)
+									} else if(data.success == 'false') {
+										plus.nativeUI.toast(data.msg);
+									} else {
+										plus.nativeUI.toast("操作异常");
+									}
+								},
+								error: function(xhr, type, errorThrown) {
+									// 异常处理；
+									plus.nativeUI.toast('请保持网络畅通');
+								}
+							});
+						}
 					});
+
+					//刷新按钮
+					reloadButton.addEventListener('tap', function(event) {
+						//打开等待动画
+						jQuery(".loading").fadeIn(100);
+
+						mui.ajax(url, {
+							dataType: 'json', // 服务器返回 json 格式数据
+							type: 'post', //HTTP 请求类型
+							timeout: 5000, // 超时时间设置为 10 秒；
+							success: function(data) {
+								// 服务器返回响应，根据响应结果，分析是否登录成功；
+								if(data.success == 'true') {
+									jQuery("#materiallistgrid").datagrid("loadData", data.materialApplicationList);
+									PagingVO = data.pagingVO;
+									//关闭等待动画
+									jQuery(".loading").addClass("loader-chanage")
+									jQuery(".loading").fadeOut(500)
+								} else if(data.success == 'false') {
+									plus.nativeUI.toast(data.msg);
+								} else {
+									plus.nativeUI.toast("操作异常");
+								}
+							},
+							error: function(xhr, type, errorThrown) {
+								// 异常处理；
+								plus.nativeUI.toast('请保持网络畅通');
+							}
+						});
+					});
+				});
+				$(".mui-scroll-wrapper").scroll({
+					//bounce: false,//滚动条是否有弹力默认是true
+					//indicators: false, //是否显示滚动条,默认是true
+					deceleration: 0.0005
 				});
 			}(mui, document));
 		</script>

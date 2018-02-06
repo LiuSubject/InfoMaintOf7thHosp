@@ -55,5 +55,10 @@
 		"refer": [
 			"main.html"
 		]
+	},
+	"InfoDept/Material_Deal.html": {
+		"refer": [
+			"InfoDept/Materrial_Approved.html"
+		]
 	}
 }
