@@ -61,7 +61,7 @@
 				<!--loading页结束-->
 				<div style="height:5px;"></div>
 				<!--防遮挡-->
-				<div class="mui-input-row mui-search" id="searchInDiv">
+				<div class="mui-input-row mui-search" id="searchInDiv" style="display: none;">
 					<input type="search" id="searchIn" class="mui-input-clear" placeholder="搜索">
 				</div>
 				<table id="faultlistgrid" data-options="
@@ -103,11 +103,10 @@
 				var PagingVO = null;
 
 				mui.plusReady(function() {
-					//隐藏普通用户搜索及前后翻页、“我的”功能
+					//隐藏普通用户搜索功能
 					var current = localStorage.getItem("$role");
-					if(current == "normal") {
-						jQuery("#searchInDiv").remove();
-						jQuery("#searchMyself").remove();
+					if(current.indexOf("admin") != -1) {
+						jQuery("#searchInDiv").show();
 					}
 					jQuery(function() {
 						jQuery('#faultlistgrid').datagrid({

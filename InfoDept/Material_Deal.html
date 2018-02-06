@@ -1,81 +1,233 @@
-<!--管理用物资申购处理页-->
 <!doctype html>
-<style type="text/css">
-    #textareadetail {
-    	min-height: 90px;
-    }
-</style>
+
+<!--管理用物资申购处理页-->
 <html>
 
 	<head>
 		<meta charset="UTF-8">
-		<title></title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../css/loaders.min.css" />
+		<link rel="stylesheet" type="text/css" href="../css/loading.css" />
+		<link rel="stylesheet" type="text/css" href="../css/all.css" />
+		<link rel="stylesheet" href="../css/style_time.css" />
+		<style type="text/css">
+			#textareadetail {
+				min-height: 90px;
+			}
+			
+			#textareafeedback {
+				min-height: 90px;
+			}
+			
+			.loading {
+				z-index: 2;
+			}
+			
+			.Urgent {
+				color: #0680FF;
+			}
+			
+			.cd-timeline-img.cd-warn {
+				background: #f0ca45;
+			}
+			
+			.cd-timeline-img.cd-wait {
+				background: #A29F9F;
+			}
+			
+			.cd-timeline-img.cd-success {
+				background: #449d44;
+			}
+			
+			.cd-timeline-img.cd-info {
+				background: #31b0d5;
+			}
+			
+			.cd-timeline-img.cd-approve {
+				background: #D9534F;
+			}
+			
+			#textareadetail {
+				min-height: 90px;
+			}
+			
+			#textareadepartcomments {
+				min-height: 90px;
+			}
+		</style>
 	</head>
 
 	<body>
 		<header class="mui-bar mui-bar-nav">
-		  <button class="mui-action-back mui-btn mui-btn-blue mui-btn-link mui-btn-nav mui-pull-left">&nbsp;&nbsp;返回</button>
-		  <h1 class="mui-title">物资申购</h1>
-		  
+			<button class="mui-action-back mui-btn mui-btn-blue mui-btn-link mui-btn-nav mui-pull-left">&nbsp;&nbsp;返回</button>
+			<h1 id="faultUrgentTitle" class="mui-title">申购处理</h1>
+
 		</header>
-		<div class="mui-content">
-			<form id="materialapplicationform" class="mui-input-group" method="post" action="http://194.168.0.194/sxqy/index.php/Home/Index/saveMaterial" enctype="multipart/form-data">
-			      
-			      <div class="mui-input-row">
-			          <label>申请人</label>
-			          <input id="applicant" name="applicant" type="text" class="mui-input-clear mui-input" readonly="readonly">
-			      </div>
-			      <div class="mui-input-row">
-			          <label>名称</label>
-			          <input id="name" name="name" type="text" class="mui-input-clear mui-input" readonly="readonly">
-			      </div>
-			      <div class="mui-input-row">
-			          <label>数量</label>
-			          <input id="number" name="number" type="number" class="mui-input-clear mui-input" readonly="readonly">
-			      </div>
-			      
-			      <div class="mui-input-row">
-			          <label>使用日期</label>
-			          <input id="useDate" name="useDate" placeholder="请输入时间" type="date">
-			      </div>
-			      <div id="textareadetail" class="mui-input-row">
-			          <label>请购理由</label>
-			          <textarea id="reason" name="reason" readonly="readonly"></textarea>
-			      </div>
-			      <div class="mui-input-row">
-			          <label style="color: #0680FF;">品牌:</label>
-			          <input id="brand" name="brand" type="text" class="mui-input-clear mui-input" placeholder="请输入品牌">
-			      </div>
-			      <div class="mui-input-row">
-			          <label style="color: #0680FF;">参考型号:</label>
-			          <input id="model" name="model" type="text" class="mui-input-clear mui-input" placeholder="请输入型号">
-			      </div>
-			      <div class="mui-input-row">
-			          <label style="color: #0680FF;">估价:</label>
-			          <input id="judge" name="judge" type="number" class="mui-input-clear mui-input" placeholder="请输入估价">
-			      </div>
-			      <div class="mui-input-row">
-			          <label style="color: #0680FF;">总价:</label>
-			          <input id="total" name="total" type="number" class="mui-input-clear mui-input" placeholder="请输入总价">
-			      </div>
-			      <div id="textareadetail" class="mui-input-row">
-			          <label style="color: #0680FF;">回复：</label>
-			          <textarea id="reback" name="reback" placeholder="请输入回复"></textarea>
-			      </div>
-			  </form>
-		  </div>
+		<!--loading页开始-->
+		<div class="loading" style="background: #efeff4;">
+			<div class="loader">
+				<div class="loader-inner ball-grid-beat">
+					<div></div>
+					<div></div>
+					<div></div>
+					<div></div>
+					<div></div>
+					<div></div>
+					<div></div>
+					<div></div>
+					<div></div>
+				</div>
+			</div>
 		</div>
+		<!--loading页结束-->
+		<div style="height:45px;"></div>
+		<!--防遮挡-->
+		<form id="materialapplicationform" class="mui-input-group" method="post" enctype="multipart/form-data">
+
+			<div class="mui-input-row">
+				<label>申请人</label>
+				<input id="applicant" name="applicant" type="text" class="mui-input-clear mui-input" readonly="readonly">
+			</div>
+			<div class="mui-input-row">
+				<label>名称</label>
+				<input id="name" name="name" type="text" class="mui-input-clear mui-input" readonly="readonly">
+			</div>
+			<div class="mui-input-row">
+				<label>数量</label>
+				<input id="number" name="number" type="number" class="mui-input-clear mui-input" readonly="readonly">
+			</div>
+
+			<div class="mui-input-row">
+				<label>使用日期</label>
+				<input id="useDate" name="useDate" placeholder="请输入时间" type="date">
+			</div>
+			<div id="textareadetail" class="mui-input-row">
+				<label>请购理由</label>
+				<textarea id="reason" name="reason" readonly="readonly"></textarea>
+			</div>
+			<div id="textareadepartcomments" class="mui-input-row">
+				<label>科室意见</label>
+				<textarea id="bmyj" name="bmyj" readonly="readonly"></textarea>
+			</div>
+			<div class="mui-input-row">
+				<label style="color: #0680FF;">品牌:</label>
+				<input id="brand" name="brand" type="text" class="mui-input-clear mui-input" placeholder="请输入品牌">
+			</div>
+			<div class="mui-input-row">
+				<label style="color: #0680FF;">参考型号:</label>
+				<input id="model" name="model" type="text" class="mui-input-clear mui-input" placeholder="请输入型号">
+			</div>
+			<div class="mui-input-row">
+				<label style="color: #0680FF;">估价:</label>
+				<input id="judge" name="judge" type="number" class="mui-input-clear mui-input" placeholder="请输入估价">
+			</div>
+			<div class="mui-input-row">
+				<label style="color: #0680FF;">总价:</label>
+				<input id="total" name="total" type="number" class="mui-input-clear mui-input" placeholder="请输入总价">
+			</div>
+			<div id="textareadetail" class="mui-input-row">
+				<label style="color: #0680FF;">回复：</label>
+				<textarea id="reback" name="reback" placeholder="请输入回复"></textarea>
+			</div>
+		</form>
+		
+		<section id="cd-timeline" class="cd-container">
+			<div id="ctb1" class="cd-timeline-block">
+				<div class="cd-timeline-img cd-warn">
+				</div>
+				<div id="ctcw" class="cd-timeline-content">
+					<h4></h4>
+					<p></p>
+					<span class="cd-date"></span>
+				</div>
+			</div>
+			<div id="ctbadd" class="cd-timeline-block" style="display: none;">
+				<div class="cd-timeline-img cd-approve">
+				</div>
+				<div id="ctca" class="cd-timeline-content">
+					<h4></h4>
+					<p id="ctcaP1" style="display: none;"></p>
+					<p id="ctcaP2" style="display: none;"></p>
+					<p id="ctcaP3" style="display: none;"></p>
+					<span class="cd-date"></span>
+				</div>
+			</div>
+			<div id="ctb2" class="cd-timeline-block" style="display: none;">
+				<div class="cd-timeline-img cd-info">
+				</div>
+				<div id="ctci1" class="cd-timeline-content">
+					<h4></h4>
+					<p></p>
+					<span class="cd-date"></span>
+				</div>
+			</div>
+			<div id="ctb3" class="cd-timeline-block" style="display: none;">
+				<div class="cd-timeline-img cd-info">
+				</div>
+				<div id="ctci2" class="cd-timeline-content">
+					<h4></h4>
+					<p></p>
+					<span class="cd-date"></span>
+				</div>
+			</div>
+			<div id="ctb4" class="cd-timeline-block" style="display: none;">
+				<div class="cd-timeline-img cd-info">
+				</div>
+				<div id="ctci3" class="cd-timeline-content">
+					<h4></h4>
+					<p></p>
+					<span class="cd-date"></span>
+				</div>
+			</div>
+			<div id="ctb5" class="cd-timeline-block" style="display: none;">
+				<div class="cd-timeline-img cd-info">
+				</div>
+				<div id="ctci4" class="cd-timeline-content">
+					<h4></h4>
+					<p></p>
+					<span class="cd-date"></span>
+				</div>
+			</div>
+			<div id="ctb6" class="cd-timeline-block" style="display: none;">
+				<div class="cd-timeline-img cd-info">
+				</div>
+				<div id="ctci5" class="cd-timeline-content">
+					<h4></h4>
+					<p></p>
+					<span class="cd-date"></span>
+				</div>
+			</div>
+			<div id="ctb7" class="cd-timeline-block" style="display: none;">
+				<div class="cd-timeline-img cd-wait">
+				</div>
+				<div id="ctcw2" style="height: 40px;">
+				</div>
+			</div>
+			<div id="ctb8" class="cd-timeline-block" style="display: none;">
+				<div class="cd-timeline-img cd-success">
+				</div>
+				<div id="ctcs" class="cd-timeline-content">
+					<h4></h4>
+					<p></p>
+					<span class="cd-date"></span>
+				</div>
+			</div>
+		</section>
 		<nav class="mui-bar mui-bar-tab">
-        <a id="deal" class="mui-tab-item mui-active">
-            <span class="mui-icon mui-icon-download"></span>
-            <span class="mui-tab-label">处理</span>
-        </a>
-        <a id="complete" class="mui-tab-item">
-            <span class="mui-icon mui-icon-upload"></span>
-            <span class="mui-tab-label">完成</span>
-        </a>
+			<a id="approve" class="mui-tab-item" style="display: none;">
+				<span class="mui-icon mui-icon-compose"></span>
+				<span class="mui-tab-label">推送</span>
+			</a>
+			<a id="deal" class="mui-tab-item">
+				<span class="mui-icon mui-icon-download"></span>
+				<span class="mui-tab-label">处理</span>
+			</a>
+			<a id="complete" class="mui-tab-item">
+				<span class="mui-icon mui-icon-upload"></span>
+				<span class="mui-tab-label">完成</span>
+			</a>
+		</nav>
 		<script src="../js/mui.min.js"></script>
 		<script src="../js/jquery.min.js"></script>
 		<script src="../js/jquery.easyui.min.js"></script>
@@ -87,105 +239,310 @@
 				jQuery.noConflict();
 				mui.plusReady(function() {
 					//加载数据
-					var url = APPINFO.serverURL+'/mobileadmin/checkMaterialApplication';
-					mui.ajax( url ,{
-						data : {
-									id:plus.webview.currentWebview().thisId
-								},
-						dataType : 'json' , // 服务器返回 json 格式数据
-						type : 'GET' , //HTTP 请求类型
-						timeout : 10000 , // 超时时间设置为 10 秒；
-						success : function (data){
+					var url = APPINFO.serverURL + '/mobileadmin/checkMaterialApplication';
+					mui.ajax(url, {
+						data: {
+							id: plus.webview.currentWebview().thisId
+						},
+						dataType: 'json', // 服务器返回 json 格式数据
+						type: 'GET', //HTTP 请求类型
+						timeout: 10000, // 超时时间设置为 10 秒；
+						success: function(data) {
 							// 服务器返回响应，根据响应结果，分析是否成功；
-							if(data.success == 'true'){	
-								jQuery('#materialapplicationform').form('load', data.materialApplication);							    
-							}else if(data.success == 'false'){
+							if(data.success == 'true') {
+								jQuery('#materialapplicationform').form('load', data.materialApplication);
+								//依权限显示推送按钮
+								var current = localStorage.getItem("$role");
+								if(data.materialApplication.flag != 2) {
+									if(current.indexOf("examiner") != -1 && data.materialApplication.highApproved == 0) {
+										jQuery("#approve").show();
+									}
+								}
+								//可处理标识
+								if(data.materialApplication.groupVisible == 1 && current.indexOf("admin") != -1) {
+									jQuery("#faultUrgentTitle").addClass("Urgent");
+								}
+								//加载时间轴
+								timeLine(data.materialApplication);
+								//关闭等待动画
+								jQuery(".loading").addClass("loader-chanage")
+								jQuery(".loading").fadeOut(500)
+							} else if(data.success == 'false') {
 								plus.nativeUI.toast(data.msg);
-							}else{
+							} else {
 								plus.nativeUI.toast("状态异常");
-							}							
-	
-						},	
-						error : function (xhr,type,errorThrown){
+							}
+
+						},
+						error: function(xhr, type, errorThrown) {
 							// 异常处理；
 							plus.nativeUI.toast('请保持网络畅通');
 						}
 					});
+					
+					//推送按钮
+					var approveBtn = doc.getElementById('approve');
 					//处理按钮
-				var dealBtn = doc.getElementById('deal');
-				//完成按钮
-				var completeBtn = doc.getElementById('complete');
-				
-				dealBtn.addEventListener('tap', function(event) {
-					//处理按钮点击事件
-					var url = APPINFO.serverURL+'/mobileadmin/dealMaterialApplication';
-					mui.ajax( url ,{
-						data : {
-									id : plus.webview.currentWebview().thisId,
-									feedback : document.getElementById("reback").value,
-									brand : document.getElementById("brand").value,
-									model : document.getElementById("model").value,
-									judge : document.getElementById("judge").value,
-									total : document.getElementById("total").value
-								},
-						dataType : 'json' , // 服务器返回 json 格式数据
-						type : 'GET' , //HTTP 请求类型
-						timeout : 10000 , // 超时时间设置为 10 秒；
-						success : function (data){
-							// 服务器返回响应，根据响应结果，分析是否成功；
-							if(data.success == 'true'){	
-								plus.nativeUI.toast(data.msg);
-							}else if(data.success == 'false'){
-								plus.nativeUI.toast(data.msg);
-							}else{
-								plus.nativeUI.toast("状态异常");
+					var dealBtn = doc.getElementById('deal');
+					//完成按钮
+					var completeBtn = doc.getElementById('complete');
+					
+					approveBtn.addEventListener('tap', function(event) {
+						var mapData;
+						var url = APPINFO.serverURL + '/mobileadmin/prePushMaterialApplication';
+						mui.ajax(url, {
+							data: {
+								id: plus.webview.currentWebview().thisId,
+								feedback: document.getElementById("reback").value,
+							},
+							dataType: 'json', // 服务器返回 json 格式数据
+							type: 'GET', //HTTP 请求类型
+							timeout: 10000, // 超时时间设置为 10 秒；
+							success: function(data) {
+								// 服务器返回响应，根据响应结果，分析是否成功；
+								if(data.success == 'true') {
+									mapData = data;
+									//打开审批窗口
+									mui.openWindow({
+										url: 'Materrial_Approved.html',
+										id: 'Materrial_Approved',
+										extras: {
+											mapData: mapData
+										},
+										styles: {
+											popGesture: 'hide'
+										},
+										show: {
+											duration: 150
+										},
+										waiting: {
+											autoShow: false, //自动显示等待框，默认为true  
+										}
+									});
+								} else if(data.success == 'false') {
+									plus.nativeUI.toast(data.msg);
+								} else {
+									plus.nativeUI.toast("状态异常");
+								}
+							},
+							error: function(xhr, type, errorThrown) {
+								// 异常处理；
+								plus.nativeUI.toast('请保持网络畅通');
 							}
-							
-	
-						},	
-						error : function (xhr,type,errorThrown){
-							// 异常处理；
-							plus.nativeUI.toast('请保持网络畅通');
-						}
+						});
+						
+						
 					});
-				});
-				
-				completeBtn.addEventListener('tap', function(event) {
-					//处理按钮点击事件
-					var url = APPINFO.serverURL+'/mobileadmin/completeMaterialApplication';
-					mui.ajax( url ,{
-						data : {
-									id : plus.webview.currentWebview().thisId,
-									feedback : document.getElementById("reback").value,
-									brand : document.getElementById("brand").value,
-									model : document.getElementById("model").value,
-									judge : document.getElementById("judge").value,
-									total : document.getElementById("total").value
-								},
-						dataType : 'json' , // 服务器返回 json 格式数据
-						type : 'GET' , //HTTP 请求类型
-						timeout : 10000 , // 超时时间设置为 10 秒；
-						success : function (data){
-							// 服务器返回响应，根据响应结果，分析是否成功；
-							if(data.success == 'true'){	
-								plus.nativeUI.toast(data.msg);
-							}else if(data.success == 'false'){
-								plus.nativeUI.toast(data.msg);
-							}else{
-								plus.nativeUI.toast("状态异常");
+
+					dealBtn.addEventListener('tap', function(event) {
+						//处理按钮点击事件
+						var url = APPINFO.serverURL + '/mobileadmin/dealMaterialApplication';
+						mui.ajax(url, {
+							data: {
+								id: plus.webview.currentWebview().thisId,
+								feedback: document.getElementById("reback").value,
+								brand: document.getElementById("brand").value,
+								model: document.getElementById("model").value,
+								judge: document.getElementById("judge").value,
+								total: document.getElementById("total").value
+							},
+							dataType: 'json', // 服务器返回 json 格式数据
+							type: 'GET', //HTTP 请求类型
+							timeout: 10000, // 超时时间设置为 10 秒；
+							success: function(data) {
+								// 服务器返回响应，根据响应结果，分析是否成功；
+								if(data.success == 'true') {
+									plus.nativeUI.toast(data.msg);
+								} else if(data.success == 'false') {
+									plus.nativeUI.toast(data.msg);
+								} else {
+									plus.nativeUI.toast("状态异常");
+								}
+
+							},
+							error: function(xhr, type, errorThrown) {
+								// 异常处理；
+								plus.nativeUI.toast('请保持网络畅通');
 							}
-							
-	
-						},	
-						error : function (xhr,type,errorThrown){
-							// 异常处理；
-							plus.nativeUI.toast('请保持网络畅通');
-						}
+						});
 					});
-				});
-				});
+
+					completeBtn.addEventListener('tap', function(event) {
+						//处理按钮点击事件
+						var url = APPINFO.serverURL + '/mobileadmin/completeMaterialApplication';
+						mui.ajax(url, {
+							data: {
+								id: plus.webview.currentWebview().thisId,
+								feedback: document.getElementById("reback").value,
+								brand: document.getElementById("brand").value,
+								model: document.getElementById("model").value,
+								judge: document.getElementById("judge").value,
+								total: document.getElementById("total").value
+							},
+							dataType: 'json', // 服务器返回 json 格式数据
+							type: 'GET', //HTTP 请求类型
+							timeout: 10000, // 超时时间设置为 10 秒；
+							success: function(data) {
+								// 服务器返回响应，根据响应结果，分析是否成功；
+								if(data.success == 'true') {
+									plus.nativeUI.toast(data.msg);
+								} else if(data.success == 'false') {
+									plus.nativeUI.toast(data.msg);
+								} else {
+									plus.nativeUI.toast("状态异常");
+								}
+
+							},
+							error: function(xhr, type, errorThrown) {
+								// 异常处理；
+								plus.nativeUI.toast('请保持网络畅通');
+							}
+						});
+					});
+					
+					//时间轴加载
+					function timeLine(materialApplication) {
+						//提交节点
+						var elem_child1 = doc.getElementById('ctcw').childNodes; //得到参数元素的所有子元素
+						for(var i = 0; i < elem_child1.length; i++) { //遍历子元素
+							if(elem_child1[i].nodeName == "H4") {
+								elem_child1[i].textContent = materialApplication.applicant;
+							} else if(elem_child1[i].nodeName == "P") {
+								elem_child1[i].textContent = materialApplication.name +" : "+materialApplication.reason;
+							} else if(elem_child1[i].nodeName == "SPAN") {
+								elem_child1[i].textContent = materialApplication.createTime;
+							}
+						}
+						//审批节点
+						if(materialApplication.highApproved == 1) {
+							var elem_child2 = doc.getElementById('ctca').childNodes; //得到参数元素的所有子元素
+							for(var i = 0; i < elem_child2.length; i++) { //遍历子元素
+								if(elem_child2[i].nodeName == "H4") {
+									var approveResult = "";
+									if(materialApplication.approvedFlag == 0){
+										approveResult = "审批中";
+									}else if(materialApplication.approvedFlag == 1){
+										approveResult = "审批通过";
+									}else if(materialApplication.approvedFlag == 2){
+										approveResult = "审批未通过";
+									}
+									elem_child2[i].textContent = approveResult;
+								} else if(elem_child2[i].nodeName == "P") {
+									var approveDetails = "";
+									if(materialApplication.highLeaderApproved1 == 1 && elem_child2[i].id == "ctcaP1"){
+										approveDetails = "分管院长审批意见:"
+											+ materialApplication.highLeaderReback1;
+										elem_child2[i].textContent = approveDetails;
+										jQuery("#ctcaP1").show();
+									}else if(materialApplication.highLeaderApproved2 == 1 && elem_child2[i].id == "ctcaP2"){
+										approveDetails = "信息主管院长审批意见:"
+											+ materialApplication.highLeaderReback2;
+										elem_child2[i].textContent = approveDetails;
+										jQuery("#ctcaP2").show();
+									}else if(materialApplication.highLeaderApproved3 == 1 && elem_child2[i].id == "ctcaP3"){
+										approveDetails = "院长审批意见:"
+											+ materialApplication.highLeaderReback3;
+										elem_child2[i].textContent = approveDetails;
+										jQuery("#ctcaP3").show();
+									}
+								}
+							}
+							jQuery("#ctbadd").show();
+						}
+						//处理节点1
+						if(materialApplication.feedbackId1 != null && materialApplication.feedbackId1 != "") {
+							var elem_child2 = doc.getElementById('ctci1').childNodes; //得到参数元素的所有子元素
+							for(var i = 0; i < elem_child2.length; i++) { //遍历子元素
+								if(elem_child2[i].nodeName == "H4") {
+									elem_child2[i].textContent = materialApplication.feedbackName1;
+								} else if(elem_child2[i].nodeName == "P") {
+									elem_child2[i].textContent = materialApplication.feedbackContent1;
+								} else if(elem_child2[i].nodeName == "SPAN") {
+									elem_child2[i].textContent = materialApplication.feedbackTime1;
+								}
+							}
+							jQuery("#ctb2").show();
+						}
+						
+						//处理节点2
+						if(materialApplication.feedbackId2 != null && materialApplication.feedbackId2 != "") {
+							var elem_child3 = doc.getElementById('ctci2').childNodes; //得到参数元素的所有子元素
+							for(var i = 0; i < elem_child3.length; i++) { //遍历子元素
+								if(elem_child3[i].nodeName == "H4") {
+									elem_child3[i].textContent = materialApplication.feedbackName2;
+								} else if(elem_child3[i].nodeName == "P") {
+									elem_child3[i].textContent = materialApplication.feedbackContent2;
+								} else if(elem_child3[i].nodeName == "SPAN") {
+									elem_child3[i].textContent = materialApplication.feedbackTime2;
+								}
+							}
+							jQuery("#ctb3").show();
+						}
+						//处理节点3
+						if(materialApplication.feedbackId3 != null && materialApplication.feedbackId3 != "") {
+							var elem_child4 = doc.getElementById('ctci3').childNodes; //得到参数元素的所有子元素
+							for(var i = 0; i < elem_child4.length; i++) { //遍历子元素
+								if(elem_child4[i].nodeName == "H4") {
+									elem_child4[i].textContent = materialApplication.feedbackName3;
+								} else if(elem_child4[i].nodeName == "P") {
+									elem_child4[i].textContent = materialApplication.feedbackContent3;
+								} else if(elem_child4[i].nodeName == "SPAN") {
+									elem_child4[i].textContent = materialApplication.feedbackTime3;
+								}
+							}
+							jQuery("#ctb4").show();
+						}
+						//处理节点4
+						if(materialApplication.feedbackId4 != null && materialApplication.feedbackId4 != "") {
+							var elem_child5 = doc.getElementById('ctci4').childNodes; //得到参数元素的所有子元素
+							for(var i = 0; i < elem_child5.length; i++) { //遍历子元素
+								if(elem_child5[i].nodeName == "H4") {
+									elem_child5[i].textContent = materialApplication.feedbackName4;
+								} else if(elem_child5[i].nodeName == "P") {
+									elem_child5[i].textContent = materialApplication.feedbackContent4;
+								} else if(elem_child5[i].nodeName == "SPAN") {
+									elem_child5[i].textContent = materialApplication.feedbackTime4;
+								}
+							}
+							jQuery("#ctb5").show();
+						}
+						//处理节点5
+						if(materialApplication.feedbackId5 != null && materialApplication.feedbackId5 != "") {
+							var elem_child6 = doc.getElementById('ctci5').childNodes; //得到参数元素的所有子元素
+							for(var i = 0; i < elem_child6.length; i++) { //遍历子元素
+								if(elem_child6[i].nodeName == "H4") {
+									elem_child6[i].textContent = materialApplication.feedbackName5;
+								} else if(elem_child6[i].nodeName == "P") {
+									elem_child6[i].textContent = materialApplication.feedbackContent5;
+								} else if(elem_child6[i].nodeName == "SPAN") {
+									elem_child6[i].textContent = materialApplication.feedbackTime5;
+								}
+							}
+							jQuery("#ctb6").show();
+						}
+						//完成节点
+						if(materialApplication.flag == 2) {
+							var elem_child8 = doc.getElementById('ctcs').childNodes; //得到参数元素的所有子元素
+							for(var i = 0; i < elem_child8.length; i++) { //遍历子元素
+								if(elem_child8[i].nodeName == "H4") {
+									elem_child8[i].textContent = materialApplication.leaderName;
+								} else if(elem_child8[i].nodeName == "P") {
+									elem_child8[i].textContent = materialApplication.reback;
+								} else if(elem_child8[i].nodeName == "SPAN") {
+									elem_child8[i].textContent = materialApplication.doneTime;
+								}
+							}
+							jQuery("#ctb8").show();
+						} else {
+							//等待节点
+							jQuery("#ctb7").show();
+						}
+
+					}
 				
 				
+				});
+
 			}(mui, document));
 		</script>
 	</body>

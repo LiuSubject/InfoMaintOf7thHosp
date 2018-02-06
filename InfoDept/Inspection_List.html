@@ -22,12 +22,11 @@
 		<header id="header" class="mui-bar mui-bar-nav">
 			<button class="mui-action-back mui-btn mui-btn-blue mui-btn-link mui-btn-nav mui-pull-left">&nbsp;&nbsp;返回</button>
 			<h1 class="mui-title">巡检信息</h1>
-			<button id="searchMyself" class="mui-btn mui-btn-link mui-btn-nav mui-pull-right">我的&nbsp;&nbsp;</button>
 		</header>
 		<div id="hh">
 			<div style="height:45px;"></div>
 			<!--防遮挡-->
-			<div class="mui-input-row mui-search">
+			<div class="mui-input-row mui-search" id="searchInDiv" style="display: none;">
 				<input type="search" id="searchIn" class="mui-input-clear" placeholder="搜索">
 			</div>
 		</div>
@@ -66,7 +65,11 @@
 				mui.init();
 				jQuery.noConflict();
 				mui.plusReady(function() {
-
+					//隐藏普通用户搜索功能
+					var current = localStorage.getItem("$role");
+					if(current.indexOf("admin") != -1) {
+						jQuery("#searchInDiv").show();
+					}
 					jQuery(function() {
 						jQuery('#inspectionlistgrid').datagrid({
 							url: "", //"/sxqy/index.php/Home/Admin/getInspectionList"; 
@@ -210,8 +213,6 @@
 					var reloadButton = doc.getElementById('reloadPage');
 					//搜索按钮
 					var searchInput = doc.getElementById('searchIn');
-					//“我的”按钮
-					var searchMyButton = doc.getElementById('searchMyself');
 
 					frontPageButton.addEventListener('tap', function(event) {
 						//上一页按钮点击事件
@@ -298,30 +299,6 @@
 						window.location.reload();
 					});
 
-					searchMyButton.addEventListener('tap', function(event) {
-						//搜索用户相关记录
-						var url = APPINFO.serverURL + '/mobileadmin/searchMyComputerProblems';
-						mui.ajax(url, {
-							dataType: 'json', // 服务器返回 json 格式数据
-							type: 'post', //HTTP 请求类型
-							timeout: 10000, // 超时时间设置为 10 秒；
-							success: function(data) {
-								// 服务器返回响应，根据响应结果，分析是否登录成功；
-								if(data.success == 'true') {
-
-									jQuery("#inspectionlistgrid").datagrid("loadData", data.engineRoomInspectionList);
-								} else {
-									plus.nativeUI.toast("抱歉，查询失败");
-								}
-
-							},
-							error: function(xhr, type, errorThrown) {
-								// 异常处理；
-								plus.nativeUI.toast('请保持网络畅通');
-							}
-						});
-					});
-
 					//搜索框回车触发
 					searchInput.addEventListener('keyup', function(event) {
 						if(event.keyCode == 13) {
@@ -329,9 +306,10 @@
 							var searchKey = document.getElementById("searchIn").value;
 							mui.ajax(url, {
 								data: {
-									findByDept: searchKey,
-									findByName: searchKey,
-									findByFlag: searchKey,
+									//只支持按巡检人搜索
+									findByDept: '',
+									findByExaminer: searchKey,
+									findByFlag: '',
 								},
 								dataType: 'json', // 服务器返回 json 格式数据
 								type: 'post', //HTTP 请求类型

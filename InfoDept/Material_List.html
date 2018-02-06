@@ -63,7 +63,7 @@
 				<!--loading页结束-->
 				<div style="height:5px;"></div>
 				<!--防遮挡-->
-				<div class="mui-input-row mui-search" id="searchInDiv">
+				<div class="mui-input-row mui-search" id="searchInDiv" style="display: none;">
 					<input type="search" id="searchIn" class="mui-input-clear" placeholder="搜索">
 				</div>
 				<table id="materiallistgrid" data-options="
@@ -105,11 +105,10 @@
 				var PagingVO = null;
 
 				mui.plusReady(function() {
-					//隐藏普通用户搜索及前后翻页、“我的”功能
+					//隐藏普通用户搜索功能
 					var current = localStorage.getItem("$role");
-					if(current == "normal") {
-						jQuery("#searchInDiv").remove();
-						jQuery("#searchMyself").remove();
+					if(current.indexOf("admin") != -1) {
+						jQuery("#searchInDiv").show();
 					}
 					jQuery(function() {
 						jQuery('#materiallistgrid').datagrid({
@@ -124,13 +123,19 @@
 									{
 										field: 'applicant',
 										title: '申请人',
-										width: 20,
+										width: 18,
 										align: 'center'
 									},
 									{
 										field: 'name',
 										title: '名称',
 										width: 20,
+										align: 'center'
+									},
+									{
+										field: 'total',
+										title: '总价',
+										width: 17,
 										align: 'center'
 									},
 									{
@@ -206,8 +211,8 @@
 							],
 							rowStyler: function(index, row) {
 								var current = localStorage.getItem("$role");
-								if(row.groupVisible == 1 &&
-									(current.indexOf("material") != -1 ||
+								if(row.groupVisible == 1 &&  row.flag != 2 
+									&&(current.indexOf("material") != -1 ||
 										current.indexOf("examiner") != -1)) {
 									return 'background-color: lightskyblue;';
 								}
@@ -247,8 +252,8 @@
 						jQuery(document).on('click', '.approveBtn', function() {
 							var thisid = jQuery(this).parents("tr").find(".approveBtn").attr("id");
 							mui.openWindow({
-								url: 'Material_Deal.html',
-								id: 'Material_Deal',
+								url: 'Material_Detail.html',
+								id: 'Material_Detail',
 								extras: {
 									thisId: thisid
 								},
