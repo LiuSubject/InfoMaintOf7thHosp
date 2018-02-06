@@ -4,6 +4,9 @@
     #textareadetail {
     	min-height: 90px;
     }
+    #textareadepartcomments{
+    	min-height: 90px;
+    }
 </style>
 <html>
 
@@ -32,7 +35,9 @@
 			      </div>
 			      <div class="mui-input-row">
 			          <label>名称</label>
-			          <input id="name" name="name" type="text" class="mui-input-clear mui-input" placeholder="请输入名称">
+			          <select name="nameCode" id="nameCode">
+					  </select>
+			          <input name="name" id='name' type="text" class="mui-input-clear mui-input" placeholder="请输入标题">
 			      </div>
 			      <div class="mui-input-row">
 			          <label>数量</label>
@@ -46,6 +51,10 @@
 			      <div id="textareadetail" class="mui-input-row">
 			          <label>请购理由</label>
 			          <textarea id="reason" name="reason" placeholder="请输入请购理由"></textarea>
+			      </div>
+			      <div id="textareadepartcomments" class="mui-input-row">
+			          <label>科室意见</label>
+			          <textarea id="bmyj" name="bmyj" placeholder="请输入请购科室意见"></textarea>
 			      </div>
 			  </form>
 		  </div>
@@ -78,6 +87,9 @@
 						        return false; 
 						    }else if( jQuery("#reason").val()==0 ){
 						        plus.nativeUI.toast("请输入请购理由");
+						        return false; 
+						    }else if( jQuery("#bmyj").val()==0 ){
+						        plus.nativeUI.toast("请输入请购科室意见");
 						        return false; 
 						    }
 						    
@@ -122,7 +134,7 @@
 				  	
 				  	//物资列表填入
 				    jQuery.ajax({
-				        url:"/admin/getMaterialTypeList",
+				        url:APPINFO.serverURL+"/mobileadmin/getMaterialTypeList",
 				        async:true,
 				        success: function(data){
 				            var list = data.materialApplicationTypeList;

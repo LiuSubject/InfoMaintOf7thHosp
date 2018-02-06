@@ -1,4 +1,4 @@
-<!doctype html>	
+<!doctype html>
 <!--电脑故障-->
 <html>
 
@@ -17,14 +17,20 @@
 			.loading {
 				z-index: 3;
 			}
+			
 			#searchInput {
 				margin-bottom: 0px;
 			}
-			.mui-scroll{
+			
+			.mui-scroll {
 				height: 100%;
 			}
+			
 			.mui-scroll-wrapper {
-			    height: 100%;
+				height: 100%;
+			}
+			.loading .loader{ 
+				top: 40%;
 			}
 		</style>
 	</head>
@@ -36,29 +42,29 @@
 		</header>
 		<div class="mui-content mui-scroll-wrapper">
 			<div class="mui-scroll">
-			<!--loading页开始-->
-			<div class="loading" style="background: #efeff4;">
-				<div class="loader">
-					<div class="loader-inner ball-grid-beat">
-						<div></div>
-						<div></div>
-						<div></div>
-						<div></div>
-						<div></div>
-						<div></div>
-						<div></div>
-						<div></div>
-						<div></div>
+				<!--loading页开始-->
+				<div class="loading" style="background: #efeff4;">
+					<div class="loader">
+						<div class="loader-inner ball-grid-beat">
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
+						</div>
 					</div>
 				</div>
-			</div>
-			<!--loading页结束-->
-			<div style="height:5px;"></div>
-			<!--防遮挡-->
-			<div class="mui-input-row mui-search" id="searchInDiv">
-				<input type="search" id="searchIn" class="mui-input-clear" placeholder="搜索">
-			</div>
-			<table id="faultlistgrid" data-options="
+				<!--loading页结束-->
+				<div style="height:5px;"></div>
+				<!--防遮挡-->
+				<div class="mui-input-row mui-search" id="searchInDiv">
+					<input type="search" id="searchIn" class="mui-input-clear" placeholder="搜索">
+				</div>
+				<table id="faultlistgrid" data-options="
 					header:'#fillingTop',
 					iconCls: 'icon-edit',
 					singleSelect: true,
@@ -66,7 +72,7 @@
 					fitColumns:true,
 					border: false,
 					scrollbarSize: 0">
-			</table>
+				</table>
 			</div>
 		</div>
 		<nav class="mui-bar mui-bar-tab">
@@ -85,12 +91,6 @@
 		</nav>
 		<script src="../js/mui.min.js"></script>
 		<script src="../js/jquery.min.js"></script>
-		<script type="text/javascript">
-			jQuery(window).load(function() {
-				jQuery(".loading").addClass("loader-chanage")
-				jQuery(".loading").fadeOut(1000)
-			})
-		</script>
 		<script src="../js/jquery.easyui.min.js"></script>
 		<script src="../js/jquery.easyui.mobile.js"></script>
 		<script src="../js/tether.min.js"></script>
@@ -164,18 +164,11 @@
 											}
 											return res;
 										}
-									},
-									{
-										field: 'faultUrgent',
-										title: '标红',
-										width: 15,
-										align: 'center',
-										hidden:'true'
 									}
 								]
 							],
-							rowStyler:function(index,row){
-								if (row.faultUrgent == 1){
+							rowStyler: function(index, row) {
+								if(row.faultUrgent == 1) {
 									return 'background-color: pink;';
 								}
 							}
@@ -240,14 +233,6 @@
 						timeout: 10000, // 超时时间设置为 10 秒；
 						success: function(data) {
 							// 服务器返回响应，根据响应结果，分析是否登录成功；
-							/*					if(data.success == 'true'){
-													
-													toMain(data);
-												}else if(data.success == 'false'){
-													plus.nativeUI.toast(data.msg);
-												}else{
-													plus.nativeUI.toast("抱歉，获取失败");
-												}*/
 							if(data.success == 'true') {
 								jQuery("#faultlistgrid").datagrid("loadData", data.computerProblemsList);
 								PagingVO = data.pagingVO;
@@ -278,7 +263,7 @@
 
 						//搜索框回车触发
 						searchInput.addEventListener('keyup', function(event) {
-							
+
 							if(event.keyCode == 13) {
 								//打开等待动画
 								jQuery(".loading").fadeIn(500);
@@ -446,12 +431,12 @@
 					});
 
 				});
-				
+
 				$(".mui-scroll-wrapper").scroll({
-			        //bounce: false,//滚动条是否有弹力默认是true
-			        //indicators: false, //是否显示滚动条,默认是true
-			        deceleration: 0.0005
-				}); 	
+					//bounce: false,//滚动条是否有弹力默认是true
+					//indicators: false, //是否显示滚动条,默认是true
+					deceleration: 0.0005
+				});
 			}(mui, document));
 		</script>
 	</body>
