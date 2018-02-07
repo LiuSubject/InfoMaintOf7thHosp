@@ -370,7 +370,8 @@
 				var completeBtn = doc.getElementById('complete');
 
 				if(typeof(urgentBtn) != "undefined" && urgentBtn != null) {
-					urgentBtn.addEventListener('tap', function(event) {
+					jQuery("#faultSavebtn").attr("disabled", true);
+					urgentBtn.one('tap', function(event) {
 						//处理按钮点击事件
 						var url = APPINFO.serverURL + '/mobileadmin/urgentComputerProblems';
 						mui.ajax(url, {
@@ -388,20 +389,24 @@
 									location.reload();
 								} else if(data.success == 'false') {
 									plus.nativeUI.toast(data.msg);
+									jQuery("#faultSavebtn").attr("disabled", false);
 								} else {
 									plus.nativeUI.toast("状态异常");
+									jQuery("#faultSavebtn").attr("disabled", false);
 								}
 
 							},
 							error: function(xhr, type, errorThrown) {
 								// 异常处理；
 								plus.nativeUI.toast('请保持网络畅通');
+								jQuery("#faultSavebtn").attr("disabled", false);
 							}
 						});
 					});
 				}
 
 				dealBtn.addEventListener('tap', function(event) {
+					jQuery("#faultSavebtn").attr("disabled", true);
 					//处理按钮点击事件
 					var url = APPINFO.serverURL + '/mobileadmin/dealComputerProblems';
 					mui.ajax(url, {
@@ -419,19 +424,23 @@
 								location.reload();
 							} else if(data.success == 'false') {
 								plus.nativeUI.toast(data.msg);
+								jQuery("#faultSavebtn").attr("disabled", false);
 							} else {
 								plus.nativeUI.toast("状态异常");
+								jQuery("#faultSavebtn").attr("disabled", false);
 							}
 
 						},
 						error: function(xhr, type, errorThrown) {
 							// 异常处理；
 							plus.nativeUI.toast('请保持网络畅通');
+							jQuery("#faultSavebtn").attr("disabled", false);
 						}
 					});
 				});
 
 				completeBtn.addEventListener('tap', function(event) {
+					jQuery("#faultSavebtn").attr("disabled", true);
 					//处理按钮点击事件
 					var url = APPINFO.serverURL + '/mobileadmin/completeComputerProblems';
 					mui.ajax(url, {
@@ -449,14 +458,17 @@
 								location.reload();
 							} else if(data.success == 'false') {
 								plus.nativeUI.toast(data.msg);
+								jQuery("#faultSavebtn").attr("disabled", false);
 							} else {
 								plus.nativeUI.toast("状态异常");
+								jQuery("#faultSavebtn").attr("disabled", false);
 							}
 
 						},
 						error: function(xhr, type, errorThrown) {
 							// 异常处理；
 							plus.nativeUI.toast('请保持网络畅通');
+							jQuery("#faultSavebtn").attr("disabled", false);
 						}
 					});
 				});

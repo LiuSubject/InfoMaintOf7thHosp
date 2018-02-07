@@ -178,7 +178,7 @@
 					"xxhdpi": "C:/Users/lxkLXK/Desktop/7Th/Android/strat1.png"
 				}
 			},"debug":true
-		}
+		},"ads":{"rp":false,"splash":false,"push":false,"spot":false},"adid":""
 	},
 	"dependencies": {
 		"pages": {

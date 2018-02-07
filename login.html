@@ -173,6 +173,56 @@
 							});
 
 					};
+					
+					var loginFunction = function() {
+						
+						var url = APPINFO.serverURL + '/mobilelogin';
+						var usercode = document.getElementById("account").value;
+						var userspsd = document.getElementById("password").value;
+						localStorage.setItem('userscode', usercode);
+						localStorage.setItem('userspsd', userspsd);
+						userspsd = Encrypting(usercode, userspsd);
+						//获取当前用户ID
+						var ClientInfo = plus.push.getClientInfo();
+						var clientid = ClientInfo.clientid;
+						mui.ajax(url, {
+							data: {
+								code: usercode,
+								psd: userspsd,
+								userclientid: clientid
+							},
+							dataType: 'json', // 服务器返回 json 格式数据
+							type: 'post', //HTTP 请求类型
+							timeout: 10000, // 超时时间设置为 10 秒；
+							success: function(data) {
+								// 服务器返回响应，根据响应结果，分析是否登录成功；
+								if(data.success == 'true') {
+									toMain(data);
+								} else if(data.success == 'false') {
+									plus.nativeUI.toast(data.msg);
+								} else {
+									plus.nativeUI.toast("抱歉，登陆失败");
+								}
+							},
+							error: function(xhr, type, errorThrown) {
+								// 异常处理；
+								plus.nativeUI.toast('网络异常');
+							}
+						});
+
+						var loginInfo = {
+							account: usercode,
+							password: userspsd
+						};
+
+						app.login(loginInfo, function(err) {
+							if(err) {
+								plus.nativeUI.toast(err);
+								return;
+							}
+						});
+
+					};
 					//检查 "登录状态/锁屏状态" 开始
 					if(settings.autoLogin && state.token && settings.gestures) {
 						$.openWindow({
@@ -252,72 +302,7 @@
 
 					//登录按钮触发事件
 					loginButton.addEventListener('tap', function(event) {
-
-						var url = APPINFO.serverURL + '/mobilelogin';
-						var usercode = document.getElementById("account").value;
-						var userspsd = document.getElementById("password").value;
-						localStorage.setItem('userscode', usercode);
-						localStorage.setItem('userspsd', userspsd);
-						userspsd = Encrypting(usercode, userspsd);
-						//获取当前用户ID
-						var ClientInfo = plus.push.getClientInfo();
-						var clientid = ClientInfo.clientid;
-						mui.ajax(url, {
-							data: {
-								code: usercode,
-								psd: userspsd,
-								userclientid: clientid
-							},
-							dataType: 'json', // 服务器返回 json 格式数据
-							type: 'post', //HTTP 请求类型
-							timeout: 10000, // 超时时间设置为 10 秒；
-							success: function(data) {
-								// 服务器返回响应，根据响应结果，分析是否登录成功；
-								if(data.success == 'true') {
-									//根据根据用户权限预加载不同页面
-									/*if(data.role == "admin") {
-										//管理用户登录页面预加载
-										mainPage = $.preload({
-												"id": 'main',
-												"url": 'main.html'
-										});
-										mainPage.addEventListener("loaded", function() {
-											main_loaded_flag = true;
-										});
-									} else {
-										//普通用户登录页面预加载
-										mainNormalPage = $.preload({
-												"id": 'mainNormal',
-												"url": 'mainNormal.html'
-										});
-										mainNormalPage.addEventListener("loaded", function() {
-											mainNormal_loaded_flag = true;
-										});
-									}*/
-									toMain(data);
-								} else if(data.success == 'false') {
-									plus.nativeUI.toast(data.msg);
-								} else {
-									plus.nativeUI.toast("抱歉，登陆失败");
-								}
-							},
-							error: function(xhr, type, errorThrown) {
-								// 异常处理；
-								plus.nativeUI.toast('网络异常');
-							}
-						});
-
-						var loginInfo = {
-							account: usercode,
-							password: userspsd
-						};
-
-						app.login(loginInfo, function(err) {
-							if(err) {
-								plus.nativeUI.toast(err);
-								return;
-							}
-						});
+						loginFunction();
 					});
 
 					//检查更新按钮触发事件
@@ -428,6 +413,8 @@
 						}, 1000);
 						return false;
 					};
+					//自动登录
+					loginFunction();
 				});
 			}(mui, document));
 		</script>

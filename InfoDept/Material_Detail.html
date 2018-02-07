@@ -79,7 +79,7 @@
 		<!--loading页结束-->
 		<div style="height:45px;"></div>
 		<!--防遮挡-->
-		<form id="materialapplicationform" class="mui-input-group" method="post" action="http://194.168.0.194/sxqy/index.php/Home/Index/saveMaterial" enctype="multipart/form-data">
+		<form id="materialapplicationform" class="mui-input-group" method="post" enctype="multipart/form-data">
 			<div class="mui-input-row">
 				<label>申请人</label>
 				<input id="applicant" name="applicant" type="text" class=" mui-input" readonly="readonly">
@@ -312,6 +312,7 @@
 					var denyBtn = doc.getElementById('deny');
 
 					passBtn.addEventListener('tap', function(event) {
+						jQuery("#faultSavebtn").attr("disabled", true);
 						//打开等待动画
 						jQuery(".loading").fadeIn(500);
 						var mapData;
@@ -333,19 +334,23 @@
 									jQuery(".loading").fadeOut(500)
 								} else if(data.success == 'false') {
 									plus.nativeUI.toast(data.msg);
+									jQuery("#faultSavebtn").attr("disabled", false);
 								} else {
 									plus.nativeUI.toast("状态异常");
+									jQuery("#faultSavebtn").attr("disabled", false);
 								}
 							},
 							error: function(xhr, type, errorThrown) {
 								// 异常处理；
 								plus.nativeUI.toast('请保持网络畅通');
+								jQuery("#faultSavebtn").attr("disabled", false);
 							}
 						});
 
 					});
 
 					denyBtn.addEventListener('tap', function(event) {
+						jQuery("#faultSavebtn").attr("disabled", true);
 						//处理按钮点击事件
 						var url = APPINFO.serverURL + '/mobileadmin/denyMaterialApplication';
 						mui.ajax(url, {
@@ -365,13 +370,16 @@
 									jQuery(".loading").fadeOut(500)
 								} else if(data.success == 'false') {
 									plus.nativeUI.toast(data.msg);
+									jQuery("#faultSavebtn").attr("disabled", false);
 								} else {
 									plus.nativeUI.toast("状态异常");
+									jQuery("#faultSavebtn").attr("disabled", false);
 								}
 							},
 							error: function(xhr, type, errorThrown) {
 								// 异常处理；
 								plus.nativeUI.toast('请保持网络畅通');
+								jQuery("#faultSavebtn").attr("disabled", false);
 							}
 						});
 					});
@@ -407,17 +415,17 @@
 									var approveDetails = "";
 									if(materialApplication.highLeaderApproved1 == 1 && elem_child2[i].id == "ctcaP1") {
 										approveDetails = "分管院长审批意见:" +
-											materialApplication.highLeaderReback1;
+											(materialApplication.highLeaderReback1||"");
 										elem_child2[i].textContent = approveDetails;
 										jQuery("#ctcaP1").show();
 									} else if(materialApplication.highLeaderApproved2 == 1 && elem_child2[i].id == "ctcaP2") {
 										approveDetails = "信息主管院长审批意见:" +
-											materialApplication.highLeaderReback2;
+											(materialApplication.highLeaderReback2||"");
 										elem_child2[i].textContent = approveDetails;
 										jQuery("#ctcaP2").show();
 									} else if(materialApplication.highLeaderApproved3 == 1 && elem_child2[i].id == "ctcaP3") {
 										approveDetails = "院长审批意见:" +
-											materialApplication.highLeaderReback3;
+											(materialApplication.highLeaderReback3||"");
 										elem_child2[i].textContent = approveDetails;
 										jQuery("#ctcaP3").show();
 									}

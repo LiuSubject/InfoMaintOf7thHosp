@@ -285,6 +285,7 @@
 				var denyBtn = doc.getElementById('denyBtn');
 
 				passBtn.addEventListener('tap', function(event) {
+					jQuery("#faultSavebtn").attr("disabled", true);
 					//通过按钮点击事件
 					var url = APPINFO.serverURL + '/mobileadmin/passEngineRoomInspection';
 					mui.ajax(url, {
@@ -300,19 +301,23 @@
 								plus.nativeUI.toast(data.msg);
 							} else if(data.success == 'false') {
 								plus.nativeUI.toast(data.msg);
+								jQuery("#faultSavebtn").attr("disabled", false);
 							} else {
 								plus.nativeUI.toast("状态异常");
+								jQuery("#faultSavebtn").attr("disabled", false);
 							}
 
 						},
 						error: function(xhr, type, errorThrown) {
 							// 异常处理；
 							plus.nativeUI.toast('请保持网络畅通');
+							jQuery("#faultSavebtn").attr("disabled", false);
 						}
 					});
 				});
 
 				denyBtn.addEventListener('tap', function(event) {
+					jQuery("#faultSavebtn").attr("disabled", true);
 					//拒绝按钮点击事件
 					var url = APPINFO.serverURL + '/mobileadmin/denyEngineRoomInspection';
 					mui.ajax(url, {
@@ -328,14 +333,17 @@
 								plus.nativeUI.toast(data.msg);
 							} else if(data.success == 'false') {
 								plus.nativeUI.toast(data.msg);
+								jQuery("#faultSavebtn").attr("disabled", false);
 							} else {
 								plus.nativeUI.toast("状态异常");
+								jQuery("#faultSavebtn").attr("disabled", false);
 							}
 
 						},
 						error: function(xhr, type, errorThrown) {
 							// 异常处理；
 							plus.nativeUI.toast('请保持网络畅通');
+							jQuery("#faultSavebtn").attr("disabled", false);
 						}
 					});
 				});
