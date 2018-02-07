@@ -1,10 +1,6 @@
-<!--信息科机房巡检记录-->
 <!doctype html>
-<style type="text/css">
-	#searchInput {
-		margin-bottom: 0px;
-	}
-</style>
+<!--信息科机房巡检记录-->
+
 <html>
 
 	<head>
@@ -16,6 +12,29 @@
 		<link rel="stylesheet" type="text/css" href="../css/mobile.css">
 		<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
 		<link rel="stylesheet" type="text/css" href="../css/tether.min.css">
+		<link rel="stylesheet" type="text/css" href="../css/loaders.min.css" />
+		<link rel="stylesheet" type="text/css" href="../css/loading.css" />
+		<style type="text/css">
+			.loading {
+				z-index: 3;
+			}
+			
+			#searchInput {
+				margin-bottom: 0px;
+			}
+			
+			.mui-scroll {
+				height: 100%;
+			}
+			
+			.mui-scroll-wrapper {
+				height: 100%;
+			}
+			
+			.loading .loader {
+				top: 40%;
+			}
+		</style>
 	</head>
 
 	<body>
@@ -23,14 +42,31 @@
 			<button class="mui-action-back mui-btn mui-btn-blue mui-btn-link mui-btn-nav mui-pull-left">&nbsp;&nbsp;返回</button>
 			<h1 class="mui-title">巡检信息</h1>
 		</header>
-		<div id="hh">
-			<div style="height:45px;"></div>
-			<!--防遮挡-->
-			<div class="mui-input-row mui-search" id="searchInDiv" style="display: none;">
-				<input type="search" id="searchIn" class="mui-input-clear" placeholder="搜索">
-			</div>
-		</div>
-		<table id="inspectionlistgrid" data-options="
+		<div class="mui-content mui-scroll-wrapper">
+			<div class="mui-scroll">
+				<!--loading页开始-->
+				<div class="loading" style="background: #efeff4;">
+					<div class="loader">
+						<div class="loader-inner ball-grid-beat">
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
+						</div>
+					</div>
+				</div>
+				<!--loading页结束-->
+				<div style="height:5px;"></div>
+				<!--防遮挡-->
+				<div class="mui-input-row mui-search" id="searchInDiv" style="display: none;">
+					<input type="search" id="searchIn" class="mui-input-clear" placeholder="搜索">
+				</div>
+				<table id="inspectionlistgrid" data-options="
 				header:'#hh',
 				iconCls: 'icon-edit',
 				singleSelect: true,
@@ -38,7 +74,9 @@
 				fitColumns:true,
 				border: false,
 				scrollbarSize: 0">
-		</table>
+				</table>
+			</div>
+		</div>
 		<nav class="mui-bar mui-bar-tab">
 			<a id="frontPage" class="mui-tab-item mui-active">
 				<span class="mui-icon mui-icon-arrowthinleft"></span>
@@ -72,7 +110,7 @@
 					}
 					jQuery(function() {
 						jQuery('#inspectionlistgrid').datagrid({
-							url: "", //"/sxqy/index.php/Home/Admin/getInspectionList"; 
+							url: "",
 							columns: [
 								[{
 										field: 'date',
@@ -157,6 +195,9 @@
 													}*/
 								jQuery("#inspectionlistgrid").datagrid("loadData", data.engineRoomInspectionList);
 								PagingVO = data.pagingVO;
+								//关闭等待动画
+								jQuery(".loading").addClass("loader-chanage")
+								jQuery(".loading").fadeOut(500)
 							},
 							error: function(xhr, type, errorThrown) {
 								// 异常处理；
@@ -215,14 +256,19 @@
 					var searchInput = doc.getElementById('searchIn');
 
 					frontPageButton.addEventListener('tap', function(event) {
+						//打开等待动画
+						jQuery(".loading").fadeIn(500);
 						//上一页按钮点击事件
 						//页码边界判断
 						if(typeof(PagingVO) == "undefined" ||
 							PagingVO.curentPageNo < 0 ||
 							typeof(PagingVO.curentPageNo) == "undefined" ||
 							PagingVO.curentPageNo == null) {
+							//关闭等待动画
+							jQuery(".loading").addClass("loader-chanage")
+							jQuery(".loading").fadeOut(500)
 							return;
-						} else if(PagingVO.curentPageNo == 0) {
+						} else if(PagingVO.curentPageNo == 1) {
 							return;
 						} else if(PagingVO.curentPageNo > 1) {
 							var url = APPINFO.serverURL + '/mobileadmin/showEngineRoomInspection';
@@ -245,6 +291,9 @@
 														}*/
 									jQuery("#inspectionlistgrid").datagrid("loadData", data.engineRoomInspectionList);
 									PagingVO = data.pagingVO;
+									//关闭等待动画
+									jQuery(".loading").addClass("loader-chanage")
+									jQuery(".loading").fadeOut(500)
 								},
 								error: function(xhr, type, errorThrown) {
 									// 异常处理；
@@ -255,14 +304,22 @@
 					});
 
 					nextPageButton.addEventListener('tap', function(event) {
+						//打开等待动画
+						jQuery(".loading").fadeIn(500);
 						//下一页按钮点击事件
 						//页码边界判断
 						if(typeof(PagingVO) == "undefined" ||
 							PagingVO.curentPageNo < 0 ||
 							typeof(PagingVO.curentPageNo) == "undefined" ||
 							PagingVO.curentPageNo == null) {
+							//关闭等待动画
+							jQuery(".loading").addClass("loader-chanage")
+							jQuery(".loading").fadeOut(500)
 							return;
 						} else if(PagingVO.curentPageNo >= PagingVO.totalCount) {
+							//关闭等待动画
+							jQuery(".loading").addClass("loader-chanage")
+							jQuery(".loading").fadeOut(500)
 							return;
 						} else if(PagingVO.curentPageNo >= 1) {
 							var url = APPINFO.serverURL + '/mobileadmin/showEngineRoomInspection';
@@ -285,6 +342,9 @@
 														}*/
 									jQuery("#inspectionlistgrid").datagrid("loadData", data.engineRoomInspectionList);
 									PagingVO = data.pagingVO;
+									//关闭等待动画
+									jQuery(".loading").addClass("loader-chanage")
+									jQuery(".loading").fadeOut(500)
 								},
 								error: function(xhr, type, errorThrown) {
 									// 异常处理；
@@ -302,6 +362,8 @@
 					//搜索框回车触发
 					searchInput.addEventListener('keyup', function(event) {
 						if(event.keyCode == 13) {
+							//打开等待动画
+							jQuery(".loading").fadeIn(500);
 							var url = APPINFO.serverURL + '/mobileadmin/searchComputerProblems';
 							var searchKey = document.getElementById("searchIn").value;
 							mui.ajax(url, {
@@ -319,6 +381,9 @@
 									if(data.success == 'true') {
 
 										jQuery("#inspectionlistgrid").datagrid("loadData", data.engineRoomInspectionList);
+										//关闭等待动画
+										jQuery(".loading").addClass("loader-chanage")
+										jQuery(".loading").fadeOut(500)
 									} else if(data.success == 'false') {
 										plus.nativeUI.toast(data.msg);
 									} else {
@@ -333,6 +398,11 @@
 							});
 						}
 					});
+				});
+				$(".mui-scroll-wrapper").scroll({
+					//bounce: false,//滚动条是否有弹力默认是true
+					indicators: false, //是否显示滚动条,默认是true
+					deceleration: 0.0005
 				});
 			}(mui, document));
 		</script>
