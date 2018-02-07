@@ -1,5 +1,6 @@
-<!--abandon-->
 <!DOCTYPE html>
+
+<!--abandon-->
 <html>
 
 	<head>
@@ -158,13 +159,13 @@
 
 				//处理按钮点击事件
 				jQuery(document).on('click', '.editBtn', function() {
-					window.location.href = "/sxqy/index.php/Home/Admin/manageEdit" + "/id/" + $(this).attr('id');
+					window.location.href = "/id/" + $(this).attr('id');
 				});
 				//详情按钮点击事件+
 				 
 				jQuery(document).on("click",".viewDetail",function(){
 			   		bootstrapQ.dialog({
-			    	    url : '/sxqy/index.php/Home/Index/manageModify/id/' + jQuery(this).attr('id'),
+			    	    url :   jQuery(this).attr('id'),
 			    	    title : '详细信息',
 			    	    foot : false
 	    			});

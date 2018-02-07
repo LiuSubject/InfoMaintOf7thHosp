@@ -79,7 +79,7 @@
 		<!--loading页结束-->
 		<div style="height:45px;"></div>
 		<!--防遮挡-->
-		<form id="materialapplicationform" class="mui-input-group" method="post" action="http://194.168.0.194/sxqy/index.php/Home/Index/saveMaterial" enctype="multipart/form-data">
+		<form id="materialapplicationform" class="mui-input-group" method="post" enctype="multipart/form-data">
 			<div class="mui-input-row">
 				<label>申请人</label>
 				<input id="applicant" name="applicant" type="text" class=" mui-input" readonly="readonly">
@@ -132,7 +132,7 @@
 				<label>信息主管院长意见</label>
 				<textarea id="highLeaderReback2" name="highLeaderReback2" readonly="readonly"></textarea>
 			</div>
-			<div id="highLeaderReback3_area" class="mui-input-row textareadetail" style="display: none;"> 
+			<div id="highLeaderReback3_area" class="mui-input-row textareadetail" style="display: none;">
 				<label>院长意见</label>
 				<textarea id="highLeaderReback3" name="highLeaderReback3" readonly="readonly"></textarea>
 			</div>
@@ -243,8 +243,7 @@
 				mui.init();
 				jQuery.noConflict();
 				mui.plusReady(function() {
-					
-					
+
 					//加载数据
 					var url = APPINFO.serverURL + '/mobileadmin/checkMaterialApplication';
 					mui.ajax(url, {
@@ -258,7 +257,7 @@
 							// 服务器返回响应，根据响应结果，分析是否登录成功；
 							if(data.success == 'true') {
 								jQuery('#materialapplicationform').form('load', data.materialApplication);
-								
+
 								var role = localStorage.getItem("$role");
 								var material_Application = data.materialApplication;
 								//依权限显示审批按钮
@@ -268,26 +267,25 @@
 										(role.indexOf("infodean") != -1 && material_Application.highApproved == 1 &&
 											material_Application.approvedFlag == 0 && material_Application.highLeaderApproved2 == 1) ||
 										(role.indexOf("alldean") != -1 && material_Application.highApproved == 1 &&
-											material_Application.approvedFlag == 0 && material_Application.highLeaderApproved3 == 1)) 
-									{
+											material_Application.approvedFlag == 0 && material_Application.highLeaderApproved3 == 1)) {
 										jQuery("#approve").show();
 										jQuery("#approve_rebackarea").show();
 									}
 								}
-								
+
 								//可处理标识
 								if(data.materialApplication.groupVisible == 1 && role.indexOf("admin") != -1) {
 									jQuery("#faultUrgentTitle").addClass("Urgent");
 								}
-								
+
 								//依情况显示不同院领导审批意见
-								if(material_Application.highLeaderApproved1 == 1){
+								if(material_Application.highLeaderApproved1 == 1) {
 									jQuery("#highLeaderReback1_area").show();
 								}
-								if(material_Application.highLeaderApproved2 == 1){
+								if(material_Application.highLeaderApproved2 == 1) {
 									jQuery("#highLeaderReback2_area").show();
 								}
-								if(material_Application.highLeaderApproved3 == 1){
+								if(material_Application.highLeaderApproved3 == 1) {
 									jQuery("#highLeaderReback3_area").show();
 								}
 								//加载时间轴
@@ -307,13 +305,14 @@
 							plus.nativeUI.toast('请保持网络畅通');
 						}
 					});
-					
+
 					//处理按钮
 					var passBtn = doc.getElementById('pass');
 					//完成按钮
 					var denyBtn = doc.getElementById('deny');
-					
+
 					passBtn.addEventListener('tap', function(event) {
+						jQuery("#faultSavebtn").attr("disabled", true);
 						//打开等待动画
 						jQuery(".loading").fadeIn(500);
 						var mapData;
@@ -335,20 +334,23 @@
 									jQuery(".loading").fadeOut(500)
 								} else if(data.success == 'false') {
 									plus.nativeUI.toast(data.msg);
+									jQuery("#faultSavebtn").attr("disabled", false);
 								} else {
 									plus.nativeUI.toast("状态异常");
+									jQuery("#faultSavebtn").attr("disabled", false);
 								}
 							},
 							error: function(xhr, type, errorThrown) {
 								// 异常处理；
 								plus.nativeUI.toast('请保持网络畅通');
+								jQuery("#faultSavebtn").attr("disabled", false);
 							}
 						});
-						
-						
+
 					});
 
 					denyBtn.addEventListener('tap', function(event) {
+						jQuery("#faultSavebtn").attr("disabled", true);
 						//处理按钮点击事件
 						var url = APPINFO.serverURL + '/mobileadmin/denyMaterialApplication';
 						mui.ajax(url, {
@@ -368,17 +370,20 @@
 									jQuery(".loading").fadeOut(500)
 								} else if(data.success == 'false') {
 									plus.nativeUI.toast(data.msg);
+									jQuery("#faultSavebtn").attr("disabled", false);
 								} else {
 									plus.nativeUI.toast("状态异常");
+									jQuery("#faultSavebtn").attr("disabled", false);
 								}
 							},
 							error: function(xhr, type, errorThrown) {
 								// 异常处理；
 								plus.nativeUI.toast('请保持网络畅通');
+								jQuery("#faultSavebtn").attr("disabled", false);
 							}
 						});
 					});
-					
+
 					//时间轴加载
 					function timeLine(materialApplication) {
 						//提交节点
@@ -387,7 +392,7 @@
 							if(elem_child1[i].nodeName == "H4") {
 								elem_child1[i].textContent = materialApplication.applicant;
 							} else if(elem_child1[i].nodeName == "P") {
-								elem_child1[i].textContent = materialApplication.name +" : "+materialApplication.reason;
+								elem_child1[i].textContent = materialApplication.name + " : " + materialApplication.reason;
 							} else if(elem_child1[i].nodeName == "SPAN") {
 								elem_child1[i].textContent = materialApplication.createTime;
 							}
@@ -398,29 +403,29 @@
 							for(var i = 0; i < elem_child2.length; i++) { //遍历子元素
 								if(elem_child2[i].nodeName == "H4") {
 									var approveResult = "";
-									if(materialApplication.approvedFlag == 0){
+									if(materialApplication.approvedFlag == 0) {
 										approveResult = "审批中";
-									}else if(materialApplication.approvedFlag == 1){
+									} else if(materialApplication.approvedFlag == 1) {
 										approveResult = "审批通过";
-									}else if(materialApplication.approvedFlag == 2){
+									} else if(materialApplication.approvedFlag == 2) {
 										approveResult = "审批未通过";
 									}
 									elem_child2[i].textContent = approveResult;
 								} else if(elem_child2[i].nodeName == "P") {
 									var approveDetails = "";
-									if(materialApplication.highLeaderApproved1 == 1 && elem_child2[i].id == "ctcaP1"){
-										approveDetails = "分管院长审批意见:"
-											+ materialApplication.highLeaderReback1;
+									if(materialApplication.highLeaderApproved1 == 1 && elem_child2[i].id == "ctcaP1") {
+										approveDetails = "分管院长审批意见:" +
+											(materialApplication.highLeaderReback1||"");
 										elem_child2[i].textContent = approveDetails;
 										jQuery("#ctcaP1").show();
-									}else if(materialApplication.highLeaderApproved2 == 1 && elem_child2[i].id == "ctcaP2"){
-										approveDetails = "信息主管院长审批意见:"
-											+ materialApplication.highLeaderReback2;
+									} else if(materialApplication.highLeaderApproved2 == 1 && elem_child2[i].id == "ctcaP2") {
+										approveDetails = "信息主管院长审批意见:" +
+											(materialApplication.highLeaderReback2||"");
 										elem_child2[i].textContent = approveDetails;
 										jQuery("#ctcaP2").show();
-									}else if(materialApplication.highLeaderApproved3 == 1 && elem_child2[i].id == "ctcaP3"){
-										approveDetails = "院长审批意见:"
-											+ materialApplication.highLeaderReback3;
+									} else if(materialApplication.highLeaderApproved3 == 1 && elem_child2[i].id == "ctcaP3") {
+										approveDetails = "院长审批意见:" +
+											(materialApplication.highLeaderReback3||"");
 										elem_child2[i].textContent = approveDetails;
 										jQuery("#ctcaP3").show();
 									}
@@ -442,7 +447,7 @@
 							}
 							jQuery("#ctb2").show();
 						}
-						
+
 						//处理节点2
 						if(materialApplication.feedbackId2 != null && materialApplication.feedbackId2 != "") {
 							var elem_child3 = doc.getElementById('ctci2').childNodes; //得到参数元素的所有子元素
@@ -518,8 +523,13 @@
 						}
 
 					}
-				
-					
+
+				});
+
+				mui(".mui-content").scroll({
+					//bounce: false,//滚动条是否有弹力默认是true
+					indicators: false, //是否显示滚动条,默认是true
+					deceleration: 0.0005
 				});
 			}(mui, document));
 		</script>

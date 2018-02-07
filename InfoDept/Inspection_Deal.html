@@ -1,10 +1,6 @@
-<!--信息科机房巡检记录页-->
 <!doctype html>
-<style type="text/css">
-	#textareadetail {
-		min-height: 90px;
-	}
-</style>
+<!--信息科机房巡检记录页-->
+
 <html>
 
 	<head>
@@ -12,6 +8,50 @@
 		<title></title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../css/loaders.min.css" />
+		<link rel="stylesheet" type="text/css" href="../css/loading.css" />
+		<link rel="stylesheet" type="text/css" href="../css/all.css" />
+		<style type="text/css">
+			#textareadetail {
+				min-height: 90px;
+			}
+			
+			#textareafeedback {
+				min-height: 90px;
+			}
+			
+			.loading {
+				z-index: 2;
+			}
+			
+			.Urgent {
+				color: #c9302c;
+			}
+			
+			.cd-timeline-img.cd-warn {
+				background: #f0ca45;
+			}
+			
+			.cd-timeline-img.cd-wait {
+				background: #A29F9F;
+			}
+			
+			.cd-timeline-img.cd-success {
+				background: #449d44;
+			}
+			
+			.cd-timeline-img.cd-info {
+				background: #31b0d5;
+			}
+			
+			.cd-timeline-img.cd-approve {
+				background: #D9534F;
+			}
+			
+			#textareadetail {
+				min-height: 90px;
+			}
+		</style>
 	</head>
 
 	<body>
@@ -19,7 +59,25 @@
 			<button class="mui-action-back mui-btn mui-btn-blue mui-btn-link mui-btn-nav mui-pull-left"><span class="mui-icon mui-icon-left-nav"></span>返回</button>
 			<h1 class="mui-title">机房巡检</h1>
 		</header>
-		<div class="mui-content">
+		<!--loading页开始-->
+		<div class="loading" style="background: #efeff4;">
+			<div class="loader">
+				<div class="loader-inner ball-grid-beat">
+					<div></div>
+					<div></div>
+					<div></div>
+					<div></div>
+					<div></div>
+					<div></div>
+					<div></div>
+					<div></div>
+					<div></div>
+				</div>
+			</div>
+		</div>
+		<!--loading页结束-->
+		<div style="height:45px;"></div>
+		<!--防遮挡-->
 			<form id="inspectionform" name="inspectionform" class="mui-input-group" method="post" action="">
 				<div class="mui-input-row">
 					<label class='long'>检查日期</label>
@@ -171,7 +229,6 @@
 					<textarea id="ycyy" name="ycyy" placeholder="原因/结果"></textarea>
 				</div>
 			</form>
-		</div>
 		<nav class="mui-bar mui-bar-tab">
 			<a id="passBtn" class="mui-tab-item mui-active">
 				<span class="mui-icon mui-icon-checkmarkempty"></span>
@@ -205,6 +262,9 @@
 							// 服务器返回响应，根据响应结果，分析是否登录成功；
 							if(data.success == 'true') {
 								jQuery('#inspectionform').form('load', data.engineRoomInspection);
+								//关闭等待动画
+								jQuery(".loading").addClass("loader-chanage")
+								jQuery(".loading").fadeOut(500)
 							} else if(data.success == 'false') {
 								plus.nativeUI.toast(data.msg);
 							} else {
@@ -225,6 +285,7 @@
 				var denyBtn = doc.getElementById('denyBtn');
 
 				passBtn.addEventListener('tap', function(event) {
+					jQuery("#faultSavebtn").attr("disabled", true);
 					//通过按钮点击事件
 					var url = APPINFO.serverURL + '/mobileadmin/passEngineRoomInspection';
 					mui.ajax(url, {
@@ -240,19 +301,23 @@
 								plus.nativeUI.toast(data.msg);
 							} else if(data.success == 'false') {
 								plus.nativeUI.toast(data.msg);
+								jQuery("#faultSavebtn").attr("disabled", false);
 							} else {
 								plus.nativeUI.toast("状态异常");
+								jQuery("#faultSavebtn").attr("disabled", false);
 							}
 
 						},
 						error: function(xhr, type, errorThrown) {
 							// 异常处理；
 							plus.nativeUI.toast('请保持网络畅通');
+							jQuery("#faultSavebtn").attr("disabled", false);
 						}
 					});
 				});
 
 				denyBtn.addEventListener('tap', function(event) {
+					jQuery("#faultSavebtn").attr("disabled", true);
 					//拒绝按钮点击事件
 					var url = APPINFO.serverURL + '/mobileadmin/denyEngineRoomInspection';
 					mui.ajax(url, {
@@ -268,14 +333,17 @@
 								plus.nativeUI.toast(data.msg);
 							} else if(data.success == 'false') {
 								plus.nativeUI.toast(data.msg);
+								jQuery("#faultSavebtn").attr("disabled", false);
 							} else {
 								plus.nativeUI.toast("状态异常");
+								jQuery("#faultSavebtn").attr("disabled", false);
 							}
 
 						},
 						error: function(xhr, type, errorThrown) {
 							// 异常处理；
 							plus.nativeUI.toast('请保持网络畅通');
+							jQuery("#faultSavebtn").attr("disabled", false);
 						}
 					});
 				});
